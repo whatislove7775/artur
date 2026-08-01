@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header"></header>
+
+<div class="fp">
+  <div class="fp__rail">
+
+    <!-- block 1 — big photo left, garment right -->
+    <section class="block">
+      <div class="block__photo">
+        <img src="assets/hero-1.png" alt="">
+      </div>
+      <div class="block__items">
+        <div class="scroller">
+          <div class="scroller__head">
+            <a class="pill" href="items.html#garment">Garment</a>
+          </div>
+          <div class="grid-2" data-grid="garment"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- block 2 — jewelry left, big photo right -->
+    <section class="block block--reverse">
+      <div class="block__photo">
+        <img src="assets/hero-2.png" alt="">
+      </div>
+      <div class="block__items">
+        <div class="scroller">
+          <div class="scroller__head">
+            <a class="pill" href="items.html#jewelry">Jewelry</a>
+          </div>
+          <div class="grid-2" data-grid="jewelry"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+  mountHeader();
+  renderCards('[data-grid="garment"]', byCat('garment'));
+  renderCards('[data-grid="jewelry"]', byCat('jewelry'));
+</script>
+<script src="js/home.js"></script>
+</body>
+</html>
