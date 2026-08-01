@@ -242,8 +242,8 @@ img { display: block; max-width: 100%; }
    the Garment button gives */
 .photo-toggle {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 24px;
+  left: 24px;
   z-index: 5;
   padding: 0;
   border: 0;
@@ -251,13 +251,7 @@ img { display: block; max-width: 100%; }
   line-height: 0;
   transition: transform .25s;
 }
-.photo-toggle img {
-  width: 54px;
-  height: auto;
-  /* keeps the icon readable over the photos */
-  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #fff)
-          drop-shadow(0 0 14px #fff);
-}
+.photo-toggle img { width: 40px; height: 40px; }
 .photo-toggle:hover { transform: scale(1.06); }
 
 /* --- grid mode ------------------------------------------------- */
