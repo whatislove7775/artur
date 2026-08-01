@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn — Items</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header"></header>
+
+<main class="page">
+  <div class="catalog">
+
+    <section class="catalog__section" id="garment">
+      <div class="catalog__head"><span class="pill">Garment</span></div>
+      <div class="grid-3" data-grid="garment"></div>
+    </section>
+
+    <section class="catalog__section" id="jewelry">
+      <div class="catalog__head"><span class="pill">Jewelry</span></div>
+      <div class="grid-3" data-grid="jewelry"></div>
+    </section>
+
+  </div>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+  mountHeader();
+  renderCards('[data-grid="garment"]', byCat('garment'));
+  renderCards('[data-grid="jewelry"]', byCat('jewelry'));
+
+  /* honour #garment / #jewelry once the grids exist */
+  if (location.hash) {
+    const t = document.querySelector(location.hash);
+    if (t) t.scrollIntoView();
+  }
+</script>
+</body>
+</html>
