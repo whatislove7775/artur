@@ -122,28 +122,22 @@
     updateHint();
   });
 
-  /* corner emblem — hides the big photos and lays the two blocks out
-     as one plain catalogue, the same view the Garment button gives */
-  const toggle = document.getElementById('cornerToggle');
-  if (toggle) {
+  /* the icon on each big photo — hides the photos and lays the two
+     blocks out as one plain catalogue, the same view the Garment
+     button gives. The logo in the header brings the photos back. */
+  document.querySelectorAll('.photo-toggle').forEach((toggle) => {
     toggle.addEventListener('click', () => {
-      const on = document.body.classList.toggle('is-grid');
-      toggle.setAttribute('aria-pressed', String(on));
-
-      if (on) {
-        blocks.forEach((b) => {
-          const s = b.querySelector('.scroller');
-          if (s) s.scrollTop = 0;
-        });
-        window.scrollTo(0, 0);
-      } else {
-        idx = 0;
-        rail.style.transform = jacking() ? 'translateY(0)' : '';
-        window.scrollTo(0, 0);
-      }
+      document.body.classList.add('is-grid');
+      blocks.forEach((b) => {
+        const s = b.querySelector('.scroller');
+        if (s) s.scrollTop = 0;
+      });
+      idx = 0;
+      rail.style.transform = '';
+      window.scrollTo(0, 0);
       updateHint();
     });
-  }
+  });
 
   updateHint();
 })();

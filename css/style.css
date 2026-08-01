@@ -196,6 +196,7 @@ img { display: block; max-width: 100%; }
 }
 
 .block__photo {
+  position: relative;
   flex: 0 0 47%;
   overflow: hidden;
   background: #000;
@@ -236,27 +237,28 @@ img { display: block; max-width: 100%; }
   row-gap: 42px;
 }
 
-/* corner emblem — drops the big photos and lays the home page out
-   as one plain catalogue, the same view the Garment button gives */
-.corner-toggle {
-  position: fixed;
-  left: 24px;
-  bottom: 20px;
-  z-index: 400;
+/* icon in the top-left corner of each big photo — drops the photos
+   and lays the home page out as one plain catalogue, the same view
+   the Garment button gives */
+.photo-toggle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 5;
   padding: 0;
   border: 0;
   background: none;
   line-height: 0;
   transition: transform .25s;
 }
-.corner-toggle img {
-  width: 96px;
+.photo-toggle img {
+  width: 54px;
   height: auto;
-  /* keeps the emblem readable over the dark hero photos */
+  /* keeps the icon readable over the photos */
   filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #fff)
           drop-shadow(0 0 14px #fff);
 }
-.corner-toggle:hover { transform: scale(1.06); }
+.photo-toggle:hover { transform: scale(1.06); }
 
 /* --- grid mode ------------------------------------------------- */
 body.is-grid .block__photo { display: none; }
