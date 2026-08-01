@@ -23,12 +23,20 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* custom cursors ------------------------------------------------ */
-html, body, * { cursor: var(--cur-default); }
+/* custom cursors ------------------------------------------------
+   The default cursor is set once on the root and inherited by
+   everything; only genuinely clickable elements switch to the
+   hover cursor — and their children inherit it too.            */
+html, body { cursor: var(--cur-default); }
 
-a, button, .clickable, .card, .nav-link, .pill, .thumb, .dropdown a {
-  cursor: var(--cur-pointer);
-}
+a[href],
+button,
+.clickable,
+.card,
+.pill,
+.btn,
+.thumb,
+.dropdown a { cursor: var(--cur-pointer); }
 
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
@@ -125,11 +133,11 @@ img { display: block; max-width: 100%; }
   width: 100%;
   aspect-ratio: 1 / 1;
   transform-style: preserve-3d;
-  transition: transform .55s cubic-bezier(.72, -0.18, .2, 1.2);
+  transition: transform 1.05s cubic-bezier(.33, .01, .2, 1);
   will-change: transform;
 }
 
-.card:hover .card__flip { transform: rotateY(180deg) ; }
+.card:hover .card__flip { transform: rotateY(180deg); }
 
 .card__face {
   position: absolute;
@@ -226,6 +234,64 @@ img { display: block; max-width: 100%; }
   grid-template-columns: repeat(2, 1fr);
   column-gap: 54px;
   row-gap: 42px;
+}
+
+/* corner emblem — drops the big photos and lays the home page out
+   as one plain catalogue, the same view the Garment button gives */
+.corner-toggle {
+  position: fixed;
+  left: 24px;
+  bottom: 20px;
+  z-index: 400;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  transition: transform .25s;
+}
+.corner-toggle img {
+  width: 96px;
+  height: auto;
+  /* keeps the emblem readable over the dark hero photos */
+  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #fff)
+          drop-shadow(0 0 14px #fff);
+}
+.corner-toggle:hover { transform: scale(1.06); }
+
+/* --- grid mode ------------------------------------------------- */
+body.is-grid .block__photo { display: none; }
+
+body.is-grid .fp {
+  position: static;
+  overflow: visible;
+  padding-top: var(--bar-h);
+}
+body.is-grid .fp__rail {
+  height: auto;
+  transform: none !important;
+}
+body.is-grid .block {
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+body.is-grid .block + .block { margin-top: 96px; }
+
+body.is-grid .scroller {
+  height: auto;
+  overflow: visible;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 50px 160px 0;
+}
+body.is-grid .block:last-child .scroller { padding-bottom: 120px; }
+
+body.is-grid .scroller__head { margin-bottom: 44px; }
+
+body.is-grid .grid-2 {
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 62px;
+  row-gap: 46px;
 }
 
 .scroll-hint {
@@ -356,7 +422,7 @@ img { display: block; max-width: 100%; }
   .product__price { font-size: 34px; }
 
   /* stacked, natural scrolling on small screens */
-  .fp { position: static; overflow: visible; }
+  .fp { position: static; overflow: visible; padding-top: var(--bar-h); }
   .fp__rail { transform: none !important; height: auto; }
   .block { flex-direction: column; height: auto; }
   .block--reverse { flex-direction: column; }
