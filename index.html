@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header"></header>
+
+<nav class="menu-strip"></nav>
+
+<main class="catalogue">
+  <div class="grid-2" data-grid></div>
+</main>
+
+<footer class="footer"></footer>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+  const cat = new URLSearchParams(location.search).get('cat');
+  const validCat = cat === 'jewellery' || cat === 'garment' ? cat : null;
+
+  mountHeader();
+  mountMenuStrip('', validCat);
+  mountFooter();
+
+  const items = validCat ? byCat(validCat) : PRODUCTS;
+  renderCards('[data-grid]', items);
+
+  if (!validCat) {
+    document.querySelector('[data-grid]').insertAdjacentHTML('beforeend', sketchCardMarkup());
+    mountSketchLightbox();
+  }
+</script>
+</body>
+</html>
