@@ -58,7 +58,7 @@
           .join('')}
       </div>
       <div class="product__actions">
-        <a href="#">+ to card</a>
+        <a href="#" data-add-to-card>+ to card</a>
       </div>
       <div class="product__note">one size</div>
       ${accordionMarkup(
@@ -88,6 +88,12 @@
   });
 
   initAccordions();
+
+  document.querySelector('[data-add-to-card]').addEventListener('click', (e) => {
+    e.preventDefault();
+    addToCart(item.id, 1);
+    openCartDrawer();
+  });
 </script>
 </body>
 </html>
