@@ -104,17 +104,32 @@ button { font-family: inherit; }
   opacity: 1;
   z-index: 1;
   transition: opacity .35s ease;
-  /* solid black right at the tile's own edge — so neighbouring tiles'
-     edges merge into one continuous dark seam instead of a visible
-     border — with the whole photo carrying a moody tint, not just
-     the edges, fading inward to a (still slightly tinted) centre */
-  background: radial-gradient(
-    140% 120% at 50% 50%,
-    rgba(0, 0, 0, .38) 0%,
-    rgba(0, 0, 0, .55) 42%,
-    rgba(0, 0, 0, .82) 68%,
-    #000 100%
-  );
+  /* darkening is a function of distance from the tile's own border, in
+     real pixels — 100% right at the frame, stepping down fast
+     (90% / 10px, 80% / 30px, ...) to a near-clear 5% by ~190px in,
+     then flat. Pixel stops (not %) so the falloff is the same width on
+     a short edge and a tall one — a tall tile no longer reads darker
+     top-to-bottom than it does side-to-side. One linear gradient per
+     edge, stacked: corners (near two borders at once) end up darkest,
+     which also keeps neighbouring tiles' edges merging seamlessly. */
+  --vig-stops:
+    rgba(0, 0, 0, 1) 0px,
+    rgba(0, 0, 0, .9) 10px,
+    rgba(0, 0, 0, .8) 30px,
+    rgba(0, 0, 0, .7) 50px,
+    rgba(0, 0, 0, .6) 70px,
+    rgba(0, 0, 0, .5) 90px,
+    rgba(0, 0, 0, .4) 110px,
+    rgba(0, 0, 0, .3) 130px,
+    rgba(0, 0, 0, .2) 150px,
+    rgba(0, 0, 0, .1) 170px,
+    rgba(0, 0, 0, .05) 190px,
+    rgba(0, 0, 0, .05) 100%;
+  background:
+    linear-gradient(to right, var(--vig-stops)),
+    linear-gradient(to left, var(--vig-stops)),
+    linear-gradient(to bottom, var(--vig-stops)),
+    linear-gradient(to top, var(--vig-stops));
 }
 
 .menu-tile__label {
