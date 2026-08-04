@@ -9,7 +9,7 @@ function headerMarkup(prefix) {
   <nav class="nav">
     <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span></a>
     <span class="nav-swap">
-      <a class="nav-swap__default" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo</a>
+      <a class="nav-swap__default" href="${p}tattoo.html">tattoo</a>
       <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment</a>
     </span>
     <span class="nav-swap">
@@ -34,7 +34,7 @@ function initHeroHeader() {
   if (!strip || !header) return;
 
   const update = () => {
-    header.classList.toggle('is-transparent', strip.getBoundingClientRect().bottom > 0);
+    header.classList.toggle('is-transparent', strip.getBoundingClientRect().bottom <= 0);
   };
   update();
   window.addEventListener('scroll', update, { passive: true });
@@ -52,9 +52,38 @@ function footerMarkup() {
   </div>`;
 }
 
+/* The garment/jewellery swap only ever triggers off the "items" link
+   itself — hovering tattoo or a.dept directly does nothing. A short
+   grace period on leaving "items" keeps the menu open long enough for
+   the pointer to reach the revealed links (which sit exactly where
+   tattoo/a.dept were), so it doesn't collapse mid-travel. */
+function initItemsMenu() {
+  const nav = document.querySelector('.nav');
+  const itemsLink = document.querySelector('.nav-items');
+  if (!nav || !itemsLink) return;
+
+  let hideTimer = null;
+  const show = () => {
+    clearTimeout(hideTimer);
+    nav.classList.add('items-active');
+  };
+  const scheduleHide = () => {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => nav.classList.remove('items-active'), 220);
+  };
+
+  itemsLink.addEventListener('mouseenter', show);
+  itemsLink.addEventListener('mouseleave', scheduleHide);
+  nav.querySelectorAll('.nav-swap__hover').forEach((el) => {
+    el.addEventListener('mouseenter', show);
+    el.addEventListener('mouseleave', scheduleHide);
+  });
+}
+
 function mountHeader(prefix) {
   const el = document.querySelector('.header');
   if (el) el.innerHTML = headerMarkup(prefix);
+  initItemsMenu();
 }
 
 function mountFooter() {
@@ -69,7 +98,11 @@ function menuStripMarkup(prefix, activeId) {
   return MENU.map((m) => {
     const active = m.id === activeId ? ' is-active' : '';
     const href =
-      m.kind === 'external' ? m.href : `${p}index.html?cat=${m.id}`;
+      m.kind === 'external' || m.kind === 'page'
+        ? m.kind === 'page'
+          ? p + m.href
+          : m.href
+        : `${p}index.html?cat=${m.id}`;
     const target = m.kind === 'external' ? ' target="_blank" rel="noopener"' : '';
     return `
     <a class="menu-tile${active}" href="${href}"${target} data-menu="${m.id}">
@@ -190,6 +223,71 @@ function attachScrub(cardEl) {
   });
 }
 
+/* Collapsible DESCRIPTION / DELIVERY sections on product & tattoo pages */
+function accordionMarkup(label, bodyHtml, openByDefault) {
+  return `
+  <div class="accordion${openByDefault ? ' is-open' : ''}">
+    <button class="accordion__toggle" type="button">
+      <span class="accordion__caret">${openByDefault ? '^' : 'v'}</span>${label}
+    </button>
+    <div class="accordion__body"><div class="accordion__body-inner">${bodyHtml}</div></div>
+  </div>`;
+}
+
+function initAccordions(root) {
+  (root || document).querySelectorAll('.accordion__toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const acc = btn.closest('.accordion');
+      acc.classList.toggle('is-open');
+      btn.querySelector('.accordion__caret').textContent = acc.classList.contains('is-open') ? '^' : 'v';
+    });
+  });
+}
+
+/* tattoo.html's year list: rests stacked bottom-right (newest on top of
+   that resting cluster) until you scroll into that year's own section
+   of the grid, at which point its label rises up the screen — docking
+   just under the header, in a growing stack, once you've scrolled all
+   the way through it. The next year then does the same, docking right
+   below the previous one. */
+function initYearScrollspy(years) {
+  const items = Array.from(document.querySelectorAll('.year-rail__item'));
+  const markers = years.map((y) => document.querySelector(`[data-year-marker="${y}"]`));
+  if (!items.length || markers.some((m) => !m)) return;
+
+  const headerH = 58;
+  const dockGap = 26;
+  const restGap = 26;
+  const restBottomMargin = 40;
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+  const update = () => {
+    const scrollY = window.scrollY;
+    const pageBottom = document.body.scrollHeight;
+    const restBase = window.innerHeight - restBottomMargin;
+
+    years.forEach((year, i) => {
+      const startY = markers[i].getBoundingClientRect().top + scrollY;
+      const endY =
+        i + 1 < years.length
+          ? markers[i + 1].getBoundingClientRect().top + scrollY
+          : pageBottom;
+      const progress = clamp((scrollY - startY) / Math.max(1, endY - startY), 0, 1);
+
+      const restTop = restBase - (years.length - i) * restGap;
+      const dockTop = headerH + 20 + i * dockGap;
+      const top = restTop + (dockTop - restTop) * progress;
+
+      items[i].style.top = `${top}px`;
+      items[i].classList.toggle('is-current', progress > 0 && progress < 1);
+    });
+  };
+
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+}
+
 function renderCards(target, items, prefix) {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
   if (!el) return;
@@ -197,47 +295,15 @@ function renderCards(target, items, prefix) {
   el.querySelectorAll('.card').forEach(attachScrub);
 }
 
-function sketchCardMarkup(prefix) {
+function sketchCardMarkup(prefix, sketch) {
   const p = prefix || '';
+  const s = sketch || SKETCHES[0];
   return `
-  <div class="sketch-card" data-sketch-open>
+  <a class="sketch-card" href="${p}tattoo-item.html?id=${s.id}">
     <div class="sketch-card__frame">
-      <img src="${p}${SKETCH.image}" alt="${SKETCH.caption}">
+      <img src="${p}${s.image}" alt="${s.caption}">
     </div>
-    <div class="sketch-card__date">${SKETCH.date}</div>
-    <div class="sketch-card__caption">${SKETCH.caption}</div>
-  </div>`;
-}
-
-function mountSketchLightbox(prefix) {
-  const p = prefix || '';
-  const box = document.createElement('div');
-  box.className = 'lightbox';
-  box.innerHTML = `
-    <button class="lightbox__close" type="button" aria-label="Close">&times;</button>
-    <img src="${p}${SKETCH.image}" alt="${SKETCH.caption}">`;
-  document.body.appendChild(box);
-
-  const open = () => box.classList.add('is-open');
-  const close = () => box.classList.remove('is-open');
-
-  document.querySelectorAll('[data-sketch-open]').forEach((el) => {
-    el.addEventListener('click', open);
-  });
-  box.querySelector('.lightbox__close').addEventListener('click', close);
-  box.addEventListener('click', (e) => {
-    // img has pointer-events:none (Yandex image-overlay workaround), so
-    // e.target is always the backdrop here — check the click coordinates
-    // against the image instead of relying on target identity.
-    const rect = box.querySelector('img').getBoundingClientRect();
-    const insideImg =
-      e.clientX >= rect.left &&
-      e.clientX <= rect.right &&
-      e.clientY >= rect.top &&
-      e.clientY <= rect.bottom;
-    if (!insideImg) close();
-  });
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') close();
-  });
+    <div class="sketch-card__date">${s.date}</div>
+    <div class="sketch-card__caption">${s.caption}</div>
+  </a>`;
 }

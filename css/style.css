@@ -17,6 +17,9 @@ html, body {
   font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  /* small raster cursor (not SVG — Safari's SVG-cursor support is
+     unreliable) with a plain-arrow fallback if it ever fails to load */
+  cursor: url("../assets/cursors/goth.png") 2 2, auto;
 }
 
 /* hide the scrollbar everywhere — the page still scrolls normally,
@@ -56,11 +59,11 @@ button { font-family: inherit; }
   background: #fff;
 }
 
-/* index.html only, and only while some of the menu-strip hero is still
-   visible under the fixed header — no backdrop, just a soft white glow
-   so the logo/links stay readable over whatever photo scrolls beneath.
-   Everywhere else (and once the hero's fully scrolled past) it's the
-   solid white bar above, so it never sits illegibly over page text. */
+/* index.html only, and only once the menu-strip hero has fully scrolled
+   past — no backdrop, just a soft white glow so the logo/links stay
+   readable over whatever's scrolling underneath. While still over the
+   hero (and on every other page) the header stays the solid white bar
+   set above. */
 .header.is-transparent {
   background: none;
   filter: drop-shadow(0 1px 2px rgba(255, 255, 255, .6))
@@ -83,15 +86,33 @@ button { font-family: inherit; }
 
 .nav a:hover { opacity: .55; }
 
-.nav-items__colon { display: none; }
-.nav:hover .nav-items__colon { display: inline; }
+/* colon is always in the DOM (reserves its own width) so "items" never
+   shifts when it fades in — same reasoning for .nav-swap below */
+.nav-items__colon { opacity: 0; transition: opacity .15s ease; }
+.nav.items-active .nav-items__colon { opacity: 1; }
 
-/* hovering the items/tattoo/a.dept cluster swaps tattoo + a.dept for
-   the two catalogue filters, garment + jewellery */
-.nav-swap { position: relative; display: inline-flex; }
-.nav-swap__hover { display: none; }
-.nav:hover .nav-swap__default { display: none; }
-.nav:hover .nav-swap__hover { display: inline; }
+/* hovering "items" only (see initItemsMenu in site.js — not tattoo or
+   a.dept) swaps them for the two catalogue filters, garment + jewellery.
+   Both states are stacked on top of each other (absolute + a fixed-width
+   placeholder) so the swap never changes .nav's own width — nothing in
+   the row, "items" included, shifts position when it happens. */
+.nav-swap {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.nav-swap__default { opacity: 1; transition: opacity .15s ease; }
+.nav-swap__hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  white-space: nowrap;
+}
+.nav.items-active .nav-swap__default { opacity: 0; pointer-events: none; }
+.nav.items-active .nav-swap__hover { opacity: 1; pointer-events: auto; }
 
 .header__spacer { display: none; }
 
@@ -184,7 +205,7 @@ button { font-family: inherit; }
 .catalogue {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 16px 60px 140px;
+  padding: 0 60px 140px;
 }
 
 /* index.html sits its .catalogue right under the menu-strip hero, which
@@ -200,10 +221,36 @@ button { font-family: inherit; }
   align-items: start;
 }
 
+/* invisible scroll-position marker dropped in front of each year's
+   first sketch — spans both columns, takes no height, doesn't disturb
+   the 2-up card flow. Read by initYearScrollspy in site.js. */
+.year-marker { grid-column: 1 / -1; height: 0; }
+
+/* ===========================================================
+   TATTOO YEAR RAIL — scrollspy list on tattoo.html
+   =========================================================== */
+/* each item is positioned independently (fixed, JS-driven "top"), not
+   laid out by this container — see initYearScrollspy in site.js */
+.year-rail { position: static; }
+.year-rail__item {
+  position: fixed;
+  right: 60px;
+  z-index: 400;
+  font-size: 15px;
+  color: #999;
+  line-height: 26px;
+  pointer-events: none;
+}
+.year-rail__item.is-current { color: var(--ink); }
+
+@media (max-width: 980px) {
+  .year-rail { display: none; }
+}
+
 /* ===========================================================
    PRODUCT CARD  — mouse-scrub photo cycling
    =========================================================== */
-.card { display: block; cursor: pointer; }
+.card { display: block; }
 
 .card__frame {
   position: relative;
@@ -262,7 +309,7 @@ button { font-family: inherit; }
 /* ===========================================================
    SKETCH CARD — portfolio piece, no price / cart
    =========================================================== */
-.sketch-card { display: block; cursor: pointer; }
+.sketch-card { display: block; }
 
 .sketch-card__frame {
   width: 100%;
@@ -290,47 +337,28 @@ button { font-family: inherit; }
 }
 
 /* ===========================================================
-   SKETCH — lightbox
+   PRODUCT / TATTOO DETAIL PAGE
    =========================================================== */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, .92);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 900;
-  padding: 40px;
-}
-.lightbox.is-open { display: flex; }
-.lightbox img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-.lightbox__close {
-  position: absolute;
-  top: 24px;
-  right: 32px;
-  background: none;
-  border: 0;
-  color: #fff;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-/* ===========================================================
-   PRODUCT PAGE
-   =========================================================== */
-.product {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
+.product-page {
   max-width: 1280px;
   margin: 0 auto;
   /* +42px top padding: the fixed header no longer takes up flow space */
   padding: 122px 60px 140px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 40px;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: #888;
+}
+.back-link:hover { color: var(--ink); }
+
+.product {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
 }
 
 .product__main {
@@ -340,35 +368,102 @@ button { font-family: inherit; }
 }
 .product__main img { width: 100%; height: 100%; object-fit: contain; }
 
+.product__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 20px;
+}
+.product__dots span { width: 20px; height: 2px; background: #d6d6d6; cursor: pointer; }
+.product__dots span.is-active { background: #111; }
+
 .product__title {
-  margin-top: 24px;
+  margin-top: 20px;
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: .01em;
 }
-.product__price { margin-top: 12px; font-size: 38px; }
-.product__material { margin-top: 22px; font-size: 14px; color: #555; }
+.product__price { margin-top: 8px; font-size: 38px; }
+.product__price-old {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 24px;
+  margin-right: 10px;
+}
 
 .product__thumbs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin-top: 40px;
 }
-.thumb { aspect-ratio: 1 / 1; overflow: hidden; background: #fff; cursor: pointer; }
+.thumb { aspect-ratio: 1 / 1; overflow: hidden; background: #fff; }
 .thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: opacity .2s; }
 .thumb:hover img,
 .thumb.is-active img { opacity: 1; }
 
-.product__actions { display: flex; gap: 14px; margin-top: 44px; }
-.product__btn {
-  padding: 12px 30px;
-  font-size: 14px;
-  border: 1px solid #111;
-  background: #fff;
-  cursor: pointer;
+/* plain text links, not buttons — "+ to card", telegram/instagram order */
+.product__actions {
+  display: flex;
+  gap: 32px;
+  margin-top: 30px;
+  font-size: 17px;
+  color: #999;
 }
-.product__btn:hover { background: #111; color: #fff; }
+.product__actions a { color: #999; }
+.product__actions a:hover { color: var(--ink); }
+
+.product__note {
+  margin-top: 56px;
+  font-size: 16px;
+}
+
+/* accordion: DESCRIPTION / DELIVERY */
+.accordion + .accordion { margin-top: 26px; }
+.accordion__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: #888;
+}
+.accordion__toggle:hover { color: var(--ink); }
+/* the ^ / v glyph itself is swapped by JS on toggle (see initAccordions
+   in site.js) — no CSS transform here, that would rotate it a second
+   time on top of the swap and point it the wrong way */
+.accordion__caret { font-size: 10px; }
+.accordion__body {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .25s ease;
+}
+.accordion.is-open .accordion__body { max-height: 800px; }
+.accordion__body-inner {
+  padding-top: 14px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.accordion__body-inner p { margin: 0 0 16px; white-space: pre-line; }
+.accordion__body-inner p:last-child { margin-bottom: 0; }
+
+/* ===========================================================
+   404
+   =========================================================== */
+.not-found {
+  min-height: 70vh;
+  padding-top: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+.not-found__icon { width: 320px; height: auto; }
+.not-found__link { font-size: 16px; }
+.not-found__link:hover { opacity: .55; }
 
 /* ===========================================================
    FOOTER
@@ -390,12 +485,13 @@ button { font-family: inherit; }
 @media (max-width: 980px) {
   .menu-strip { grid-template-columns: repeat(2, 1fr); }
   .menu-tile { aspect-ratio: 1 / 1; }
-  .catalogue { padding: 24px 30px 100px; }
+  .catalogue { padding: 0 30px 100px; }
   /* mobile header is two rows tall (~84px) — items.html's hero-less
      catalogue needs the matching extra clearance */
   .catalogue--top { padding-top: 108px; }
   .grid-2 { grid-template-columns: 1fr; row-gap: 70px; }
-  .product { grid-template-columns: 1fr; gap: 40px; padding: 134px 24px 90px; }
+  .product-page { padding: 134px 24px 90px; }
+  .product { grid-template-columns: 1fr; gap: 40px; }
   .header {
     grid-template-columns: 1fr auto;
     grid-template-areas: "logo right" "nav nav";
