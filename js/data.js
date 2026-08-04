@@ -28,6 +28,18 @@ const PRODUCTS = [
     material: '100% cotton, black color, 200 gm'
   },
   {
+    id: 'hoodie-everyday',
+    cat: 'garment',
+    title: "'EVERY DAY' LONG SLEEVE",
+    price: '6 670 p',
+    images: [
+      'assets/products/hoodie-everyday/1.png',
+      'assets/products/hoodie-everyday/2.png',
+      'assets/products/hoodie-everyday/3.png'
+    ],
+    material: '100% cotton, black color'
+  },
+  {
     id: 'pendant-angelisdead',
     cat: 'jewellery',
     title: 'PENDANT"ANGELISDEAD"',
