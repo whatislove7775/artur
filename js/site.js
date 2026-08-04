@@ -20,7 +20,7 @@ function headerMarkup(prefix) {
   <div class="header__spacer"></div>
   <div class="header__right">
     <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#">card</a>
+    <a href="#" data-cart-open>card</a>
   </div>`;
 }
 
@@ -84,6 +84,7 @@ function mountHeader(prefix) {
   const el = document.querySelector('.header');
   if (el) el.innerHTML = headerMarkup(prefix);
   initItemsMenu();
+  mountCartDrawer(prefix);
 }
 
 function mountFooter() {
@@ -286,6 +287,152 @@ function initYearScrollspy(years) {
   update();
   window.addEventListener('scroll', update, { passive: true });
   window.addEventListener('resize', update);
+}
+
+/* ===========================================================
+   CART — localStorage-backed, slides in from the right
+   =========================================================== */
+const CART_KEY = 'artasimn-cart';
+
+function getCart() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function addToCart(id, qty) {
+  const cart = getCart();
+  const row = cart.find((r) => r.id === id);
+  if (row) row.qty += qty || 1;
+  else cart.push({ id, qty: qty || 1 });
+  saveCart(cart);
+  renderCartDrawer();
+}
+
+function setCartQty(id, qty) {
+  let cart = getCart();
+  if (qty <= 0) cart = cart.filter((r) => r.id !== id);
+  else {
+    const row = cart.find((r) => r.id === id);
+    if (row) row.qty = qty;
+  }
+  saveCart(cart);
+  renderCartDrawer();
+}
+
+function removeFromCart(id) {
+  saveCart(getCart().filter((r) => r.id !== id));
+  renderCartDrawer();
+}
+
+function parsePrice(price) {
+  return parseInt(String(price).replace(/[^\d]/g, ''), 10) || 0;
+}
+
+function formatRub(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+function mountCartDrawer(prefix) {
+  const p = prefix || '';
+  if (document.querySelector('.cart-drawer')) return;
+  const el = document.createElement('div');
+  el.className = 'cart-drawer';
+  el.innerHTML = `
+    <div class="cart-drawer__bar">
+      <span data-cart-count></span>
+      <a href="#" data-cart-close>close</a>
+    </div>
+    <div class="cart-drawer__rows" data-cart-rows></div>
+    <div class="cart-drawer__foot">
+      <span data-cart-total></span>
+      <a href="#" class="cart-drawer__order">order</a>
+    </div>`;
+  document.body.appendChild(el);
+
+  document.querySelectorAll('[data-cart-open]').forEach((btn) =>
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openCartDrawer();
+    })
+  );
+  el.querySelector('[data-cart-close]').addEventListener('click', (e) => {
+    e.preventDefault();
+    closeCartDrawer();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCartDrawer();
+  });
+
+  renderCartDrawer(p);
+}
+
+function openCartDrawer() {
+  const el = document.querySelector('.cart-drawer');
+  if (el) el.classList.add('is-open');
+}
+
+function closeCartDrawer() {
+  const el = document.querySelector('.cart-drawer');
+  if (el) el.classList.remove('is-open');
+}
+
+function renderCartDrawer(prefix) {
+  const el = document.querySelector('.cart-drawer');
+  if (!el) return;
+  const p = prefix || '';
+  const cart = getCart();
+  const rowsEl = el.querySelector('[data-cart-rows]');
+  const countEl = el.querySelector('[data-cart-count]');
+  const totalEl = el.querySelector('[data-cart-total]');
+
+  const pcs = cart.reduce((sum, r) => sum + r.qty, 0);
+  countEl.textContent = `${pcs} pcs`;
+
+  if (!cart.length) {
+    rowsEl.innerHTML = '<div class="cart-drawer__empty">cart is empty</div>';
+    totalEl.textContent = 'total: 0 rub';
+    return;
+  }
+
+  let total = 0;
+  rowsEl.innerHTML = cart
+    .map((row) => {
+      const item = PRODUCTS.find((i) => i.id === row.id);
+      if (!item) return '';
+      const lineTotal = parsePrice(item.price) * row.qty;
+      total += lineTotal;
+      return `
+      <div class="cart-drawer__row" data-cart-row="${item.id}">
+        <img src="${p}${item.images[0]}" alt="${item.title}">
+        <div class="cart-drawer__row-info">
+          <div class="cart-drawer__row-title">${item.title}</div>
+          <div class="cart-drawer__row-price">${item.price}</div>
+        </div>
+        <div class="cart-drawer__qty">
+          <button type="button" data-cart-dec>-</button>
+          <span>${row.qty}</span>
+          <button type="button" data-cart-inc>+</button>
+        </div>
+        <button type="button" class="cart-drawer__remove" data-cart-remove>&times;</button>
+      </div>`;
+    })
+    .join('');
+  totalEl.textContent = `total: ${formatRub(total)} rub`;
+
+  rowsEl.querySelectorAll('[data-cart-row]').forEach((rowEl) => {
+    const id = rowEl.dataset.cartRow;
+    const cur = cart.find((r) => r.id === id).qty;
+    rowEl.querySelector('[data-cart-inc]').addEventListener('click', () => setCartQty(id, cur + 1));
+    rowEl.querySelector('[data-cart-dec]').addEventListener('click', () => setCartQty(id, cur - 1));
+    rowEl.querySelector('[data-cart-remove]').addEventListener('click', () => removeFromCart(id));
+  });
 }
 
 function renderCards(target, items, prefix) {
