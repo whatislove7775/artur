@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn — Item</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header"></header>
+
+<main class="product" id="product"></main>
+
+<footer class="footer"></footer>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+  mountHeader();
+  mountFooter();
+
+  const id = new URLSearchParams(location.search).get('id');
+  const item = PRODUCTS.find((p) => p.id === id) || PRODUCTS[0];
+  document.title = 'Artasimn — ' + item.title;
+
+  document.getElementById('product').innerHTML = `
+    <div class="product__left">
+      <div class="product__main">
+        <img id="mainImg" src="${item.images[0]}" alt="${item.title}">
+      </div>
+      <div class="product__thumbs">
+        ${item.images
+          .map(
+            (src, i) =>
+              `<div class="thumb${i === 0 ? ' is-active' : ''}" data-src="${src}">
+                 <img src="${src}" alt="">
+               </div>`
+          )
+          .join('')}
+      </div>
+    </div>
+    <div class="product__right">
+      <h1 class="product__title">${item.title}</h1>
+      <div class="product__price">${item.price}</div>
+      <div class="product__material">${item.material}</div>
+      <div class="product__actions">
+        <button class="product__btn" type="button">ORDER</button>
+        <button class="product__btn" type="button">+ ADD TO CARD</button>
+      </div>
+    </div>`;
+
+  const main = document.getElementById('mainImg');
+  document.querySelectorAll('.thumb').forEach((t) => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.thumb').forEach((x) => x.classList.remove('is-active'));
+      t.classList.add('is-active');
+      main.src = t.dataset.src;
+    });
+  });
+</script>
+</body>
+</html>
