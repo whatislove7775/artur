@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn — Tattoo</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header"></header>
+
+<main class="catalogue catalogue--top">
+  <div class="grid-2" data-grid></div>
+</main>
+
+<aside class="year-rail" data-years></aside>
+
+<footer class="footer"></footer>
+
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+  mountHeader();
+  mountFooter();
+
+  const years = sketchYears();
+  const grid = document.querySelector('[data-grid]');
+  grid.innerHTML = years
+    .map(
+      (year, i) =>
+        `<div class="year-marker" data-year-marker="${year}"></div>` +
+        byYear(year)
+          .map((s) => sketchCardMarkup('', s))
+          .join('')
+    )
+    .join('');
+
+  const rail = document.querySelector('[data-years]');
+  rail.innerHTML = years.map((y) => `<span class="year-rail__item">${y}</span>`).join('');
+
+  initYearScrollspy(years);
+</script>
+</body>
+</html>
