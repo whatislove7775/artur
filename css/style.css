@@ -105,22 +105,24 @@ button { font-family: inherit; }
   z-index: 1;
   transition: opacity .35s ease;
   /* darkening is a function of distance from the tile's own border, in
-     real pixels — 100% exactly at the frame, but dropping fast (down
-     to 35% by 15px, ~5% by 50-80px) so most of the photo stays clear
-     and the cut reads as sharp rather than a slow fade. Pixel stops
-     (not %) so the falloff is the same width on a short edge and a
-     tall one. One linear gradient per edge, stacked: corners (near two
-     borders at once) end up darker than a single edge — that's also
-     what keeps neighbouring tiles merging into one seamless black seam
-     — but the two-layer corner still stays under ~60% by the time it
-     reaches the menu-tile__label text, so it's dimmed, not hidden. */
+     real pixels — 100% right at the true edge (needed so neighbouring
+     tiles still merge into one seamless black seam), then eased down
+     over more, closer-spaced stops than before for a smoother-reading
+     fade, out to a near-clear 5% by ~120px. Pixel stops (not %) so the
+     falloff is the same width on a short edge and a tall one. One
+     linear gradient per edge, stacked: corners (near two borders at
+     once) run darker than a single edge, which is also what keeps the
+     seam seamless — tuned so that corner still sits around ~60% by
+     the time it reaches the menu-tile__label text, dimmed, not hidden. */
   --vig-stops:
     rgba(0, 0, 0, 1) 0px,
-    rgba(0, 0, 0, .6) 5px,
-    rgba(0, 0, 0, .35) 15px,
-    rgba(0, 0, 0, .18) 30px,
-    rgba(0, 0, 0, .08) 50px,
-    rgba(0, 0, 0, .05) 80px,
+    rgba(0, 0, 0, .9) 3px,
+    rgba(0, 0, 0, .6) 10px,
+    rgba(0, 0, 0, .38) 20px,
+    rgba(0, 0, 0, .2) 35px,
+    rgba(0, 0, 0, .12) 55px,
+    rgba(0, 0, 0, .07) 85px,
+    rgba(0, 0, 0, .05) 120px,
     rgba(0, 0, 0, .05) 100%;
   background:
     linear-gradient(to right, var(--vig-stops)),
@@ -149,7 +151,7 @@ button { font-family: inherit; }
 .catalogue {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 36px 60px 140px;
+  padding: 16px 60px 140px;
 }
 
 .grid-2 {
@@ -341,7 +343,7 @@ button { font-family: inherit; }
 @media (max-width: 980px) {
   .menu-strip { grid-template-columns: repeat(2, 1fr); }
   .menu-tile { aspect-ratio: 1 / 1; }
-  .catalogue { padding: 60px 30px 100px; }
+  .catalogue { padding: 24px 30px 100px; }
   .grid-2 { grid-template-columns: 1fr; row-gap: 70px; }
   .product { grid-template-columns: 1fr; gap: 40px; padding: 50px 24px 90px; }
   .header {
