@@ -204,8 +204,11 @@ button { font-family: inherit; }
   font-size: 12px;
   letter-spacing: .01em;
   text-transform: uppercase;
-  color: #444;
+  color: #888;
+  transition: color .2s ease;
 }
+
+.card:hover .card__title { color: var(--ink); }
 
 .card__price {
   margin-top: 6px;
