@@ -38,11 +38,11 @@ css/style.css
 js/data.js   — каталог товаров, меню, эскиз
 js/site.js   — шапка, футер, карточки, скраб-хавер, лайтбокс
 assets/
-  logo.svg           — новый логотип (только вордмарк)
-  favicon.svg         — буква "A" из логотипа
-  menu/               — 4 фото под шапкой
-  products/<slug>/    — фото товаров по папкам
-  sketches/           — эскизы
+  logo.svg           — логотип (вордмарк)
+  favicon.svg        — фавикон из репозитория
+  menu/              — 4 фото под шапкой
+  products/<slug>/   — фото товаров по папкам
+  sketches/          — эскизы
 vercel.json
 ```
 
