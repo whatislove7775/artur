@@ -7,15 +7,38 @@ function headerMarkup(prefix) {
     <img src="${p}assets/logo.svg" alt="Artasimn">
   </a>
   <nav class="nav">
-    <a href="${p}items.html">items</a>
-    <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo</a>
-    <a href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
+    <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span></a>
+    <span class="nav-swap">
+      <a class="nav-swap__default" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo</a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment</a>
+    </span>
+    <span class="nav-swap">
+      <a class="nav-swap__default" href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery">jewellery</a>
+    </span>
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
     <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
     <a href="#">card</a>
   </div>`;
+}
+
+/* index.html only: the header floats transparent (no white backdrop)
+   while any part of the menu-strip hero is still visible under it;
+   once the hero has fully scrolled past, it switches to a solid white
+   bar so it doesn't sit illegibly over the catalogue's own text. */
+function initHeroHeader() {
+  const strip = document.querySelector('.menu-strip');
+  const header = document.querySelector('.header');
+  if (!strip || !header) return;
+
+  const update = () => {
+    header.classList.toggle('is-transparent', strip.getBoundingClientRect().bottom > 0);
+  };
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
 }
 
 function footerMarkup() {
