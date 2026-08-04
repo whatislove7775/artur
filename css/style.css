@@ -50,7 +50,7 @@ button { font-family: inherit; }
   font-size: 17px;
 }
 
-.header__logo img { height: 27px; width: auto; }
+.header__logo img { height: 22px; width: auto; }
 
 .header__logo { justify-self: start; }
 

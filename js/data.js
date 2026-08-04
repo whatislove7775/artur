@@ -70,7 +70,7 @@ const PRODUCTS = [
 const SKETCH = {
   id: 'nobody-loves-me',
   date: '02 2026',
-  caption: 'Эскиз от Mr.A',
+  caption: 'Эскиз тату',
   image: 'assets/sketches/nobody-loves-me.png'
 };
 

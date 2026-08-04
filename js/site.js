@@ -93,7 +93,9 @@ function attachScrub(cardEl) {
   const dots = Array.from(cardEl.querySelectorAll('.card__dots span'));
   if (imgs.length < 2) return;
 
+  let current = 0;
   const show = (i) => {
+    current = i;
     imgs.forEach((img, idx) => img.classList.toggle('is-visible', idx === i));
     dots.forEach((d, idx) => d.classList.toggle('is-active', idx === i));
   };
@@ -106,6 +108,63 @@ function attachScrub(cardEl) {
   });
 
   frame.addEventListener('mouseleave', () => show(0));
+
+  /* touch: a horizontal swipe steps through the photos like the arrows
+     on a carousel; a vertical swipe is left alone so the page still
+     scrolls normally, and a plain tap still opens the product page. */
+  let touchX = 0;
+  let touchY = 0;
+  let swiping = false;
+  let suppressClick = false;
+
+  frame.addEventListener(
+    'touchstart',
+    (e) => {
+      const t = e.touches[0];
+      touchX = t.clientX;
+      touchY = t.clientY;
+      swiping = false;
+    },
+    { passive: true }
+  );
+
+  frame.addEventListener(
+    'touchmove',
+    (e) => {
+      const t = e.touches[0];
+      const dx = t.clientX - touchX;
+      const dy = t.clientY - touchY;
+      if (!swiping && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        swiping = Math.abs(dx) > Math.abs(dy);
+      }
+      if (swiping) e.preventDefault();
+    },
+    { passive: false }
+  );
+
+  frame.addEventListener(
+    'touchend',
+    (e) => {
+      if (!swiping) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchX;
+      const threshold = 24;
+      if (dx <= -threshold) {
+        show((current + 1) % imgs.length);
+      } else if (dx >= threshold) {
+        show((current - 1 + imgs.length) % imgs.length);
+      }
+      suppressClick = true;
+    },
+    { passive: true }
+  );
+
+  cardEl.addEventListener('click', (e) => {
+    if (suppressClick) {
+      e.preventDefault();
+      suppressClick = false;
+    }
+  });
 }
 
 function renderCards(target, items, prefix) {
