@@ -144,7 +144,16 @@ function mountSketchLightbox(prefix) {
   });
   box.querySelector('.lightbox__close').addEventListener('click', close);
   box.addEventListener('click', (e) => {
-    if (e.target === box) close();
+    // img has pointer-events:none (Yandex image-overlay workaround), so
+    // e.target is always the backdrop here — check the click coordinates
+    // against the image instead of relying on target identity.
+    const rect = box.querySelector('img').getBoundingClientRect();
+    const insideImg =
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom;
+    if (!insideImg) close();
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') close();
