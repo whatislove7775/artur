@@ -20,7 +20,15 @@ html, body {
 }
 
 a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+img {
+  display: block;
+  max-width: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+  /* keeps the pointer "over" the wrapping element instead of the <img>
+     itself, so Yandex Browser's image-actions overlay never triggers */
+  pointer-events: none;
+}
 button { font-family: inherit; }
 
 /* ===========================================================
@@ -120,16 +128,9 @@ button { font-family: inherit; }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 90px;
-  row-gap: 40px;
+  row-gap: 70px;
   align-items: start;
 }
-
-/* alternate columns so a right-column card sits lower than its
-   left-column neighbour, echoing the staggered mockup layout.
-   margin-top (not transform) grows the grid's own row track, so the
-   next row never overlaps this card's title/price. */
-.grid-2 > :nth-child(4n+2),
-.grid-2 > :nth-child(4n+3) { margin-top: 70px; }
 
 /* ===========================================================
    PRODUCT CARD  — mouse-scrub photo cycling
@@ -314,8 +315,6 @@ button { font-family: inherit; }
   .menu-tile { aspect-ratio: 1 / 1; }
   .catalogue { padding: 60px 30px 100px; }
   .grid-2 { grid-template-columns: 1fr; row-gap: 70px; }
-  .grid-2 > :nth-child(4n+2),
-  .grid-2 > :nth-child(4n+3) { margin-top: 0; }
   .product { grid-template-columns: 1fr; gap: 40px; padding: 50px 24px 90px; }
   .header {
     grid-template-columns: 1fr auto;
