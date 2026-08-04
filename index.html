@@ -28,6 +28,7 @@
   mountHeader();
   mountMenuStrip('', validCat);
   mountFooter();
+  initHeroHeader();
 
   const items = validCat ? byCat(validCat) : PRODUCTS;
   renderCards('[data-grid]', items);

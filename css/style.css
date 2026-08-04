@@ -53,9 +53,16 @@ button { font-family: inherit; }
   align-items: center;
   padding: 10px 58px;
   font-size: 17px;
+  background: #fff;
+}
+
+/* index.html only, and only while some of the menu-strip hero is still
+   visible under the fixed header — no backdrop, just a soft white glow
+   so the logo/links stay readable over whatever photo scrolls beneath.
+   Everywhere else (and once the hero's fully scrolled past) it's the
+   solid white bar above, so it never sits illegibly over page text. */
+.header.is-transparent {
   background: none;
-  /* no backdrop — just keeps the logo/links readable over whatever
-     photo happens to be scrolling underneath */
   filter: drop-shadow(0 1px 2px rgba(255, 255, 255, .6))
           drop-shadow(0 1px 5px rgba(255, 255, 255, .35));
 }
@@ -69,9 +76,22 @@ button { font-family: inherit; }
   align-items: center;
   gap: 44px;
   justify-self: center;
+  /* nudged left of true-centre so it clears the right-hand catalogue
+     column's title/price once the page is scrolled */
+  transform: translateX(-90px);
 }
 
 .nav a:hover { opacity: .55; }
+
+.nav-items__colon { display: none; }
+.nav:hover .nav-items__colon { display: inline; }
+
+/* hovering the items/tattoo/a.dept cluster swaps tattoo + a.dept for
+   the two catalogue filters, garment + jewellery */
+.nav-swap { position: relative; display: inline-flex; }
+.nav-swap__hover { display: none; }
+.nav:hover .nav-swap__default { display: none; }
+.nav:hover .nav-swap__hover { display: inline; }
 
 .header__spacer { display: none; }
 
@@ -384,7 +404,7 @@ button { font-family: inherit; }
   }
   .header__logo { grid-area: logo; }
   .header__right { grid-area: right; gap: 20px; }
-  .nav { grid-area: nav; justify-self: start; gap: 18px; flex-wrap: wrap; }
+  .nav { grid-area: nav; justify-self: start; gap: 18px; flex-wrap: wrap; transform: none; }
 }
 
 @media (max-width: 560px) {
