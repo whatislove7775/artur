@@ -450,6 +450,7 @@ function sketchCardMarkup(prefix, sketch) {
     <div class="sketch-card__frame">
       <img src="${p}${s.image}" alt="${s.caption}">
     </div>
+    <div class="card__dots" aria-hidden="true"><span></span></div>
     <div class="sketch-card__date">${s.date}</div>
     <div class="sketch-card__caption">${s.caption}</div>
   </a>`;

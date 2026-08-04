@@ -326,12 +326,14 @@ button { font-family: inherit; }
 
 .sketch-card__date {
   margin-top: 14px;
+  margin-left: 10px;
   font-size: 12px;
   letter-spacing: .01em;
-  color: #444;
+  color: #888;
 }
 .sketch-card__caption {
   margin-top: 6px;
+  margin-left: 10px;
   font-size: 22px;
 }
 
