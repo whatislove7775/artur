@@ -4,7 +4,8 @@ function headerMarkup(prefix) {
   const p = prefix || '';
   return `
   <a class="header__logo" href="${p}index.html">
-    <img src="${p}assets/logo.svg" alt="Artasimn">
+    <img class="header__logo-full" src="${p}assets/logo.svg" alt="Artasimn">
+    <img class="header__logo-mobile" src="${p}assets/logo-mobile.svg" alt="Artasimn">
   </a>
   <nav class="nav">
     <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span></a>
@@ -19,9 +20,23 @@ function headerMarkup(prefix) {
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
-    <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
+    <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
     <a href="#" data-cart-open>card</a>
+    <a href="#" class="header__menu-toggle" data-menu-toggle>menu</a>
   </div>`;
+}
+
+/* mobile only: "menu" toggles the items/tattoo/a.dept row open below
+   the compact single-line header instead of it always taking a second
+   row (see the ≤980px breakpoint in style.css) */
+function initMobileMenuToggle() {
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const header = document.querySelector('.header');
+  if (!toggle || !header) return;
+  toggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    header.classList.toggle('nav-open');
+  });
 }
 
 /* index.html only: the header floats transparent (no white backdrop)
@@ -84,6 +99,7 @@ function mountHeader(prefix) {
   const el = document.querySelector('.header');
   if (el) el.innerHTML = headerMarkup(prefix);
   initItemsMenu();
+  initMobileMenuToggle();
   mountCartDrawer(prefix);
 }
 

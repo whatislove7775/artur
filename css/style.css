@@ -74,9 +74,12 @@ button { font-family: inherit; }
    solid white bar set above. */
 .header.is-transparent { background: none; }
 
-.header__logo img { height: 22px; width: auto; }
+.header__logo-full { height: 22px; width: auto; }
+.header__logo-mobile { display: none; }
 
 .header__logo { justify-self: start; }
+
+.header__menu-toggle { display: none; }
 
 .nav {
   display: flex;
@@ -486,8 +489,14 @@ button { font-family: inherit; }
 /* ===========================================================
    404
    =========================================================== */
+/* page-404 stretches the body to a full-height flex column so .not-found
+   can grow to fill whatever's left between the (fixed, out-of-flow)
+   header and the footer — keeps the footer pinned to the bottom of the
+   viewport instead of floating right under the short 404 content */
+.page-404 { display: flex; flex-direction: column; min-height: 100vh; }
+
 .not-found {
-  min-height: 70vh;
+  flex: 1 1 auto;
   padding-top: 58px;
   display: flex;
   flex-direction: column;
@@ -617,21 +626,53 @@ button { font-family: inherit; }
   .menu-strip { grid-template-columns: repeat(2, 1fr); }
   .menu-tile { aspect-ratio: 1 / 1; }
   .catalogue { padding: 0 30px 100px; }
-  /* mobile header is two rows tall (~84px) — items.html's hero-less
+  /* mobile header is one compact row (~50px) — items.html's hero-less
      catalogue needs the matching extra clearance */
-  .catalogue--top { padding-top: 108px; }
+  .catalogue--top { padding-top: 66px; }
   .grid-2 { grid-template-columns: 1fr; row-gap: 70px; }
-  .product-page { padding: 134px 24px 90px; }
+  .product-page { padding: 90px 24px 90px; }
   .product { grid-template-columns: 1fr; gap: 40px; }
+
+  /* compact single-row header: small emblem left, card + menu right.
+     items/tattoo/a.dept move into a dropdown under "menu". */
   .header {
-    grid-template-columns: 1fr auto;
-    grid-template-areas: "logo right" "nav nav";
-    row-gap: 14px;
+    grid-template-columns: auto 1fr auto;
     padding: 14px 18px;
+    position: relative;
   }
-  .header__logo { grid-area: logo; }
-  .header__right { grid-area: right; gap: 20px; }
-  .nav { grid-area: nav; justify-self: start; gap: 18px; flex-wrap: wrap; transform: none; }
+  .header__logo-full { display: none; }
+  .header__logo-mobile { display: block; height: 20px; width: auto; }
+  .header__tattoo-office { display: none; }
+  .header__menu-toggle { display: inline; }
+  .header__right { gap: 20px; justify-self: end; }
+
+  .nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 4px 18px 14px;
+    transform: none;
+  }
+  .header.nav-open .nav { display: flex; }
+  .nav a, .nav-swap { padding: 8px 0; }
+
+  /* extra clearance from the left edge so title/price never sit under
+     the fixed header's logo/menu corner while scrolling; long titles
+     are free to wrap onto a second line rather than run into it */
+  .card__title,
+  .card__price,
+  .sketch-card__date,
+  .sketch-card__caption {
+    margin-left: 22px;
+  }
+  .card__title { white-space: normal; }
 }
 
 @media (max-width: 560px) {

@@ -70,6 +70,19 @@ const PRODUCTS = [
 /* Tattoo sketches — a portfolio catalogue, not a product for sale.
    Ordered newest first; "year" drives the scrollspy year-list on
    tattoo.html. */
+const SKETCH_DESC_RU = [
+  'Внимание: эскизы ARTASIMN могут вызвать эстетическую зависимость.',
+  'Каждый дизайн на этом сайте — авторская работа artasimn, созданная без использования шаблонов и повторов. Мы уделяем внимание каждой линии, вкладывая в эскиз идею, стиль и характер.',
+  'Это не просто картинки — это продуманные концепции с уникальным почерком. Выбирая наш эскиз, вы выбираете индивидуальность и качество.',
+  'Если вам понравился эскиз делай скрин и отправь нам в ТГ или ДМ [ инстаграм ]\nмы поможем записаться и определить стоимость.'
+];
+const SKETCH_DESC_EN = [
+  'Warning: ARTASIMN sketches may cause aesthetic addiction.',
+  'Every design on this website is an original creation by artasimn, made without the use of templates or repetition. We pay attention to every line, putting thought, style, and character into each sketch.',
+  'These are not just images — they are well-crafted concepts with a unique signature. By choosing one of our sketches, you choose individuality and quality.',
+  'If you found a sketch you like, take a screenshot and send it to us via Telegram or Instagram DM — we’ll help you book a session and estimate the cost.'
+];
+
 const SKETCHES = [
   {
     id: 'nobody-loves-me',
@@ -77,18 +90,53 @@ const SKETCHES = [
     date: '02 2026',
     caption: 'эскиз от artasimn',
     image: 'assets/sketches/nobody-loves-me.png',
-    descriptionRu: [
-      'Внимание: эскизы ARTASIMN могут вызвать эстетическую зависимость.',
-      'Каждый дизайн на этом сайте — авторская работа artasimn, созданная без использования шаблонов и повторов. Мы уделяем внимание каждой линии, вкладывая в эскиз идею, стиль и характер.',
-      'Это не просто картинки — это продуманные концепции с уникальным почерком. Выбирая наш эскиз, вы выбираете индивидуальность и качество.',
-      'Если вам понравился эскиз делай скрин и отправь нам в ТГ или ДМ [ инстаграм ]\nмы поможем записаться и определить стоимость.'
-    ],
-    descriptionEn: [
-      'Warning: ARTASIMN sketches may cause aesthetic addiction.',
-      'Every design on this website is an original creation by artasimn, made without the use of templates or repetition. We pay attention to every line, putting thought, style, and character into each sketch.',
-      'These are not just images — they are well-crafted concepts with a unique signature. By choosing one of our sketches, you choose individuality and quality.',
-      'If you found a sketch you like, take a screenshot and send it to us via Telegram or Instagram DM — we’ll help you book a session and estimate the cost.'
-    ]
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'bleeding-heart',
+    year: 2026,
+    date: '01 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/bleeding-heart.png',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'reaper-collage',
+    year: 2026,
+    date: '03 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/reaper-collage.png',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'church-domes',
+    year: 2026,
+    date: '08 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/church-domes.png',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'heart-and-globe',
+    year: 2026,
+    date: '07 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/heart-and-globe.png',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'star-cross',
+    year: 2026,
+    date: '23 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/star-cross.png',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
   }
 ];
 
