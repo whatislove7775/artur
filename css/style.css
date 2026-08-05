@@ -29,6 +29,13 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* every page is <body><header (fixed, out of flow)><main><footer></body> —
+   stretching body to a full-height flex column lets <main> grow to fill
+   whatever's left, so the footer always sits pinned to the bottom of the
+   viewport instead of floating right under short content */
+body { display: flex; flex-direction: column; min-height: 100vh; }
+body > main { flex: 1 0 auto; }
+
 /* hide the scrollbar everywhere — the page still scrolls normally,
    the track/thumb just isn't drawn */
 html {
@@ -412,6 +419,7 @@ button { font-family: inherit; }
 .product__title,
 .product__note {
   font-size: var(--font-b-size);
+  font-weight: 400;
   letter-spacing: .01em;
   text-transform: uppercase;
   color: var(--font-b-color);
@@ -430,11 +438,11 @@ button { font-family: inherit; }
 }
 
 .product__thumbs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
-.thumb { aspect-ratio: 1 / 1; overflow: hidden; background: #fff; }
+.thumb { flex: 0 0 auto; width: 56px; aspect-ratio: 1 / 1; overflow: hidden; background: #fff; }
 .thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: opacity .2s; }
 .thumb:hover img,
 .thumb.is-active img { opacity: 1; }
@@ -491,14 +499,7 @@ button { font-family: inherit; }
 /* ===========================================================
    404
    =========================================================== */
-/* page-404 stretches the body to a full-height flex column so .not-found
-   can grow to fill whatever's left between the (fixed, out-of-flow)
-   header and the footer — keeps the footer pinned to the bottom of the
-   viewport instead of floating right under the short 404 content */
-.page-404 { display: flex; flex-direction: column; min-height: 100vh; }
-
 .not-found {
-  flex: 1 1 auto;
   padding-top: 58px;
   display: flex;
   flex-direction: column;
@@ -691,6 +692,5 @@ button { font-family: inherit; }
 
 @media (max-width: 560px) {
   .menu-strip { grid-template-columns: 1fr; }
-  .product__thumbs { grid-template-columns: repeat(4, 1fr); }
   .footer { flex-direction: column; gap: 10px; align-items: flex-start; }
 }
