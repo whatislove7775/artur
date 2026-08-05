@@ -370,6 +370,9 @@ button { font-family: inherit; }
   margin: 0 auto;
   /* +18px top padding: the fixed header no longer takes up flow space */
   padding: 76px 60px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .back-link {
