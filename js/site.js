@@ -21,7 +21,7 @@ function headerMarkup(prefix) {
   <div class="header__spacer"></div>
   <div class="header__right">
     <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#" data-cart-open>card</a>
+    <a href="#" data-cart-open>cart</a>
     <a href="#" class="header__menu-toggle" data-menu-toggle>menu</a>
   </div>
   <div class="mobile-menu">
@@ -33,7 +33,7 @@ function headerMarkup(prefix) {
       <a href="${p}index.html?cat=jewellery">jewellery</a>
       <a href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
       <a href="${p}tattoo.html">tattoo</a>
-      <a href="#" data-cart-open data-mobile-menu-cart>card</a>
+      <a href="#" data-cart-open data-mobile-menu-cart>cart</a>
     </nav>
   </div>`;
 }
