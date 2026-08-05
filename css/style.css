@@ -225,6 +225,13 @@ button { font-family: inherit; }
    CATALOGUE GRID
    =========================================================== */
 .catalogue {
+  /* explicit width (not auto) so this flex item (body is now a flex
+     column, for footer-pinning) fills its full cross-axis instead of
+     shrink-to-fit sizing to its content — auto margins on a flex item
+     override the default stretch behaviour otherwise, and with a
+     narrower grid (a filtered category, fewer/shorter cards) that
+     collapsed the whole catalogue down around the cards themselves */
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 60px 140px;
