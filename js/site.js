@@ -416,7 +416,7 @@ function renderCartDrawer(prefix) {
           <div class="cart-drawer__row-price">${item.price}</div>
         </div>
         <div class="cart-drawer__qty">
-          <button type="button" data-cart-dec>-</button>
+          <button type="button" data-cart-dec>&ndash;</button>
           <span>${row.qty}</span>
           <button type="button" data-cart-inc>+</button>
         </div>
