@@ -559,14 +559,14 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: var(--font-b-size);
+  font-size: 20px;
+  line-height: 1;
   color: var(--font-b-color);
 }
 .cart-drawer__qty button {
   background: none;
   border: 0;
-  font-size: 20px;
-  line-height: 1;
+  font: inherit;
   padding: 4px;
   color: var(--font-b-color);
 }
