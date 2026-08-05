@@ -11,9 +11,9 @@
 
 <header class="header"></header>
 
-<nav class="menu-strip"></nav>
+<nav class="menu-strip" id="menuStrip"></nav>
 
-<main class="catalogue">
+<main class="catalogue" id="catalogue">
   <div class="grid-2" data-grid></div>
 </main>
 
@@ -26,9 +26,20 @@
   const validCat = cat === 'jewellery' || cat === 'garment' ? cat : null;
 
   mountHeader();
-  mountMenuStrip('', validCat);
   mountFooter();
-  initHeroHeader();
+
+  if (validCat) {
+    // a category was picked from the photo-menu (or the items mega-menu)
+    // — the menu itself has done its job, so it goes away and the header
+    // behaves like items.html: no hero left to float over, permanently
+    // transparent, catalogue gets the header-clearance padding instead.
+    document.getElementById('menuStrip').remove();
+    document.getElementById('catalogue').classList.add('catalogue--top');
+    document.querySelector('.header').classList.add('is-transparent');
+  } else {
+    mountMenuStrip('', validCat);
+    initHeroHeader();
+  }
 
   const items = validCat ? byCat(validCat) : PRODUCTS;
   renderCards('[data-grid]', items);

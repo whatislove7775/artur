@@ -87,6 +87,19 @@
     d.addEventListener('click', () => setImage(i, item.images[i]));
   });
 
+  // hovering the main photo scrubs through the gallery by cursor
+  // position, same as the product cards on the home page
+  if (item.images.length > 1) {
+    const mainFrame = document.querySelector('.product__main');
+    mainFrame.addEventListener('mousemove', (e) => {
+      const rect = mainFrame.getBoundingClientRect();
+      const fraction = (e.clientX - rect.left) / rect.width;
+      const i = Math.min(item.images.length - 1, Math.max(0, Math.floor(fraction * item.images.length)));
+      setImage(i, item.images[i]);
+    });
+    mainFrame.addEventListener('mouseleave', () => setImage(0, item.images[0]));
+  }
+
   initAccordions();
 
   document.querySelector('[data-add-to-card]').addEventListener('click', (e) => {
