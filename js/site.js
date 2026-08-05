@@ -23,20 +23,38 @@ function headerMarkup(prefix) {
     <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
     <a href="#" data-cart-open>card</a>
     <a href="#" class="header__menu-toggle" data-menu-toggle>menu</a>
+  </div>
+  <div class="mobile-menu">
+    <div class="mobile-menu__bar">
+      <a href="#" class="mobile-menu__close" data-menu-toggle>close</a>
+    </div>
+    <nav class="mobile-menu__links">
+      <a href="${p}index.html?cat=garment">garment</a>
+      <a href="${p}index.html?cat=jewellery">jewellery</a>
+      <a href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
+      <a href="${p}tattoo.html">tattoo</a>
+      <a href="#" data-cart-open data-mobile-menu-cart>card</a>
+    </nav>
   </div>`;
 }
 
-/* mobile only: "menu" toggles the items/tattoo/a.dept row open below
-   the compact single-line header instead of it always taking a second
-   row (see the ≤980px breakpoint in style.css) */
+/* mobile/tablet only: "menu" opens a full-screen overlay panel (close
+   top-right, links right-aligned below) instead of the desktop dropdown
+   — see the ≤980px breakpoint in style.css */
 function initMobileMenuToggle() {
-  const toggle = document.querySelector('[data-menu-toggle]');
+  const toggles = document.querySelectorAll('[data-menu-toggle]');
   const header = document.querySelector('.header');
-  if (!toggle || !header) return;
-  toggle.addEventListener('click', (e) => {
-    e.preventDefault();
-    header.classList.toggle('nav-open');
+  if (!toggles.length || !header) return;
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      header.classList.toggle('nav-open');
+    });
   });
+  const cartLink = header.querySelector('[data-mobile-menu-cart]');
+  if (cartLink) {
+    cartLink.addEventListener('click', () => header.classList.remove('nav-open'));
+  }
 }
 
 /* index.html only: the header floats transparent (no white backdrop)
