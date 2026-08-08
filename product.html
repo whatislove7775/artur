@@ -74,7 +74,9 @@
 
   const main = document.getElementById('mainImg');
   const dotEls = document.querySelectorAll('.product__dots span');
+  let currentIndex = 0;
   const setImage = (i, src) => {
+    currentIndex = i;
     main.src = src;
     document.querySelectorAll('.thumb').forEach((t, idx) => t.classList.toggle('is-active', idx === i));
     dotEls.forEach((d, idx) => d.classList.toggle('is-active', idx === i));
@@ -98,6 +100,10 @@
     });
     mainFrame.addEventListener('mouseleave', () => setImage(0, item.images[0]));
   }
+
+  document.querySelector('.product__main').addEventListener('click', () => {
+    openLightbox(item.images, currentIndex, item.title);
+  });
 
   initAccordions();
 
