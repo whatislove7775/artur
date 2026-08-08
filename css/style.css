@@ -911,7 +911,7 @@ button { font-family: inherit; }
   .card__price,
   .sketch-card__date,
   .sketch-card__caption {
-    margin-left: 22px;
+    margin-left: 34px;
   }
   .card__title { white-space: normal; }
 }
