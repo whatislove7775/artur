@@ -46,7 +46,7 @@
     // pushes the catalogue down).
     document.getElementById('menuStrip').remove();
     const menuEntry = MENU.find((m) => m.id === validCat) || MENU[0];
-    mountHeroMobile('', menuEntry.image, menuEntry.label.toLowerCase());
+    mountHeroMobile('', menuEntry.image, menuEntry.label);
     document.getElementById('catalogue').classList.add('catalogue--top-desktop');
     document.querySelector('.header').classList.add('is-transparent');
   } else {

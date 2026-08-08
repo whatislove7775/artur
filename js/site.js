@@ -113,6 +113,7 @@ function footerMarkup() {
   const year = new Date().getFullYear();
   return `
   <div class="footer__brand">artasimn &nbsp; © ${year}</div>
+  <p class="footer__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
   <div class="footer__links">
     <a href="#">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a>
     <a href="#">ОФЕРТА</a>
@@ -200,7 +201,7 @@ function heroMobileMarkup(prefix, image, label) {
   const p = prefix || '';
   const src = image || 'assets/hero-mobile.png';
   const overlay = label
-    ? `<div class="hero-mobile__label">${label}</div>`
+    ? `<div class="hero-mobile__veil"></div><div class="hero-mobile__label">${label}</div>`
     : `<div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
   return `
   <img class="hero-mobile__img" src="${p}${src}" alt="${label || 'Artasimn'}">
