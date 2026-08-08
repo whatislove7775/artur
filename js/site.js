@@ -110,9 +110,8 @@ function initHeroHeader() {
 }
 
 function footerMarkup() {
-  const year = new Date().getFullYear();
   return `
-  <div class="footer__brand">artasimn &nbsp; © ${year}</div>
+  <div class="footer__brand">artasimn</div>
   <p class="footer__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
   <div class="footer__links">
     <a href="#">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a>
