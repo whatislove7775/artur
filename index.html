@@ -12,6 +12,7 @@
 <header class="header"></header>
 
 <nav class="menu-strip" id="menuStrip"></nav>
+<div class="hero-mobile" id="heroMobile"></div>
 
 <main class="catalogue" id="catalogue">
   <div class="grid-2" data-grid></div>
@@ -34,10 +35,12 @@
     // behaves like items.html: no hero left to float over, permanently
     // transparent, catalogue gets the header-clearance padding instead.
     document.getElementById('menuStrip').remove();
+    document.getElementById('heroMobile').remove();
     document.getElementById('catalogue').classList.add('catalogue--top');
     document.querySelector('.header').classList.add('is-transparent');
   } else {
     mountMenuStrip('', validCat);
+    mountHeroMobile('');
     initHeroHeader();
   }
 

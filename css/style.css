@@ -81,6 +81,13 @@ button { font-family: inherit; }
    solid white bar set above. */
 .header.is-transparent { background: none; }
 
+/* mobile-only hero (see .hero-mobile): while the header floats
+   transparent over that full-bleed photo, its text/logo switch to
+   white so they stay legible against a typically dark image; back to
+   the normal ink colour once it's over the plain white catalogue */
+.header.is-inverted { color: #fff; }
+.header.is-inverted .header__logo-full,
+.header.is-inverted .header__logo-mobile { filter: brightness(0) invert(1); }
 .header__logo-full { height: 22px; width: auto; }
 .header__logo-mobile { display: none; }
 
@@ -88,7 +95,17 @@ button { font-family: inherit; }
 
 .header__menu-toggle { display: none; }
 
-.mobile-menu { display: none; }
+/* the lightbox's close control replaces the cart link in the exact
+   same spot in the header when a lightbox is open (see openLightbox/
+   closeLightbox in site.js) */
+.header__close { display: none; }
+.header.lightbox-open .header__cart { display: none; }
+.header.lightbox-open .header__close { display: inline; }
+
+/* a direct DOM child of .header for positioning, but always has its
+   own white background — must never inherit is-inverted's white text
+   on top of that */
+.mobile-menu { display: none; color: var(--font-a-color); }
 
 .nav {
   display: flex;
@@ -224,6 +241,37 @@ button { font-family: inherit; }
 .menu-tile:hover img { transform: scale(1.06); }
 .menu-tile.is-active .menu-tile__veil { opacity: 0; }
 .menu-tile.is-active .menu-tile__label { opacity: 1; }
+
+/* ===========================================================
+   HERO MOBILE — mobile/tablet-only replacement for the menu-strip,
+   one full-bleed photo with the wordmark centred over it
+   =========================================================== */
+.hero-mobile {
+  display: none;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-mobile__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-mobile__logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .3s ease;
+}
+.hero-mobile__logo img {
+  width: 62%;
+  max-width: 320px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+.hero-mobile__logo.is-hidden { opacity: 0; }
 
 /* ===========================================================
    CATALOGUE GRID
@@ -519,33 +567,21 @@ button { font-family: inherit; }
 /* ===========================================================
    LIGHTBOX — full-screen viewer for the product/sketch main image
    =========================================================== */
+/* sits just under the header's z-index (500) so the header — with its
+   cart link swapped for a "close" link in the exact same spot, see
+   .header.lightbox-open below — stays visible on top of the full-bleed
+   image instead of being covered by it */
 .lightbox {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 900;
+  z-index: 480;
   background: #fff;
 }
 .lightbox.is-open { display: block; }
 
-.lightbox__close {
-  position: absolute;
-  top: 32px;
-  right: 60px;
-  font-size: var(--font-a-size);
-  color: var(--font-a-color);
-}
-.lightbox__close:hover { opacity: .55; }
-
-.lightbox__frame {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding: 100px 120px;
-}
-.lightbox__img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.lightbox__frame { width: 100%; height: 100%; }
+.lightbox__img { width: 100%; height: 100%; object-fit: cover; }
 
 .lightbox__nav {
   position: absolute;
@@ -577,8 +613,6 @@ button { font-family: inherit; }
 }
 
 @media (max-width: 560px) {
-  .lightbox__frame { padding: 80px 50px; }
-  .lightbox__close { top: 18px; right: 24px; }
   .lightbox__nav--prev { left: 12px; }
   .lightbox__nav--next { right: 12px; }
 }
@@ -713,8 +747,11 @@ button { font-family: inherit; }
    RESPONSIVE
    =========================================================== */
 @media (max-width: 980px) {
-  .menu-strip { grid-template-columns: repeat(2, 1fr); }
-  .menu-tile { aspect-ratio: 1 / 1; }
+  /* the 4-tile photo grid is desktop-only — mobile/tablet gets the
+     single full-bleed .hero-mobile photo instead (see initHeroHeader
+     in site.js for the accompanying header/logo colour-swap) */
+  .menu-strip { display: none; }
+  .hero-mobile { display: block; }
   .catalogue { padding: 0 30px 100px; }
   /* mobile header is one compact row (~50px) — items.html's hero-less
      catalogue needs the matching extra clearance */
@@ -778,6 +815,5 @@ button { font-family: inherit; }
 }
 
 @media (max-width: 560px) {
-  .menu-strip { grid-template-columns: 1fr; }
   .footer { flex-direction: column; gap: 10px; align-items: flex-start; }
 }

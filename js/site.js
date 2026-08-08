@@ -21,7 +21,8 @@ function headerMarkup(prefix) {
   <div class="header__spacer"></div>
   <div class="header__right">
     <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#" data-cart-open>cart</a>
+    <a href="#" class="header__cart" data-cart-open>cart</a>
+    <a href="#" class="header__close" data-lightbox-close>close</a>
     <a href="#" class="header__menu-toggle" data-menu-toggle>menu</a>
   </div>
   <div class="mobile-menu">
@@ -57,17 +58,38 @@ function initMobileMenuToggle() {
   }
 }
 
-/* index.html only: the header floats transparent (no white backdrop)
-   while any part of the menu-strip hero is still visible under it;
-   once the hero has fully scrolled past, it switches to a solid white
-   bar so it doesn't sit illegibly over the catalogue's own text. */
+/* index.html only. Two different heroes, two different scroll rules:
+   - desktop: the 4-photo .menu-strip. Header stays a solid white bar
+     while any part of it is still visible (it's a busy multi-photo
+     backdrop, needs the legibility), then goes transparent once fully
+     scrolled past (the catalogue below is plain white, so it doesn't
+     matter there).
+   - mobile/tablet (≤980px): the single full-bleed .hero-mobile photo.
+     Header goes transparent + white text/logo while still over the
+     photo (classic full-bleed-hero convention), then solid + black
+     again once scrolled onto the white catalogue. The centred wordmark
+     over the photo also fades out on the first bit of scroll. */
 function initHeroHeader() {
-  const strip = document.querySelector('.menu-strip');
   const header = document.querySelector('.header');
-  if (!strip || !header) return;
+  const strip = document.querySelector('.menu-strip');
+  const hero = document.querySelector('.hero-mobile');
+  const heroLogo = document.querySelector('.hero-mobile__logo');
+  if (!header || (!strip && !hero)) return;
 
   const update = () => {
-    header.classList.toggle('is-transparent', strip.getBoundingClientRect().bottom <= 0);
+    const useHero = window.innerWidth <= 980 && hero;
+    const target = useHero ? hero : strip;
+    if (!target) return;
+    const overHero = target.getBoundingClientRect().bottom > 0;
+
+    if (useHero) {
+      header.classList.toggle('is-transparent', overHero);
+      header.classList.toggle('is-inverted', overHero);
+      if (heroLogo) heroLogo.classList.toggle('is-hidden', window.scrollY > 40);
+    } else {
+      header.classList.toggle('is-transparent', !overHero);
+      header.classList.remove('is-inverted');
+    }
   };
   update();
   window.addEventListener('scroll', update, { passive: true });
@@ -119,6 +141,13 @@ function mountHeader(prefix) {
   initItemsMenu();
   initMobileMenuToggle();
   mountCartDrawer(prefix);
+  const closeBtn = document.querySelector('.header__close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeLightbox();
+    });
+  }
 }
 
 function mountFooter() {
@@ -151,6 +180,21 @@ function menuStripMarkup(prefix, activeId) {
 function mountMenuStrip(prefix, activeId) {
   const el = document.querySelector('.menu-strip');
   if (el) el.innerHTML = menuStripMarkup(prefix, activeId);
+}
+
+/* mobile/tablet-only replacement for the menu-strip: one full-bleed
+   photo with the wordmark centred over it (see initHeroHeader for the
+   scroll-driven header/logo behaviour). */
+function heroMobileMarkup(prefix) {
+  const p = prefix || '';
+  return `
+  <img class="hero-mobile__img" src="${p}assets/hero-mobile.png" alt="Artasimn">
+  <div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
+}
+
+function mountHeroMobile(prefix) {
+  const el = document.querySelector('.hero-mobile');
+  if (el) el.innerHTML = heroMobileMarkup(prefix);
 }
 
 /* Product card — mouse position along the image scrubs through the
@@ -501,20 +545,12 @@ function mountLightbox() {
   const el = document.createElement('div');
   el.className = 'lightbox';
   el.innerHTML = `
-    <a href="#" class="lightbox__close" data-lightbox-close>close</a>
     <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="previous">${CHEVRON_SVG}</button>
     <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="next">${CHEVRON_SVG}</button>
     <div class="lightbox__frame"><img class="lightbox__img" alt=""></div>
     <div class="product__dots lightbox__dots"></div>`;
   document.body.appendChild(el);
 
-  el.querySelector('[data-lightbox-close]').addEventListener('click', (e) => {
-    e.preventDefault();
-    closeLightbox();
-  });
-  el.addEventListener('click', (e) => {
-    if (e.target === el || e.target.classList.contains('lightbox__frame')) closeLightbox();
-  });
   el.querySelector('[data-lightbox-prev]').addEventListener('click', () => lightboxStep(-1));
   el.querySelector('[data-lightbox-next]').addEventListener('click', () => lightboxStep(1));
   el.querySelector('.lightbox__dots').addEventListener('click', (e) => {
@@ -560,9 +596,13 @@ function openLightbox(images, startIndex, alt) {
   lightboxState.alt = alt || '';
   renderLightbox();
   document.querySelector('.lightbox').classList.add('is-open');
+  const header = document.querySelector('.header');
+  if (header) header.classList.add('lightbox-open');
 }
 
 function closeLightbox() {
   const el = document.querySelector('.lightbox');
   if (el) el.classList.remove('is-open');
+  const header = document.querySelector('.header');
+  if (header) header.classList.remove('lightbox-open');
 }
