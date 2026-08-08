@@ -25,9 +25,26 @@
    single rule on the universal selector covers all of them instead of
    fighting each specific cursor value one at a time. A rasterised PNG
    (not the source SVG) because inline SVG cursors render unreliably
-   across browsers, Safari's in particular. */
+   across browsers, Safari's in particular.
+   cursor: url() always renders the image at its own raw pixel size in
+   CSS px — on a retina/HiDPI screen that stretches a plain 1x file and
+   looks soft/pixelated. image-set() lets the browser pick a real 2x/3x
+   file instead, same on-screen size but actually sharp; the trailing
+   plain url()/auto are fallbacks for browsers without image-set()
+   support in `cursor` (older Firefox in particular). */
 * {
-  cursor: url('../assets/cursors/artasimn.png') 3 2, auto;
+  cursor: -webkit-image-set(
+    url('../assets/cursors/artasimn.png') 1x,
+    url('../assets/cursors/artasimn@2x.png') 2x,
+    url('../assets/cursors/artasimn@3x.png') 3x
+  ) 3 2,
+  image-set(
+    url('../assets/cursors/artasimn.png') 1x,
+    url('../assets/cursors/artasimn@2x.png') 2x,
+    url('../assets/cursors/artasimn@3x.png') 3x
+  ) 3 2,
+  url('../assets/cursors/artasimn.png') 3 2,
+  auto;
 }
 
 html, body {
