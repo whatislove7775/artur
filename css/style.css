@@ -37,13 +37,13 @@
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 3 2,
+  ) 2 1,
   image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 3 2,
-  url('../assets/cursors/artasimn.png') 3 2,
+  ) 2 1,
+  url('../assets/cursors/artasimn.png') 2 1,
   auto;
 }
 
@@ -383,8 +383,8 @@ button { font-family: inherit; }
   font-size: var(--font-b-size);
   color: var(--font-b-color);
   line-height: 26px;
-  pointer-events: none;
 }
+.year-rail__item:hover { color: var(--ink); }
 .year-rail__item.is-current { color: var(--ink); }
 
 @media (max-width: 980px) {

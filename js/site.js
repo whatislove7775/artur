@@ -405,6 +405,15 @@ function initYearScrollspy(years) {
   update();
   window.addEventListener('scroll', update, { passive: true });
   window.addEventListener('resize', update);
+
+  // clicking a year jumps straight to that year's first sketch, clear
+  // of the fixed header
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => {
+      const targetY = markers[i].getBoundingClientRect().top + window.scrollY - headerH - 10;
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    });
+  });
 }
 
 /* ===========================================================
