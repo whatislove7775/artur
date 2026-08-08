@@ -180,6 +180,7 @@ button { font-family: inherit; }
   gap: 118px;
   justify-self: end;
 }
+.header__right a:hover { opacity: .55; }
 
 /* ===========================================================
    MENU STRIP — 4 photos under the header
