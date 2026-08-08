@@ -310,6 +310,14 @@ button { font-family: inherit; }
    items.html has no hero, so its .catalogue needs room for the header. */
 .catalogue--top { padding-top: 58px; }
 
+/* same clearance, but desktop-only: for pages that DO have a hero on
+   mobile (a filtered category, tattoo.html) but none on desktop — the
+   ≤980px breakpoint below leaves this alone, since .hero-mobile is
+   already pushing the catalogue down there in normal flow */
+@media (min-width: 981px) {
+  .catalogue--top-desktop { padding-top: 58px; }
+}
+
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

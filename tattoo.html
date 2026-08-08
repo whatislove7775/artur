@@ -29,14 +29,12 @@
 
   // mobile/tablet gets the same single-photo "section title" screen as
   // a filtered category on index.html; desktop has no hero here (never
-  // did), so it keeps the old permanent header-clearance padding.
-  const tattooMenuEntry = MENU.find((m) => m.id === 'tattoo');
+  // did), so catalogue--top-desktop keeps its old permanent clearance
+  // (a no-op on mobile, where the hero already pushes content down).
+  const tattooMenuEntry = MENU.find((m) => m.id === 'tattoo') || MENU[0];
   mountHeroMobile('', tattooMenuEntry.image, tattooMenuEntry.label.toLowerCase());
-  if (window.innerWidth <= 980) {
-    initHeroHeader();
-  } else {
-    document.getElementById('catalogue').classList.add('catalogue--top');
-  }
+  document.getElementById('catalogue').classList.add('catalogue--top-desktop');
+  initHeroHeader();
 
   const years = sketchYears();
   const grid = document.querySelector('[data-grid]');
