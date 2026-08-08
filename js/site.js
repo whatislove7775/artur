@@ -259,11 +259,14 @@ function attachScrub(cardEl) {
 }
 
 /* Collapsible DESCRIPTION / DELIVERY sections on product & tattoo pages */
+const CHEVRON_SVG =
+  '<svg width="9" height="6" viewBox="0 0 9 6" fill="none"><path d="M1 1L4.5 4.5L8 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 function accordionMarkup(label, bodyHtml, openByDefault) {
   return `
   <div class="accordion${openByDefault ? ' is-open' : ''}">
     <button class="accordion__toggle" type="button">
-      <span class="accordion__caret">${openByDefault ? '^' : 'v'}</span>${label}
+      <span class="accordion__caret">${CHEVRON_SVG}</span>${label}
     </button>
     <div class="accordion__body"><div class="accordion__body-inner">${bodyHtml}</div></div>
   </div>`;
@@ -272,9 +275,7 @@ function accordionMarkup(label, bodyHtml, openByDefault) {
 function initAccordions(root) {
   (root || document).querySelectorAll('.accordion__toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const acc = btn.closest('.accordion');
-      acc.classList.toggle('is-open');
-      btn.querySelector('.accordion__caret').textContent = acc.classList.contains('is-open') ? '^' : 'v';
+      btn.closest('.accordion').classList.toggle('is-open');
     });
   });
 }
@@ -488,4 +489,80 @@ function sketchCardMarkup(prefix, sketch) {
     <div class="sketch-card__date">${s.date}</div>
     <div class="sketch-card__caption">${s.caption}</div>
   </a>`;
+}
+
+/* ===========================================================
+   LIGHTBOX — full-screen viewer for the product/sketch main image
+   =========================================================== */
+const lightboxState = { images: [], index: 0, alt: '' };
+
+function mountLightbox() {
+  if (document.querySelector('.lightbox')) return;
+  const el = document.createElement('div');
+  el.className = 'lightbox';
+  el.innerHTML = `
+    <a href="#" class="lightbox__close" data-lightbox-close>close</a>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="previous">${CHEVRON_SVG}</button>
+    <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="next">${CHEVRON_SVG}</button>
+    <div class="lightbox__frame"><img class="lightbox__img" alt=""></div>
+    <div class="product__dots lightbox__dots"></div>`;
+  document.body.appendChild(el);
+
+  el.querySelector('[data-lightbox-close]').addEventListener('click', (e) => {
+    e.preventDefault();
+    closeLightbox();
+  });
+  el.addEventListener('click', (e) => {
+    if (e.target === el || e.target.classList.contains('lightbox__frame')) closeLightbox();
+  });
+  el.querySelector('[data-lightbox-prev]').addEventListener('click', () => lightboxStep(-1));
+  el.querySelector('[data-lightbox-next]').addEventListener('click', () => lightboxStep(1));
+  el.querySelector('.lightbox__dots').addEventListener('click', (e) => {
+    const dots = Array.from(el.querySelectorAll('.lightbox__dots span'));
+    const i = dots.indexOf(e.target);
+    if (i > -1) {
+      lightboxState.index = i;
+      renderLightbox();
+    }
+  });
+  window.addEventListener('keydown', (e) => {
+    if (!el.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lightboxStep(-1);
+    if (e.key === 'ArrowRight') lightboxStep(1);
+  });
+}
+
+function renderLightbox() {
+  const el = document.querySelector('.lightbox');
+  if (!el) return;
+  const { images, index, alt } = lightboxState;
+  const img = el.querySelector('.lightbox__img');
+  img.src = images[index];
+  img.alt = alt;
+  const multi = images.length > 1;
+  el.classList.toggle('lightbox--single', !multi);
+  el.querySelector('.lightbox__dots').innerHTML = multi
+    ? images.map((_, i) => `<span${i === index ? ' class="is-active"' : ''}></span>`).join('')
+    : '';
+}
+
+function lightboxStep(delta) {
+  const n = lightboxState.images.length;
+  lightboxState.index = (lightboxState.index + delta + n) % n;
+  renderLightbox();
+}
+
+function openLightbox(images, startIndex, alt) {
+  mountLightbox();
+  lightboxState.images = images;
+  lightboxState.index = startIndex || 0;
+  lightboxState.alt = alt || '';
+  renderLightbox();
+  document.querySelector('.lightbox').classList.add('is-open');
+}
+
+function closeLightbox() {
+  const el = document.querySelector('.lightbox');
+  if (el) el.classList.remove('is-open');
 }

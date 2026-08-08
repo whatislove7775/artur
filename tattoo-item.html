@@ -48,6 +48,10 @@
       ${accordionMarkup('DESCRIPTION', descriptionHtml, true)}
     </div>`;
 
+  document.querySelector('.product__main').addEventListener('click', () => {
+    openLightbox([item.image], 0, item.caption);
+  });
+
   initAccordions();
 </script>
 </body>

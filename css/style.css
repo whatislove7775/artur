@@ -129,6 +129,10 @@ button { font-family: inherit; }
 }
 .nav.items-active .nav-swap__default { opacity: 0; pointer-events: none; }
 .nav.items-active .nav-swap__hover { opacity: 1; pointer-events: auto; }
+/* higher specificity than the rule above, so hovering garment/jewellery
+   itself still greys it out like every other nav link instead of
+   staying pinned at full opacity */
+.nav.items-active .nav-swap__hover:hover { opacity: .55; }
 
 .header__spacer { display: none; }
 
@@ -487,10 +491,14 @@ button { font-family: inherit; }
   color: var(--font-b-color);
 }
 .accordion__toggle:hover { color: var(--ink); }
-/* the ^ / v glyph itself is swapped by JS on toggle (see initAccordions
-   in site.js) — no CSS transform here, that would rotate it a second
-   time on top of the swap and point it the wrong way. Inherits the
-   toggle's own secondary size/colour — no separate style of its own. */
+/* one small vector chevron (currentColor, so it always matches the
+   toggle's own text colour), pointing down at rest — CSS alone flips
+   it to point up when the section is open */
+.accordion__caret {
+  display: inline-flex;
+  transition: transform .2s ease;
+}
+.accordion.is-open .accordion__caret { transform: rotate(180deg); }
 .accordion__body {
   overflow: hidden;
   max-height: 0;
@@ -505,6 +513,75 @@ button { font-family: inherit; }
 }
 .accordion__body-inner p { margin: 0 0 16px; white-space: pre-line; }
 .accordion__body-inner p:last-child { margin-bottom: 0; }
+
+.product__main { cursor: pointer; }
+
+/* ===========================================================
+   LIGHTBOX — full-screen viewer for the product/sketch main image
+   =========================================================== */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: #fff;
+}
+.lightbox.is-open { display: block; }
+
+.lightbox__close {
+  position: absolute;
+  top: 32px;
+  right: 60px;
+  font-size: var(--font-a-size);
+  color: var(--font-a-color);
+}
+.lightbox__close:hover { opacity: .55; }
+
+.lightbox__frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 100px 120px;
+}
+.lightbox__img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  padding: 10px;
+  color: var(--font-a-color);
+  cursor: pointer;
+}
+.lightbox__nav:hover { opacity: .55; }
+.lightbox__nav--prev { left: 40px; }
+.lightbox__nav--prev svg { transform: rotate(90deg) scale(1.8); }
+.lightbox__nav--next { right: 40px; }
+.lightbox__nav--next svg { transform: rotate(-90deg) scale(1.8); }
+
+.lightbox__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  margin-top: 0;
+}
+
+.lightbox--single .lightbox__nav,
+.lightbox--single .lightbox__dots {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .lightbox__frame { padding: 80px 50px; }
+  .lightbox__close { top: 18px; right: 24px; }
+  .lightbox__nav--prev { left: 12px; }
+  .lightbox__nav--next { right: 12px; }
+}
 
 /* ===========================================================
    404
