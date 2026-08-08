@@ -244,12 +244,18 @@ button { font-family: inherit; }
   position: relative;
   /* 100vh in mobile Safari/in-app browsers (Telegram's included) is the
      "largest possible" viewport, taller than what's actually visible
-     with the address bar showing at initial load — leaving a white
-     gap below the photo before any scroll happens. 100dvh tracks the
-     real, currently-visible viewport instead; the plain 100vh stays as
-     a fallback for browsers that don't support dvh yet. */
+     with the address bar showing at initial load — leaving a white gap
+     below the photo before any scroll happens. 100dvh fixes that gap
+     but actively tracks the toolbar's show/hide animation as you
+     scroll, which means this element (and the centred overlay fading
+     on top of it) keeps resizing mid-scroll — a stutter, not a fix.
+     100svh matches the smallest possible viewport (toolbar showing) —
+     exactly what's visible at initial load, so no gap — and then never
+     changes again regardless of what the toolbar does, so nothing
+     reflows while scrolling. Plain 100vh stays as a fallback for
+     browsers without svh support. */
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
 }
 .hero-mobile__img {
