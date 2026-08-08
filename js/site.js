@@ -21,8 +21,7 @@ function headerMarkup(prefix) {
   <div class="header__spacer"></div>
   <div class="header__right">
     <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#" class="header__cart" data-cart-open>cart</a>
-    <a href="#" class="header__close" data-lightbox-close>close</a>
+    <a href="#" data-cart-open>cart</a>
     <a href="#" class="header__menu-toggle" data-menu-toggle>menu</a>
   </div>
   <div class="mobile-menu">
@@ -73,7 +72,7 @@ function initHeroHeader() {
   const header = document.querySelector('.header');
   const strip = document.querySelector('.menu-strip');
   const hero = document.querySelector('.hero-mobile');
-  const heroLogo = document.querySelector('.hero-mobile__logo');
+  const heroOverlay = document.querySelector('.hero-mobile__logo, .hero-mobile__label');
   if (!header || (!strip && !hero)) return;
 
   const update = () => {
@@ -85,7 +84,7 @@ function initHeroHeader() {
     if (useHero) {
       header.classList.toggle('is-transparent', overHero);
       header.classList.toggle('is-inverted', overHero);
-      if (heroLogo) heroLogo.classList.toggle('is-hidden', window.scrollY > 40);
+      if (heroOverlay) heroOverlay.classList.toggle('is-hidden', window.scrollY > 40);
     } else {
       header.classList.toggle('is-transparent', !overHero);
       header.classList.remove('is-inverted');
@@ -141,13 +140,6 @@ function mountHeader(prefix) {
   initItemsMenu();
   initMobileMenuToggle();
   mountCartDrawer(prefix);
-  const closeBtn = document.querySelector('.header__close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeLightbox();
-    });
-  }
 }
 
 function mountFooter() {
@@ -182,19 +174,28 @@ function mountMenuStrip(prefix, activeId) {
   if (el) el.innerHTML = menuStripMarkup(prefix, activeId);
 }
 
-/* mobile/tablet-only replacement for the menu-strip: one full-bleed
-   photo with the wordmark centred over it (see initHeroHeader for the
-   scroll-driven header/logo behaviour). */
-function heroMobileMarkup(prefix) {
+/* mobile/tablet-only replacement for the menu-strip. Two modes (see
+   initHeroHeader for the scroll-driven header/overlay fade behaviour):
+   - homepage (no label): assets/hero-mobile.png with the wordmark
+     centred over it.
+   - a category page (label given, e.g. from a MENU entry): that
+     category's own tile photo, with a small plain-text Helvetica
+     label instead of the big wordmark — a quick "section title"
+     screen before the catalogue grid underneath it. */
+function heroMobileMarkup(prefix, image, label) {
   const p = prefix || '';
+  const src = image || 'assets/hero-mobile.png';
+  const overlay = label
+    ? `<div class="hero-mobile__label">${label}</div>`
+    : `<div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
   return `
-  <img class="hero-mobile__img" src="${p}assets/hero-mobile.png" alt="Artasimn">
-  <div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
+  <img class="hero-mobile__img" src="${p}${src}" alt="${label || 'Artasimn'}">
+  ${overlay}`;
 }
 
-function mountHeroMobile(prefix) {
+function mountHeroMobile(prefix, image, label) {
   const el = document.querySelector('.hero-mobile');
-  if (el) el.innerHTML = heroMobileMarkup(prefix);
+  if (el) el.innerHTML = heroMobileMarkup(prefix, image, label);
 }
 
 /* Product card — mouse position along the image scrubs through the
@@ -536,21 +537,37 @@ function sketchCardMarkup(prefix, sketch) {
 }
 
 /* ===========================================================
-   LIGHTBOX — full-screen viewer for the product/sketch main image
+   LIGHTBOX — full-screen viewer for the product/sketch main image.
+   Click/tap the image to zoom in (centred on where you clicked), drag
+   to pan while zoomed, click again to zoom back out. Pinch-to-zoom on
+   touch works too, since it's the same zoomed state driven by scale
+   distance instead of a click point.
    =========================================================== */
 const lightboxState = { images: [], index: 0, alt: '' };
+const zoomState = { zoomed: false, scale: 1, x: 0, y: 0, panning: false, startX: 0, startY: 0, pinchDist: 0 };
 
 function mountLightbox() {
   if (document.querySelector('.lightbox')) return;
   const el = document.createElement('div');
   el.className = 'lightbox';
   el.innerHTML = `
+    <a href="#" class="lightbox__close" data-lightbox-close>close</a>
     <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="previous">${CHEVRON_SVG}</button>
     <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="next">${CHEVRON_SVG}</button>
     <div class="lightbox__frame"><img class="lightbox__img" alt=""></div>
     <div class="product__dots lightbox__dots"></div>`;
   document.body.appendChild(el);
 
+  const frame = el.querySelector('.lightbox__frame');
+  const img = el.querySelector('.lightbox__img');
+
+  el.querySelector('[data-lightbox-close]').addEventListener('click', (e) => {
+    e.preventDefault();
+    closeLightbox();
+  });
+  el.addEventListener('click', (e) => {
+    if (e.target === el || e.target === frame) closeLightbox();
+  });
   el.querySelector('[data-lightbox-prev]').addEventListener('click', () => lightboxStep(-1));
   el.querySelector('[data-lightbox-next]').addEventListener('click', () => lightboxStep(1));
   el.querySelector('.lightbox__dots').addEventListener('click', (e) => {
@@ -567,11 +584,121 @@ function mountLightbox() {
     if (e.key === 'ArrowLeft') lightboxStep(-1);
     if (e.key === 'ArrowRight') lightboxStep(1);
   });
+
+  const applyZoom = () => {
+    img.style.transition = zoomState.panning ? 'none' : 'transform .2s ease';
+    img.style.transform = zoomState.zoomed
+      ? `scale(${zoomState.scale}) translate(${zoomState.x}px, ${zoomState.y}px)`
+      : 'none';
+    frame.classList.toggle('is-zoomed', zoomState.zoomed);
+  };
+
+  img.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (zoomState.panning) return;
+    if (!zoomState.zoomed) {
+      const rect = img.getBoundingClientRect();
+      zoomState.zoomed = true;
+      zoomState.scale = 2.4;
+      zoomState.x = (rect.width / 2 - (e.clientX - rect.left)) / zoomState.scale;
+      zoomState.y = (rect.height / 2 - (e.clientY - rect.top)) / zoomState.scale;
+    } else {
+      zoomState.zoomed = false;
+      zoomState.scale = 1;
+      zoomState.x = 0;
+      zoomState.y = 0;
+    }
+    applyZoom();
+  });
+
+  img.addEventListener('mousedown', (e) => {
+    if (!zoomState.zoomed) return;
+    zoomState.panning = true;
+    zoomState.startX = e.clientX;
+    zoomState.startY = e.clientY;
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!zoomState.panning) return;
+    zoomState.x += (e.clientX - zoomState.startX) / zoomState.scale;
+    zoomState.y += (e.clientY - zoomState.startY) / zoomState.scale;
+    zoomState.startX = e.clientX;
+    zoomState.startY = e.clientY;
+    applyZoom();
+  });
+  window.addEventListener('mouseup', () => {
+    zoomState.panning = false;
+  });
+
+  /* touch: pinch with two fingers to zoom, drag with one finger to pan
+     while already zoomed */
+  img.addEventListener(
+    'touchstart',
+    (e) => {
+      if (e.touches.length === 2) {
+        const [a, b] = e.touches;
+        zoomState.pinchDist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+      } else if (e.touches.length === 1 && zoomState.zoomed) {
+        zoomState.panning = true;
+        zoomState.startX = e.touches[0].clientX;
+        zoomState.startY = e.touches[0].clientY;
+      }
+    },
+    { passive: true }
+  );
+  img.addEventListener(
+    'touchmove',
+    (e) => {
+      if (e.touches.length === 2) {
+        const [a, b] = e.touches;
+        const dist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        const delta = dist / zoomState.pinchDist;
+        zoomState.pinchDist = dist;
+        zoomState.scale = Math.min(4, Math.max(1, zoomState.scale * delta));
+        zoomState.zoomed = zoomState.scale > 1;
+        applyZoom();
+      } else if (e.touches.length === 1 && zoomState.panning) {
+        const t = e.touches[0];
+        zoomState.x += (t.clientX - zoomState.startX) / zoomState.scale;
+        zoomState.y += (t.clientY - zoomState.startY) / zoomState.scale;
+        zoomState.startX = t.clientX;
+        zoomState.startY = t.clientY;
+        applyZoom();
+      }
+    },
+    { passive: true }
+  );
+  img.addEventListener(
+    'touchend',
+    (e) => {
+      zoomState.panning = false;
+      if (e.touches.length === 0 && zoomState.scale <= 1) {
+        zoomState.zoomed = false;
+        zoomState.scale = 1;
+        zoomState.x = 0;
+        zoomState.y = 0;
+        applyZoom();
+      }
+    },
+    { passive: true }
+  );
+}
+
+function resetZoom() {
+  zoomState.zoomed = false;
+  zoomState.scale = 1;
+  zoomState.x = 0;
+  zoomState.y = 0;
+  zoomState.panning = false;
+  const img = document.querySelector('.lightbox__img');
+  if (img) img.style.transform = 'none';
+  const frame = document.querySelector('.lightbox__frame');
+  if (frame) frame.classList.remove('is-zoomed');
 }
 
 function renderLightbox() {
   const el = document.querySelector('.lightbox');
   if (!el) return;
+  resetZoom();
   const { images, index, alt } = lightboxState;
   const img = el.querySelector('.lightbox__img');
   img.src = images[index];
@@ -596,13 +723,9 @@ function openLightbox(images, startIndex, alt) {
   lightboxState.alt = alt || '';
   renderLightbox();
   document.querySelector('.lightbox').classList.add('is-open');
-  const header = document.querySelector('.header');
-  if (header) header.classList.add('lightbox-open');
 }
 
 function closeLightbox() {
   const el = document.querySelector('.lightbox');
   if (el) el.classList.remove('is-open');
-  const header = document.querySelector('.header');
-  if (header) header.classList.remove('lightbox-open');
 }

@@ -31,13 +31,22 @@
 
   if (validCat) {
     // a category was picked from the photo-menu (or the items mega-menu)
-    // — the menu itself has done its job, so it goes away and the header
-    // behaves like items.html: no hero left to float over, permanently
-    // transparent, catalogue gets the header-clearance padding instead.
+    // — the 4-tile grid has done its job, so it goes away. On mobile the
+    // single-photo hero sticks around, now showing that category's own
+    // tile photo with a small label instead of the wordmark, so there's
+    // still a "section title" screen before the catalogue grid. Desktop
+    // has no hero here at all — matches items.html: no photo to float
+    // over, permanently transparent, catalogue gets the header-clearance
+    // padding instead.
     document.getElementById('menuStrip').remove();
-    document.getElementById('heroMobile').remove();
-    document.getElementById('catalogue').classList.add('catalogue--top');
-    document.querySelector('.header').classList.add('is-transparent');
+    const menuEntry = MENU.find((m) => m.id === validCat);
+    mountHeroMobile('', menuEntry.image, menuEntry.label.toLowerCase());
+    if (window.innerWidth <= 980) {
+      initHeroHeader();
+    } else {
+      document.getElementById('catalogue').classList.add('catalogue--top');
+      document.querySelector('.header').classList.add('is-transparent');
+    }
   } else {
     mountMenuStrip('', validCat);
     mountHeroMobile('');
