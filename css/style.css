@@ -19,6 +19,17 @@
 
 * { box-sizing: border-box; }
 
+/* one custom cursor, everywhere — every element on the site uses this
+   same image regardless of what its cursor would otherwise be
+   (pointer on links/buttons, zoom-in/out in the lightbox, etc.), so a
+   single rule on the universal selector covers all of them instead of
+   fighting each specific cursor value one at a time. A rasterised PNG
+   (not the source SVG) because inline SVG cursors render unreliably
+   across browsers, Safari's in particular. */
+* {
+  cursor: url('../assets/cursors/artasimn.png') 3 2, auto;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -505,7 +516,7 @@ button { font-family: inherit; }
   gap: 6px;
   margin-top: 14px;
 }
-.product__dots span { width: 20px; height: 2px; background: #d6d6d6; cursor: pointer; }
+.product__dots span { width: 20px; height: 2px; background: #d6d6d6; }
 .product__dots span.is-active { background: #111; }
 
 /* title/price/one-size/accordion labels all share the same small
@@ -599,7 +610,6 @@ button { font-family: inherit; }
 .accordion__body-inner p { margin: 0 0 16px; white-space: pre-line; }
 .accordion__body-inner p:last-child { margin-bottom: 0; }
 
-.product__main { cursor: pointer; }
 
 /* ===========================================================
    LIGHTBOX — full-screen viewer for the product/sketch main image.
@@ -637,13 +647,11 @@ button { font-family: inherit; }
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  cursor: zoom-in;
   /* the global img{pointer-events:none} reset (keeps other browsers'
      built-in image-actions overlays from triggering) would otherwise
      also block the click/drag/pinch-to-zoom handlers below */
   pointer-events: auto;
 }
-.lightbox__frame.is-zoomed .lightbox__img { cursor: zoom-out; }
 
 .lightbox__nav {
   position: absolute;
@@ -653,7 +661,6 @@ button { font-family: inherit; }
   border: 0;
   padding: 10px;
   color: var(--font-a-color);
-  cursor: pointer;
 }
 .lightbox__nav:hover { opacity: .55; }
 .lightbox__nav--prev { left: 40px; }
