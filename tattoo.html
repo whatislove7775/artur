@@ -11,7 +11,9 @@
 
 <header class="header"></header>
 
-<main class="catalogue catalogue--top">
+<div class="hero-mobile" id="heroMobile"></div>
+
+<main class="catalogue" id="catalogue">
   <div class="grid-2" data-grid></div>
 </main>
 
@@ -24,6 +26,17 @@
 <script>
   mountHeader();
   mountFooter();
+
+  // mobile/tablet gets the same single-photo "section title" screen as
+  // a filtered category on index.html; desktop has no hero here (never
+  // did), so it keeps the old permanent header-clearance padding.
+  const tattooMenuEntry = MENU.find((m) => m.id === 'tattoo');
+  mountHeroMobile('', tattooMenuEntry.image, tattooMenuEntry.label.toLowerCase());
+  if (window.innerWidth <= 980) {
+    initHeroHeader();
+  } else {
+    document.getElementById('catalogue').classList.add('catalogue--top');
+  }
 
   const years = sketchYears();
   const grid = document.querySelector('[data-grid]');
