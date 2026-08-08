@@ -34,24 +34,26 @@
     // — the 4-tile grid has done its job, so it goes away. On mobile the
     // single-photo hero sticks around, now showing that category's own
     // tile photo with a small label instead of the wordmark, so there's
-    // still a "section title" screen before the catalogue grid. Desktop
-    // has no hero here at all — matches items.html: no photo to float
-    // over, permanently transparent, catalogue gets the header-clearance
-    // padding instead.
+    // still a "section title" screen before the catalogue grid.
+    // is-transparent is set unconditionally here (not just on desktop):
+    // on mobile, initHeroHeader's own scroll handling immediately
+    // overrides it with the real state anyway, so there's no window of
+    // wrong width-dependent behaviour to race against; on desktop
+    // there's no hero for initHeroHeader to touch it with at all, so it
+    // just sticks — permanently transparent, matching items.html.
+    // catalogue--top-desktop gives it the matching header-clearance
+    // padding there (a no-op on mobile, where the hero itself already
+    // pushes the catalogue down).
     document.getElementById('menuStrip').remove();
-    const menuEntry = MENU.find((m) => m.id === validCat);
+    const menuEntry = MENU.find((m) => m.id === validCat) || MENU[0];
     mountHeroMobile('', menuEntry.image, menuEntry.label.toLowerCase());
-    if (window.innerWidth <= 980) {
-      initHeroHeader();
-    } else {
-      document.getElementById('catalogue').classList.add('catalogue--top');
-      document.querySelector('.header').classList.add('is-transparent');
-    }
+    document.getElementById('catalogue').classList.add('catalogue--top-desktop');
+    document.querySelector('.header').classList.add('is-transparent');
   } else {
     mountMenuStrip('', validCat);
     mountHeroMobile('');
-    initHeroHeader();
   }
+  initHeroHeader();
 
   const items = validCat ? byCat(validCat) : PRODUCTS;
   renderCards('[data-grid]', items);

@@ -57,17 +57,28 @@ function initMobileMenuToggle() {
   }
 }
 
-/* index.html only. Two different heroes, two different scroll rules:
-   - desktop: the 4-photo .menu-strip. Header stays a solid white bar
-     while any part of it is still visible (it's a busy multi-photo
-     backdrop, needs the legibility), then goes transparent once fully
-     scrolled past (the catalogue below is plain white, so it doesn't
-     matter there).
-   - mobile/tablet (≤980px): the single full-bleed .hero-mobile photo.
-     Header goes transparent + white text/logo while still over the
-     photo (classic full-bleed-hero convention), then solid + black
-     again once scrolled onto the white catalogue. The centred wordmark
-     over the photo also fades out on the first bit of scroll. */
+/* Called on any page with a hero to float the header over — always
+   safe to call unconditionally, on every viewport width, it works out
+   the right rule itself on every scroll/resize instead of the caller
+   having to branch on window.innerWidth up front (that branch used to
+   live in each page's own script and only ran once at load, so it
+   could get stuck on a stale answer):
+   - desktop, .menu-strip present (index.html only): header stays a
+     solid white bar while any part of the 4-photo strip is still
+     visible (it's a busy multi-photo backdrop, needs the legibility),
+     then goes transparent once fully scrolled past.
+   - mobile/tablet (≤980px), .hero-mobile present: header goes
+     transparent + white text/logo while still over the single
+     full-bleed photo (classic full-bleed-hero convention), solid +
+     black again once scrolled onto the white catalogue below. Its
+     centred overlay (wordmark or a category's small label) also fades
+     out on the first bit of scroll.
+   - desktop, no .menu-strip but .hero-mobile exists (a filtered
+     category page, or tattoo.html): there's nothing to float over on
+     this viewport, so this function leaves the header alone — it's up
+     to the caller to decide the resting state there (index.html's
+     filtered branch wants permanently transparent, like items.html;
+     tattoo.html wants its old permanent solid bar, so it sets nothing). */
 function initHeroHeader() {
   const header = document.querySelector('.header');
   const strip = document.querySelector('.menu-strip');
