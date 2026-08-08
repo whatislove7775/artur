@@ -105,6 +105,17 @@
     openLightbox(item.images, currentIndex, item.title);
   });
 
+  // mobile: swipe or tap the left/right third to step through photos;
+  // a tap on the centre third opens the lightbox (the click handler
+  // above already covers mouse/desktop)
+  attachTouchImageNav(
+    document.querySelector('.product__main'),
+    item.images.length,
+    () => currentIndex,
+    (i) => setImage(i, item.images[i]),
+    () => openLightbox(item.images, currentIndex, item.title)
+  );
+
   initAccordions();
 
   document.querySelector('[data-add-to-card]').addEventListener('click', (e) => {

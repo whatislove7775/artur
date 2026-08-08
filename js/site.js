@@ -237,6 +237,82 @@ function cardMarkup(item, prefix) {
   </a>`;
 }
 
+/* Shared touch behaviour for any multi-image gallery on a small
+   screen: a horizontal swipe steps through the photos (a vertical
+   swipe is left alone so the page still scrolls normally); a plain
+   tap on the left or right third also steps through, same as the
+   arrows on a carousel; a tap on the centre third calls onCenterTap —
+   used to open the lightbox on the product page. Pass null there (as
+   the product cards do) to leave the centre third's default action
+   (the card's own link) alone. Used by attachScrub below and by
+   product.html's own main image. */
+function attachTouchImageNav(el, count, getCurrent, onShow, onCenterTap) {
+  if (count < 1) return;
+  let touchX = 0;
+  let touchY = 0;
+  let swiping = false;
+
+  el.addEventListener(
+    'touchstart',
+    (e) => {
+      const t = e.touches[0];
+      touchX = t.clientX;
+      touchY = t.clientY;
+      swiping = false;
+    },
+    { passive: true }
+  );
+
+  el.addEventListener(
+    'touchmove',
+    (e) => {
+      const t = e.touches[0];
+      const dx = t.clientX - touchX;
+      const dy = t.clientY - touchY;
+      if (!swiping && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        swiping = Math.abs(dx) > Math.abs(dy);
+      }
+      if (swiping) e.preventDefault();
+    },
+    { passive: false }
+  );
+
+  el.addEventListener(
+    'touchend',
+    (e) => {
+      const t = e.changedTouches[0];
+      if (swiping && count > 1) {
+        const dx = t.clientX - touchX;
+        const threshold = 24;
+        const current = getCurrent();
+        if (dx <= -threshold) onShow((current + 1) % count);
+        else if (dx >= threshold) onShow((current - 1 + count) % count);
+        e.preventDefault();
+        return;
+      }
+      if (count > 1) {
+        const rect = el.getBoundingClientRect();
+        const fraction = (t.clientX - rect.left) / rect.width;
+        if (fraction < 1 / 3) {
+          onShow((getCurrent() - 1 + count) % count);
+          e.preventDefault();
+          return;
+        }
+        if (fraction > 2 / 3) {
+          onShow((getCurrent() + 1) % count);
+          e.preventDefault();
+          return;
+        }
+      }
+      if (onCenterTap) {
+        onCenterTap();
+        e.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+}
+
 function attachScrub(cardEl) {
   const frame = cardEl.querySelector('.card__frame');
   const imgs = Array.from(frame.querySelectorAll('img'));
@@ -259,62 +335,10 @@ function attachScrub(cardEl) {
 
   frame.addEventListener('mouseleave', () => show(0));
 
-  /* touch: a horizontal swipe steps through the photos like the arrows
-     on a carousel; a vertical swipe is left alone so the page still
-     scrolls normally, and a plain tap still opens the product page. */
-  let touchX = 0;
-  let touchY = 0;
-  let swiping = false;
-  let suppressClick = false;
-
-  frame.addEventListener(
-    'touchstart',
-    (e) => {
-      const t = e.touches[0];
-      touchX = t.clientX;
-      touchY = t.clientY;
-      swiping = false;
-    },
-    { passive: true }
-  );
-
-  frame.addEventListener(
-    'touchmove',
-    (e) => {
-      const t = e.touches[0];
-      const dx = t.clientX - touchX;
-      const dy = t.clientY - touchY;
-      if (!swiping && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-        swiping = Math.abs(dx) > Math.abs(dy);
-      }
-      if (swiping) e.preventDefault();
-    },
-    { passive: false }
-  );
-
-  frame.addEventListener(
-    'touchend',
-    (e) => {
-      if (!swiping) return;
-      const t = e.changedTouches[0];
-      const dx = t.clientX - touchX;
-      const threshold = 24;
-      if (dx <= -threshold) {
-        show((current + 1) % imgs.length);
-      } else if (dx >= threshold) {
-        show((current - 1 + imgs.length) % imgs.length);
-      }
-      suppressClick = true;
-    },
-    { passive: true }
-  );
-
-  cardEl.addEventListener('click', (e) => {
-    if (suppressClick) {
-      e.preventDefault();
-      suppressClick = false;
-    }
-  });
+  /* mobile: swipe or tap the left/right third to step through photos;
+     a tap on the centre third is left alone, so the card's own link
+     still navigates to the product page normally */
+  attachTouchImageNav(frame, imgs.length, () => current, show, null);
 }
 
 /* Collapsible DESCRIPTION / DELIVERY sections on product & tattoo pages */
