@@ -280,7 +280,13 @@ button { font-family: inherit; }
 .hero-mobile__logo.is-hidden { opacity: 0; }
 
 /* category intro screens (garment/jewellery/tattoo) use a small plain
-   Helvetica label instead of the big wordmark */
+   Helvetica label instead of the big wordmark, and a slight dark veil
+   over the photo so it reads clearly */
+.hero-mobile__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .28);
+}
 .hero-mobile__label {
   position: absolute;
   inset: 0;
@@ -290,7 +296,6 @@ button { font-family: inherit; }
   color: #fff;
   font-size: var(--font-a-size);
   letter-spacing: .02em;
-  text-transform: lowercase;
   transition: opacity .3s ease;
 }
 .hero-mobile__label.is-hidden { opacity: 0; }
@@ -791,13 +796,25 @@ button { font-family: inherit; }
    =========================================================== */
 .footer {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  padding: 26px 28px;
+  gap: 40px;
+  padding: 24px 28px;
+  border-top: 1px solid var(--ink);
   font-size: var(--font-b-size);
   color: var(--font-b-color);
+  text-transform: uppercase;
 }
-.footer__links { display: flex; gap: 24px; }
+.footer__brand { flex: 0 0 auto; white-space: nowrap; }
+.footer__disclaimer { flex: 1 1 auto; max-width: 760px; margin: 0; line-height: 1.5; }
+.footer__links {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 24px;
+  text-align: right;
+}
 .footer__links a:hover { color: var(--ink); }
 
 /* ===========================================================
@@ -874,5 +891,13 @@ button { font-family: inherit; }
 }
 
 @media (max-width: 560px) {
-  .footer { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+  }
+  .footer__brand { order: 1; }
+  .footer__links { order: 2; justify-content: center; text-align: center; }
+  .footer__disclaimer { order: 3; max-width: 100%; }
 }

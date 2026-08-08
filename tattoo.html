@@ -32,7 +32,7 @@
   // did), so catalogue--top-desktop keeps its old permanent clearance
   // (a no-op on mobile, where the hero already pushes content down).
   const tattooMenuEntry = MENU.find((m) => m.id === 'tattoo') || MENU[0];
-  mountHeroMobile('', tattooMenuEntry.image, tattooMenuEntry.label.toLowerCase());
+  mountHeroMobile('', tattooMenuEntry.image, tattooMenuEntry.label);
   document.getElementById('catalogue').classList.add('catalogue--top-desktop');
   initHeroHeader();
 
