@@ -137,6 +137,141 @@ const SKETCHES = [
     image: 'assets/sketches/star-cross.png',
     descriptionRu: SKETCH_DESC_RU,
     descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'last-confession',
+    year: 2026,
+    date: '02 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/last-confession.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'midnight-psalm',
+    year: 2026,
+    date: '05 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/midnight-psalm.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'forgotten-oath',
+    year: 2025,
+    date: '03 2025',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/forgotten-oath.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'withered-crown',
+    year: 2025,
+    date: '09 2025',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/withered-crown.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'paper-moon',
+    year: 2024,
+    date: '01 2024',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/paper-moon.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'black-orchid',
+    year: 2024,
+    date: '08 2024',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/black-orchid.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'velvet-noose',
+    year: 2023,
+    date: '06 2023',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/velvet-noose.jpg',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'broken-rosary',
+    year: 2023,
+    date: '12 2023',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/broken-rosary.jpg',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'glass-heart',
+    year: 2022,
+    date: '02 2022',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/glass-heart.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'ash-and-bone',
+    year: 2022,
+    date: '10 2022',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/ash-and-bone.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'winter-vow',
+    year: 2021,
+    date: '11 2021',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/winter-vow.jpg',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'crooked-halo',
+    year: 2021,
+    date: '07 2021',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/crooked-halo.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'silent-thorn',
+    year: 2020,
+    date: '04 2020',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/silent-thorn.jpg',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'hollow-saint',
+    year: 2020,
+    date: '09 2020',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/hollow-saint.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'faded-serpent',
+    year: 2020,
+    date: '01 2020',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/faded-serpent.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
   }
 ];
 
