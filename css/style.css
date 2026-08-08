@@ -559,8 +559,10 @@ button { font-family: inherit; }
 
 .product__note { margin-top: 22px; }
 
-/* accordion: DESCRIPTION / DELIVERY */
-.accordion + .accordion { margin-top: 16px; }
+/* accordion: DESCRIPTION / DELIVERY — same top margin whether it's
+   the first one (below "one size"/the order links) or a second one
+   stacked below another accordion, so the spacing reads consistently */
+.accordion { margin-top: 16px; }
 .accordion__toggle {
   display: flex;
   align-items: center;
