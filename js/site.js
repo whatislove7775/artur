@@ -67,10 +67,12 @@ function initMobileMenuToggle() {
      solid white bar while any part of the 4-photo strip is still
      visible (it's a busy multi-photo backdrop, needs the legibility),
      then goes transparent once fully scrolled past.
-   - mobile/tablet (≤980px), .hero-mobile present: header goes
-     transparent + white text/logo while still over the single
-     full-bleed photo (classic full-bleed-hero convention), solid +
-     black again once scrolled onto the white catalogue below. Its
+   - mobile/tablet (≤980px), .hero-mobile present: solid white bar
+     only at rest, unscrolled (scrollY 0) — the moment any scrolling
+     happens it drops the white backdrop for good (never comes back,
+     even once scrolled well past the photo onto the catalogue), while
+     its text/logo colour keeps adapting to what's under it: white
+     while still over the photo, back to black once past it. Its
      centred overlay (wordmark or a category's small label) also fades
      out on the first bit of scroll.
    - desktop, no .menu-strip but .hero-mobile exists (a filtered
@@ -93,8 +95,9 @@ function initHeroHeader() {
     const overHero = target.getBoundingClientRect().bottom > 0;
 
     if (useHero) {
-      header.classList.toggle('is-transparent', overHero);
-      header.classList.toggle('is-inverted', overHero);
+      const scrolled = window.scrollY > 0;
+      header.classList.toggle('is-transparent', scrolled);
+      header.classList.toggle('is-inverted', scrolled && overHero);
       if (heroOverlay) heroOverlay.classList.toggle('is-hidden', window.scrollY > 40);
     } else {
       header.classList.toggle('is-transparent', !overHero);
