@@ -29,11 +29,15 @@
 
   // mobile/tablet gets the same single-photo "section title" screen as
   // a filtered category on index.html; desktop has no hero here (never
-  // did), so catalogue--top-desktop keeps its old permanent clearance
-  // (a no-op on mobile, where the hero already pushes content down).
+  // did), so it behaves like items.html: permanently transparent header,
+  // catalogue--top-desktop gives it the matching header-clearance
+  // padding (a no-op on mobile, where the hero already pushes content
+  // down, and initHeroHeader's own scroll handling overrides is-transparent
+  // there with the real state anyway).
   const tattooMenuEntry = MENU.find((m) => m.id === 'tattoo') || MENU[0];
   mountHeroMobile('', tattooMenuEntry.image, tattooMenuEntry.label);
   document.getElementById('catalogue').classList.add('catalogue--top-desktop');
+  document.querySelector('.header').classList.add('is-transparent');
   initHeroHeader();
 
   const years = sketchYears();
