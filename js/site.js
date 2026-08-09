@@ -92,7 +92,11 @@ function initHeroHeader() {
     const useHero = window.innerWidth <= 980 && hero;
     const target = useHero ? hero : strip;
     if (!target) return;
-    const overHero = target.getBoundingClientRect().bottom > 0;
+    // on mobile the hero and the menu-strip photo stack sit back to
+    // back as one continuous photo backdrop — stay in the "over photo"
+    // state until scrolled past both, not just the hero on its own
+    const photoEdge = useHero && strip ? strip : target;
+    const overHero = photoEdge.getBoundingClientRect().bottom > 0;
 
     if (useHero) {
       const scrolled = window.scrollY > 0;
@@ -158,7 +162,13 @@ function mountHeader(prefix) {
 
 function mountFooter() {
   const el = document.querySelector('.footer');
-  if (el) el.innerHTML = footerMarkup();
+  if (!el) return;
+  el.innerHTML = footerMarkup();
+  el.insertAdjacentHTML('beforebegin', '<a href="#" class="back-to-top" data-back-to-top>наверх</a>');
+  document.querySelector('[data-back-to-top]').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 /* Menu strip: 4 photos, dark veil, hover reveals, click filters or
@@ -188,28 +198,21 @@ function mountMenuStrip(prefix, activeId) {
   if (el) el.innerHTML = menuStripMarkup(prefix, activeId);
 }
 
-/* mobile/tablet-only replacement for the menu-strip. Two modes (see
-   initHeroHeader for the scroll-driven header/overlay fade behaviour):
-   - homepage (no label): assets/hero-mobile.png with the wordmark
-     centred over it.
-   - a category page (label given, e.g. from a MENU entry): that
-     category's own tile photo, with a small plain-text Helvetica
-     label instead of the big wordmark — a quick "section title"
-     screen before the catalogue grid underneath it. */
-function heroMobileMarkup(prefix, image, label) {
+/* mobile/tablet-only homepage banner: assets/hero-mobile.png with the
+   wordmark centred over it (see initHeroHeader for the scroll-driven
+   header/overlay fade behaviour). Category/tattoo pages used to get
+   their own full-screen intro photo here too; that's gone now, so
+   this only ever mounts on the homepage. */
+function heroMobileMarkup(prefix) {
   const p = prefix || '';
-  const src = image || 'assets/hero-mobile.png';
-  const overlay = label
-    ? `<div class="hero-mobile__veil"></div><div class="hero-mobile__label">${label}</div>`
-    : `<div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
   return `
-  <img class="hero-mobile__img" src="${p}${src}" alt="${label || 'Artasimn'}">
-  ${overlay}`;
+  <img class="hero-mobile__img" src="${p}assets/hero-mobile.png" alt="Artasimn">
+  <div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
 }
 
-function mountHeroMobile(prefix, image, label) {
+function mountHeroMobile(prefix) {
   const el = document.querySelector('.hero-mobile');
-  if (el) el.innerHTML = heroMobileMarkup(prefix, image, label);
+  if (el) el.innerHTML = heroMobileMarkup(prefix);
 }
 
 /* Product card — mouse position along the image scrubs through the

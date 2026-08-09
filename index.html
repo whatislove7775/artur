@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260809">
+<link rel="stylesheet" href="css/style.css?v=20260811">
 </head>
 <body>
 
@@ -14,14 +14,16 @@
 <nav class="menu-strip" id="menuStrip"></nav>
 <div class="hero-mobile" id="heroMobile"></div>
 
+<div class="catalogue__heading" id="catalogueHeading">recommended:</div>
+
 <main class="catalogue" id="catalogue">
   <div class="grid-2" data-grid></div>
 </main>
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260809"></script>
-<script src="js/site.js?v=20260809"></script>
+<script src="js/data.js?v=20260811"></script>
+<script src="js/site.js?v=20260811"></script>
 <script>
   const cat = new URLSearchParams(location.search).get('cat');
   const validCat = cat === 'jewellery' || cat === 'garment' ? cat : null;
@@ -31,23 +33,14 @@
 
   if (validCat) {
     // a category was picked from the photo-menu (or the items mega-menu)
-    // — the 4-tile grid has done its job, so it goes away. On mobile the
-    // single-photo hero sticks around, now showing that category's own
-    // tile photo with a small label instead of the wordmark, so there's
-    // still a "section title" screen before the catalogue grid.
-    // is-transparent is set unconditionally here (not just on desktop):
-    // on mobile, initHeroHeader's own scroll handling immediately
-    // overrides it with the real state anyway, so there's no window of
-    // wrong width-dependent behaviour to race against; on desktop
-    // there's no hero for initHeroHeader to touch it with at all, so it
-    // just sticks — permanently transparent, matching items.html.
-    // catalogue--top-desktop gives it the matching header-clearance
-    // padding there (a no-op on mobile, where the hero itself already
-    // pushes the catalogue down).
+    // — the 4-tile grid and the big mobile intro photo have both done
+    // their job, so they go away entirely; the page behaves exactly
+    // like items.html from here, permanently transparent header and no
+    // hero on any viewport width.
     document.getElementById('menuStrip').remove();
-    const menuEntry = MENU.find((m) => m.id === validCat) || MENU[0];
-    mountHeroMobile('', menuEntry.image, menuEntry.label);
-    document.getElementById('catalogue').classList.add('catalogue--top-desktop');
+    document.getElementById('heroMobile').remove();
+    document.getElementById('catalogueHeading').remove();
+    document.getElementById('catalogue').classList.add('catalogue--top');
     document.querySelector('.header').classList.add('is-transparent');
   } else {
     mountMenuStrip('', validCat);
