@@ -1023,7 +1023,9 @@ button { font-family: inherit; }
 
   .nav { display: none; }
 
-  /* full-screen menu overlay: "close" top-right, then a right-aligned
+  /* full-screen menu overlay: menu icon top-left (same icon as the
+     header's own toggle — it's the same data-menu-toggle button, just
+     closing instead of opening this time), then a left-aligned
      vertical stack of links below it */
   .mobile-menu {
     display: none;
@@ -1036,16 +1038,17 @@ button { font-family: inherit; }
   .header.nav-open .mobile-menu { display: flex; }
   .mobile-menu__bar {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding: 14px 18px;
   }
+  .mobile-menu__close-icon { width: 18px; height: auto; filter: brightness(0); }
   .mobile-menu__links {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: 26px;
     padding: 30px 24px;
-    /* same size as the "close" link above it, not an arbitrary bigger
+    /* same size as the icon button above it, not an arbitrary bigger
        size — the whole panel reads as one consistent button size */
     font-size: var(--font-a-size);
   }
