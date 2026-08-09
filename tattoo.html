@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260809">
+<link rel="stylesheet" href="css/style.css?v=20260811">
 </head>
 <body>
 
@@ -21,24 +21,18 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260809"></script>
-<script src="js/site.js?v=20260809"></script>
+<script src="js/data.js?v=20260811"></script>
+<script src="js/site.js?v=20260811"></script>
 <script>
   mountHeader();
   mountFooter();
 
-  // mobile/tablet gets the same single-photo "section title" screen as
-  // a filtered category on index.html; desktop has no hero here (never
-  // did), so it behaves like items.html: permanently transparent header,
-  // catalogue--top-desktop gives it the matching header-clearance
-  // padding (a no-op on mobile, where the hero already pushes content
-  // down, and initHeroHeader's own scroll handling overrides is-transparent
-  // there with the real state anyway).
-  const tattooMenuEntry = MENU.find((m) => m.id === 'tattoo') || MENU[0];
-  mountHeroMobile('', tattooMenuEntry.image, tattooMenuEntry.label);
-  document.getElementById('catalogue').classList.add('catalogue--top-desktop');
+  // behaves like items.html on every viewport: permanently transparent
+  // header, no hero/intro photo, catalogue--top gives it the header
+  // clearance padding on both desktop and mobile.
+  document.getElementById('heroMobile').remove();
+  document.getElementById('catalogue').classList.add('catalogue--top');
   document.querySelector('.header').classList.add('is-transparent');
-  initHeroHeader();
 
   const years = sketchYears();
   const grid = document.querySelector('[data-grid]');
