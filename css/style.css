@@ -244,8 +244,7 @@ button { font-family: inherit; }
 .menu-tile:nth-child(2) img { object-position: 28% 15%; }
 
 /* vignette: soft darkening hugging the edges only (see --vig-stops on
-   :root), sitting above the label too — hover lifts it, the label
-   itself stays visible regardless */
+   :root), sitting above the label too — hover lifts both */
 .menu-tile__veil {
   position: absolute;
   inset: 0;
@@ -259,6 +258,8 @@ button { font-family: inherit; }
     linear-gradient(to top, var(--vig-stops));
 }
 
+/* desktop: hover-revealed, like the veil lifting off it (see the
+   mobile breakpoint below for the always-on touch-device version) */
 .menu-tile__label {
   position: absolute;
   left: 18px;
@@ -267,13 +268,15 @@ button { font-family: inherit; }
   color: #fff;
   font-size: var(--font-b-size);
   letter-spacing: .01em;
-  opacity: 1;
+  opacity: 0;
   transition: opacity .35s ease;
 }
 
 .menu-tile:hover .menu-tile__veil { opacity: 0; }
+.menu-tile:hover .menu-tile__label { opacity: 1; }
 .menu-tile:hover img { transform: scale(1.06); }
 .menu-tile.is-active .menu-tile__veil { opacity: 0; }
+.menu-tile.is-active .menu-tile__label { opacity: 1; }
 
 /* ===========================================================
    HERO MOBILE — mobile/tablet-only replacement for the menu-strip,
@@ -911,16 +914,14 @@ button { font-family: inherit; }
 .catalogue__heading { display: none; }
 
 /* fixed corner "scroll to top" button, mobile and desktop alike (see
-   mountBackToTop in site.js) — hidden until scrolled past the top
-   photo section, then fades in and stays pinned in place */
+   mountBackToTop in site.js) — pinned to the viewport's own corner
+   (not the page/site bottom), hidden until scrolled past the top
+   photo section, then fades in. Plain text, no background/border. */
 .back-to-top {
   position: fixed;
   right: 24px;
   bottom: 24px;
   z-index: 450;
-  padding: 10px 16px;
-  background: #fff;
-  border: 1px solid #eee;
   font-size: var(--font-b-size);
   color: var(--font-b-color);
   text-transform: uppercase;
@@ -980,16 +981,6 @@ button { font-family: inherit; }
     color: var(--font-a-color);
     padding: 34px 0 0;
   }
-
-  .back-to-top {
-    display: block;
-    text-align: right;
-    padding: 20px 30px 0;
-    font-size: var(--font-b-size);
-    color: var(--font-b-color);
-    text-transform: uppercase;
-  }
-  .back-to-top:hover { color: var(--ink); }
 
   .grid-2 { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 40px; }
   /* the header-clearance margin only made sense for the old single
