@@ -499,9 +499,9 @@ function mountCartDrawer(prefix) {
       </div>
       <div class="cart-drawer__delivery">
         <div class="cart-drawer__delivery-title">delivery:</div>
-        <label class="cart-drawer__check"><input type="checkbox">по москве (в пределах мкад)</label>
-        <label class="cart-drawer__check"><input type="checkbox">по россии + мск (за мкад)</label>
-        <label class="cart-drawer__check"><input type="checkbox">worldwide</label>
+        <label class="cart-drawer__check"><input type="radio" name="cart-delivery">по москве (в пределах мкад)</label>
+        <label class="cart-drawer__check"><input type="radio" name="cart-delivery">по россии + мск (за мкад)</label>
+        <label class="cart-drawer__check"><input type="radio" name="cart-delivery">worldwide</label>
       </div>
       <div class="cart-drawer__agree">
         <label class="cart-drawer__check"><input type="checkbox">я согласен на обработку персональных данных</label>

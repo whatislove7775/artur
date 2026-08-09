@@ -736,6 +736,7 @@ button { font-family: inherit; }
   z-index: 700;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: 0 30px;
   transform: translateX(100%);
   transition: transform .3s ease;
@@ -744,6 +745,7 @@ button { font-family: inherit; }
 
 /* lines up with the header nav buttons on the Y axis */
 .cart-drawer__bar {
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -753,7 +755,10 @@ button { font-family: inherit; }
 }
 .cart-drawer__bar a:hover { opacity: .55; }
 
-.cart-drawer__rows { flex: 1 1 auto; overflow-y: auto; margin-top: 30px; }
+/* min-height:0 lets this flex item actually shrink below its content
+   size, which is what makes overflow-y:auto scroll only this list
+   instead of the whole drawer overflowing the viewport */
+.cart-drawer__rows { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin-top: 30px; }
 .cart-drawer__empty { color: var(--font-b-color); font-size: var(--font-b-size); }
 
 .cart-drawer__row {
@@ -808,7 +813,7 @@ button { font-family: inherit; }
 .cart-drawer.is-checkout [data-cart-count] { display: none; }
 .cart-drawer.is-checkout .cart-drawer__title { display: inline; }
 
-.cart-drawer__checkout { display: none; margin-top: 20px; padding-bottom: 10px; }
+.cart-drawer__checkout { flex: 0 0 auto; display: none; margin-top: 20px; padding-bottom: 10px; }
 .cart-drawer.is-checkout .cart-drawer__checkout { display: block; }
 
 .cart-drawer__fields { display: flex; flex-direction: column; gap: 16px; }
@@ -858,6 +863,7 @@ button { font-family: inherit; }
 }
 
 .cart-drawer__foot {
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
