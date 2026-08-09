@@ -474,12 +474,47 @@ function mountCartDrawer(prefix) {
   el.innerHTML = `
     <div class="cart-drawer__bar">
       <span data-cart-count></span>
+      <span class="cart-drawer__title" data-cart-title>your order:</span>
       <a href="#" data-cart-close>close</a>
     </div>
     <div class="cart-drawer__rows" data-cart-rows></div>
+    <div class="cart-drawer__checkout" data-cart-checkout>
+      <div class="cart-drawer__fields">
+        <label class="cart-drawer__field">
+          <span>full name</span>
+          <input type="text" placeholder="Ivanov Ivan Ivanovich">
+        </label>
+        <label class="cart-drawer__field">
+          <span>phone</span>
+          <input type="text" placeholder="+1 000 00 00 000">
+        </label>
+        <label class="cart-drawer__field">
+          <span>e-mail</span>
+          <input type="text" placeholder="example@mail.ru">
+        </label>
+        <label class="cart-drawer__field">
+          <span>adress</span>
+          <input type="text" placeholder="full adress, zip-code">
+        </label>
+      </div>
+      <div class="cart-drawer__delivery">
+        <div class="cart-drawer__delivery-title">delivery:</div>
+        <label class="cart-drawer__check"><input type="checkbox">по москве (в пределах мкад)</label>
+        <label class="cart-drawer__check"><input type="checkbox">по россии + мск (за мкад)</label>
+        <label class="cart-drawer__check"><input type="checkbox">worldwide</label>
+      </div>
+      <div class="cart-drawer__agree">
+        <label class="cart-drawer__check"><input type="checkbox">я согласен на обработку персональных данных</label>
+        <div class="cart-drawer__promo">
+          <span>promo code:</span>
+          <input type="text">
+        </div>
+      </div>
+    </div>
     <div class="cart-drawer__foot">
       <span data-cart-total></span>
-      <a href="${p}checkout.html" class="cart-drawer__order">order</a>
+      <a href="#" class="cart-drawer__order" data-cart-order>order</a>
+      <a href="#" class="cart-drawer__buy" data-cart-buy>submit order/buy</a>
     </div>`;
   document.body.appendChild(el);
 
@@ -492,6 +527,13 @@ function mountCartDrawer(prefix) {
   el.querySelector('[data-cart-close]').addEventListener('click', (e) => {
     e.preventDefault();
     closeCartDrawer();
+  });
+  el.querySelector('[data-cart-order]').addEventListener('click', (e) => {
+    e.preventDefault();
+    el.classList.add('is-checkout');
+  });
+  el.querySelector('[data-cart-buy]').addEventListener('click', (e) => {
+    e.preventDefault();
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeCartDrawer();
@@ -507,7 +549,7 @@ function openCartDrawer() {
 
 function closeCartDrawer() {
   const el = document.querySelector('.cart-drawer');
-  if (el) el.classList.remove('is-open');
+  if (el) el.classList.remove('is-open', 'is-checkout');
 }
 
 function renderCartDrawer(prefix) {
