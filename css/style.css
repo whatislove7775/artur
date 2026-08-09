@@ -123,6 +123,21 @@ button { font-family: inherit; }
 
 .header__menu-toggle { display: none; }
 
+/* mobile-only cart/menu icons: the source SVGs are baked solid white,
+   so brightness(0) forces them to render black by default (matching
+   the header's normal ink text) — over a photo backdrop, is-inverted
+   drops that filter and they show as the white they already are */
+.header__menu-toggle-icon,
+.header__cart-icon {
+  filter: brightness(0);
+}
+.header.is-inverted .header__menu-toggle-icon,
+.header.is-inverted .header__cart-icon {
+  filter: none;
+}
+.header__menu-toggle-icon { width: 18px; height: auto; }
+.header__cart-icon { width: 20px; height: auto; display: none; }
+
 /* a direct DOM child of .header for positioning, but always has its
    own white background — must never inherit is-inverted's white text
    on top of that */
@@ -885,10 +900,30 @@ button { font-family: inherit; }
    below */
 .catalogue__heading { display: none; }
 
-/* mobile/tablet-only "scroll to top" link, planted right before the
-   footer (see mountFooter in site.js) — same size/colour/case as the
-   footer text so it reads as part of that same chrome */
-.back-to-top { display: none; }
+/* fixed corner "scroll to top" button, mobile and desktop alike (see
+   mountBackToTop in site.js) — hidden until scrolled past the top
+   photo section, then fades in and stays pinned in place */
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 450;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #eee;
+  font-size: var(--font-b-size);
+  color: var(--font-b-color);
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.back-to-top.is-visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { color: var(--ink); }
+
+@media (max-width: 980px) {
+  .back-to-top { right: 18px; bottom: 18px; }
+}
 
 /* ===========================================================
    RESPONSIVE
@@ -968,20 +1003,23 @@ button { font-family: inherit; }
   .product-page { padding: 90px 24px 90px; }
   .product { grid-template-columns: 1fr; gap: 40px; }
 
-  /* compact single-row header: small emblem left, card + menu right.
-     the desktop nav row (items/tattoo/a.dept) is hidden — "menu" opens
-     the full-screen overlay panel below instead. Stays position:fixed
-     (inherited from the base rule) so the solid/transparent backdrop
-     mechanic behaves the same as on desktop. */
-  .header {
-    grid-template-columns: auto 1fr auto;
-    padding: 14px 18px;
-  }
+  /* compact single-row header: menu icon left, logo centred, cart icon
+     right — same 1fr auto 1fr split as desktop (inherited from the
+     base rule) so the logo lands dead centre regardless of how wide
+     the icons on either side are. The desktop nav row (items/tattoo/
+     a.dept) is hidden — the menu icon opens the full-screen overlay
+     panel below instead. Stays position:fixed (inherited from the
+     base rule) so the solid/transparent backdrop mechanic behaves the
+     same as on desktop. */
+  .header { padding: 14px 18px; }
   .header__logo-full { display: none; }
   .header__logo-mobile { display: block; height: 20px; width: auto; }
+  .header__logo { justify-self: center; }
+  .header__menu-toggle { display: flex; align-items: center; justify-self: start; }
   .header__tattoo-office { display: none; }
-  .header__menu-toggle { display: inline; }
-  .header__right { gap: 20px; justify-self: end; }
+  .header__cart-text { display: none; }
+  .header__cart-icon { display: block; }
+  .header__right { justify-self: end; }
 
   .nav { display: none; }
 

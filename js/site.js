@@ -3,6 +3,9 @@
 function headerMarkup(prefix) {
   const p = prefix || '';
   return `
+  <a href="#" class="header__menu-toggle" data-menu-toggle>
+    <img class="header__menu-toggle-icon" src="${p}assets/icons/menu-mobile.svg" alt="menu">
+  </a>
   <a class="header__logo" href="${p}index.html">
     <img class="header__logo-full" src="${p}assets/logo.svg" alt="Artasimn">
     <img class="header__logo-mobile" src="${p}assets/logo-mobile.svg" alt="Artasimn">
@@ -21,8 +24,10 @@ function headerMarkup(prefix) {
   <div class="header__spacer"></div>
   <div class="header__right">
     <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#" data-cart-open>cart</a>
-    <a href="#" class="header__menu-toggle" data-menu-toggle>menu</a>
+    <a class="header__cart" href="#" data-cart-open>
+      <span class="header__cart-text">cart</span>
+      <img class="header__cart-icon" src="${p}assets/icons/cart-mobile.svg" alt="cart">
+    </a>
   </div>
   <div class="mobile-menu">
     <div class="mobile-menu__bar">
@@ -158,14 +163,52 @@ function mountHeader(prefix) {
   initItemsMenu();
   initMobileMenuToggle();
   mountCartDrawer(prefix);
+  mountBackToTop();
 }
 
 function mountFooter() {
   const el = document.querySelector('.footer');
-  if (!el) return;
-  el.innerHTML = footerMarkup();
-  el.insertAdjacentHTML('beforebegin', '<a href="#" class="back-to-top" data-back-to-top>наверх</a>');
-  document.querySelector('[data-back-to-top]').addEventListener('click', (e) => {
+  if (el) el.innerHTML = footerMarkup();
+}
+
+/* Fixed corner "back to top" button, mobile and desktop alike — hidden
+   at rest, fades in once scrolled past the top photo section (the
+   hero/menu-strip on index.html; on pages with neither, past one
+   viewport height instead). Mounted once per page alongside the
+   header rather than per-page markup, since every page wants it. */
+function mountBackToTop() {
+  if (document.querySelector('.back-to-top')) return;
+  const btn = document.createElement('a');
+  btn.href = '#';
+  btn.className = 'back-to-top';
+  btn.textContent = 'наверх';
+  document.body.appendChild(btn);
+
+  const update = () => {
+    // re-queried on every call (not captured once) since index.html and
+    // tattoo.html remove their hero/menu-strip from the DOM after this
+    // mounts, for a filtered category or the tattoo catalogue
+    const strip = document.querySelector('.menu-strip');
+    const hero = document.querySelector('.hero-mobile');
+    let passed;
+    if (hero || strip) {
+      const useHero = window.innerWidth <= 980 && hero;
+      const target = useHero && strip ? strip : useHero ? hero : strip;
+      passed = target.getBoundingClientRect().bottom <= 0;
+    } else {
+      passed = window.scrollY > window.innerHeight * 0.6;
+    }
+    btn.classList.toggle('is-visible', passed);
+  };
+  // deferred: mountHeader (and this along with it) runs before the
+  // page's own script fills in the menu-strip/hero content, so an
+  // immediate call would measure them empty (0 height) and show the
+  // button right at the top of the page
+  requestAnimationFrame(update);
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+
+  btn.addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
