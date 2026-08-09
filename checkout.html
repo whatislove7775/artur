@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn — Checkout</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=20260809">
+</head>
+<body>
+
+<div class="checkout">
+  <div class="checkout__visual">
+    <div class="checkout__bar">
+      <a class="checkout__logo" href="index.html">
+        <img src="assets/logo.svg" alt="Artasimn">
+      </a>
+      <nav class="checkout__nav">
+        <a href="items.html">items:</a>
+        <a href="index.html?cat=garment">garment</a>
+        <a href="index.html?cat=jewellery">jewellery</a>
+      </nav>
+    </div>
+    <div class="checkout__photos">
+      <img src="assets/menu/jewellery.png" alt="">
+      <img src="assets/menu/garment.png" alt="">
+      <img src="assets/menu/tattoo.png" alt="">
+    </div>
+  </div>
+
+  <div class="checkout__panel">
+    <div class="checkout__panel-bar">
+      <span>your order:</span>
+      <a href="#" data-checkout-close>close</a>
+    </div>
+
+    <div class="checkout__rows" data-checkout-rows></div>
+
+    <div class="checkout__fields">
+      <label class="checkout__field">
+        <span>full name</span>
+        <input type="text" placeholder="Ivanov Ivan Ivanovich">
+      </label>
+      <label class="checkout__field">
+        <span>phone</span>
+        <input type="text" placeholder="+1 000 00 00 000">
+      </label>
+      <label class="checkout__field">
+        <span>e-mail</span>
+        <input type="text" placeholder="example@mail.ru">
+      </label>
+      <label class="checkout__field">
+        <span>adress</span>
+        <input type="text" placeholder="full adress, zip-code">
+      </label>
+    </div>
+
+    <div class="checkout__delivery">
+      <div class="checkout__delivery-title">delivery:</div>
+      <label class="checkout__check"><input type="checkbox">по москве (в пределах мкад)</label>
+      <label class="checkout__check"><input type="checkbox">по россии + мск (за мкад)</label>
+      <label class="checkout__check"><input type="checkbox">worldwide</label>
+    </div>
+
+    <div class="checkout__agree">
+      <label class="checkout__check"><input type="checkbox">я согласен на обработку персональных данных</label>
+      <div class="checkout__promo">
+        <span>promo code:</span>
+        <input type="text">
+      </div>
+    </div>
+
+    <div class="checkout__submit">
+      <span data-checkout-total>total: 0 rub</span>
+      <a href="#" class="checkout__buy">submit order/buy</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js?v=20260809"></script>
+<script src="js/site.js?v=20260809"></script>
+<script>
+  function renderCheckout() {
+    const cart = getCart();
+    const rowsEl = document.querySelector('[data-checkout-rows]');
+    const totalEl = document.querySelector('[data-checkout-total]');
+
+    if (!cart.length) {
+      rowsEl.innerHTML = '<div class="checkout__empty">cart is empty</div>';
+      totalEl.textContent = 'total: 0 rub';
+      return;
+    }
+
+    let total = 0;
+    rowsEl.innerHTML = cart
+      .map((row) => {
+        const item = PRODUCTS.find((i) => i.id === row.id);
+        if (!item) return '';
+        const lineTotal = parsePrice(item.price) * row.qty;
+        total += lineTotal;
+        return `
+        <div class="checkout__row" data-checkout-row="${item.id}">
+          <img src="${item.images[0]}" alt="${item.title}">
+          <div class="checkout__row-info">
+            <div class="checkout__row-title">${item.title}</div>
+            <div class="checkout__row-price">${item.price}</div>
+          </div>
+          <div class="checkout__qty">
+            <button type="button" data-qty-dec>&ndash;</button>
+            <span>${row.qty}</span>
+            <button type="button" data-qty-inc>+</button>
+          </div>
+          <button type="button" class="checkout__remove" data-qty-remove>&times;</button>
+        </div>`;
+      })
+      .join('');
+    totalEl.textContent = `total: ${formatRub(total)} rub`;
+
+    rowsEl.querySelectorAll('[data-checkout-row]').forEach((rowEl) => {
+      const id = rowEl.dataset.checkoutRow;
+      const cur = cart.find((r) => r.id === id).qty;
+      rowEl.querySelector('[data-qty-inc]').addEventListener('click', () => {
+        setCartQty(id, cur + 1);
+        renderCheckout();
+      });
+      rowEl.querySelector('[data-qty-dec]').addEventListener('click', () => {
+        setCartQty(id, cur - 1);
+        renderCheckout();
+      });
+      rowEl.querySelector('[data-qty-remove]').addEventListener('click', () => {
+        removeFromCart(id);
+        renderCheckout();
+      });
+    });
+  }
+
+  renderCheckout();
+
+  document.querySelector('[data-checkout-close]').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (document.referrer) history.back();
+    else location.href = 'index.html';
+  });
+
+  document.querySelector('.checkout__buy').addEventListener('click', (e) => {
+    e.preventDefault();
+  });
+</script>
+</body>
+</html>

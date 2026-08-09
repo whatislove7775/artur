@@ -479,7 +479,7 @@ function mountCartDrawer(prefix) {
     <div class="cart-drawer__rows" data-cart-rows></div>
     <div class="cart-drawer__foot">
       <span data-cart-total></span>
-      <a href="#" class="cart-drawer__order">order</a>
+      <a href="${p}checkout.html" class="cart-drawer__order">order</a>
     </div>`;
   document.body.appendChild(el);
 
