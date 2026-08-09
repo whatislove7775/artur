@@ -31,7 +31,9 @@ function headerMarkup(prefix) {
   </div>
   <div class="mobile-menu">
     <div class="mobile-menu__bar">
-      <a href="#" class="mobile-menu__close" data-menu-toggle>close</a>
+      <a href="#" class="mobile-menu__close" data-menu-toggle>
+        <img class="mobile-menu__close-icon" src="${p}assets/icons/menu-mobile.svg" alt="close">
+      </a>
     </div>
     <nav class="mobile-menu__links">
       <a href="${p}index.html?cat=garment">garment</a>
