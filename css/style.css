@@ -15,6 +15,22 @@
   --font-a-color: #111;
   --font-b-size: 12px;
   --font-b-color: #888;
+
+  /* shared photo-edge vignette — darkening as a function of distance
+     from the element's own border, in real pixels so the falloff is
+     the same width on a short edge and a tall one (not a % of the
+     element's own size). Used on both the menu-strip tiles and the
+     mobile hero photo so they read as the same treatment. */
+  --vig-stops:
+    rgba(0, 0, 0, 1) 0px,
+    rgba(0, 0, 0, .95) 5px,
+    rgba(0, 0, 0, .75) 15px,
+    rgba(0, 0, 0, .55) 30px,
+    rgba(0, 0, 0, .38) 50px,
+    rgba(0, 0, 0, .26) 80px,
+    rgba(0, 0, 0, .18) 120px,
+    rgba(0, 0, 0, .12) 170px,
+    rgba(0, 0, 0, .12) 100%;
 }
 
 * { box-sizing: border-box; }
@@ -227,34 +243,15 @@ button { font-family: inherit; }
    window up and left to match the reference framing */
 .menu-tile:nth-child(2) img { object-position: 28% 15%; }
 
-/* vignette: soft, heavily-blurred darkening hugging the edges only,
-   sitting above the label too — hover lifts it off both */
+/* vignette: soft darkening hugging the edges only (see --vig-stops on
+   :root), sitting above the label too — hover lifts it, the label
+   itself stays visible regardless */
 .menu-tile__veil {
   position: absolute;
   inset: 0;
   opacity: 1;
   z-index: 1;
   transition: opacity .35s ease;
-  /* darkening is a function of distance from the tile's own border, in
-     real pixels — 100% right at the true edge (needed so neighbouring
-     tiles still merge into one seamless black seam), then eased down
-     over more, closer-spaced stops than before for a smoother-reading
-     fade, out to a near-clear 5% by ~120px. Pixel stops (not %) so the
-     falloff is the same width on a short edge and a tall one. One
-     linear gradient per edge, stacked: corners (near two borders at
-     once) run darker than a single edge, which is also what keeps the
-     seam seamless — tuned so that corner still sits around ~60% by
-     the time it reaches the menu-tile__label text, dimmed, not hidden. */
-  --vig-stops:
-    rgba(0, 0, 0, 1) 0px,
-    rgba(0, 0, 0, .9) 3px,
-    rgba(0, 0, 0, .6) 10px,
-    rgba(0, 0, 0, .38) 20px,
-    rgba(0, 0, 0, .2) 35px,
-    rgba(0, 0, 0, .12) 55px,
-    rgba(0, 0, 0, .07) 85px,
-    rgba(0, 0, 0, .05) 120px,
-    rgba(0, 0, 0, .05) 100%;
   background:
     linear-gradient(to right, var(--vig-stops)),
     linear-gradient(to left, var(--vig-stops)),
@@ -266,18 +263,17 @@ button { font-family: inherit; }
   position: absolute;
   left: 18px;
   bottom: 16px;
+  z-index: 2;
   color: #fff;
   font-size: var(--font-b-size);
   letter-spacing: .01em;
-  opacity: 0;
+  opacity: 1;
   transition: opacity .35s ease;
 }
 
 .menu-tile:hover .menu-tile__veil { opacity: 0; }
-.menu-tile:hover .menu-tile__label { opacity: 1; }
 .menu-tile:hover img { transform: scale(1.06); }
 .menu-tile.is-active .menu-tile__veil { opacity: 0; }
-.menu-tile.is-active .menu-tile__label { opacity: 1; }
 
 /* ===========================================================
    HERO MOBILE — mobile/tablet-only replacement for the menu-strip,
@@ -307,9 +303,23 @@ button { font-family: inherit; }
   height: 100%;
   object-fit: cover;
 }
+/* same edge vignette as the menu-strip tiles (--vig-stops on :root),
+   as a pseudo-element so it doesn't need its own markup */
+.hero-mobile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to right, var(--vig-stops)),
+    linear-gradient(to left, var(--vig-stops)),
+    linear-gradient(to bottom, var(--vig-stops)),
+    linear-gradient(to top, var(--vig-stops));
+}
 .hero-mobile__logo {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1023,9 +1033,7 @@ button { font-family: inherit; }
 
   .nav { display: none; }
 
-  /* full-screen menu overlay: menu icon top-left (same icon as the
-     header's own toggle — it's the same data-menu-toggle button, just
-     closing instead of opening this time), then a left-aligned
+  /* full-screen menu overlay: "close" top-left, then a left-aligned
      vertical stack of links below it */
   .mobile-menu {
     display: none;
@@ -1041,7 +1049,6 @@ button { font-family: inherit; }
     justify-content: flex-start;
     padding: 14px 18px;
   }
-  .mobile-menu__close-icon { width: 18px; height: auto; filter: brightness(0); }
   .mobile-menu__links {
     display: flex;
     flex-direction: column;
