@@ -124,7 +124,7 @@ function footerMarkup() {
   <p class="footer__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
   <div class="footer__links">
     <a href="#">ОФЕРТА</a>
-    <a href="#">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a>
+    <a href="privacy.html">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a>
     <a href="#">ИНФО</a>
   </div>`;
 }
@@ -565,7 +565,7 @@ function mountCartDrawer(prefix) {
         </div>
         <label class="cart-drawer__check">
           <input type="checkbox">
-          <span>я согласен на <a href="#" class="cart-drawer__policy-link" data-policy-link>обработку персональных данных</a></span>
+          <span>я согласен на <a href="${p}privacy.html" class="cart-drawer__policy-link" data-policy-link>обработку персональных данных</a></span>
         </label>
       </div>
     </div>
@@ -599,9 +599,13 @@ function mountCartDrawer(prefix) {
 
   // preventDefault here also stops the surrounding <label>'s own
   // click handling from toggling the checkbox — without it, clicking
-  // the link would silently check the box too
+  // the link would silently check the box too. That means the
+  // default navigation is blocked along with it, so this opens the
+  // policy page itself, in a new tab so the in-progress order isn't
+  // lost.
   el.querySelector('[data-policy-link]').addEventListener('click', (e) => {
     e.preventDefault();
+    window.open(e.currentTarget.href, '_blank', 'noopener');
   });
 
   // the sample values are placeholder text, not real defaults — clear
