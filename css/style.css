@@ -1034,6 +1034,16 @@ button { font-family: inherit; }
   .sketch-card__caption {
     font-size: 13px;
   }
+  /* long product names wrap onto a second line (see white-space:
+     normal below) — reserving room for two lines up front, instead
+     of only as tall as each title actually needs, keeps every card's
+     image/price rhythm lined up with its row neighbours regardless of
+     which one has the longer name, so a long name never staggers the
+     grid or scrolls further into the header than a short one does */
+  .card__title {
+    line-height: 14px;
+    min-height: 28px;
+  }
   .product-page { padding: 90px 24px 90px; }
   .product { grid-template-columns: 1fr; gap: 40px; }
 
