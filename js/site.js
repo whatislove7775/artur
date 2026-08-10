@@ -563,7 +563,10 @@ function mountCartDrawer(prefix) {
           <span>promo code:</span>
           <input type="text">
         </div>
-        <label class="cart-drawer__check"><input type="checkbox">я согласен на обработку персональных данных</label>
+        <label class="cart-drawer__check">
+          <input type="checkbox">
+          <span>я согласен на <a href="#" class="cart-drawer__policy-link" data-policy-link>обработку персональных данных</a></span>
+        </label>
       </div>
     </div>
     <div class="cart-drawer__foot">
@@ -592,6 +595,26 @@ function mountCartDrawer(prefix) {
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeCartDrawer();
+  });
+
+  // preventDefault here also stops the surrounding <label>'s own
+  // click handling from toggling the checkbox — without it, clicking
+  // the link would silently check the box too
+  el.querySelector('[data-policy-link]').addEventListener('click', (e) => {
+    e.preventDefault();
+  });
+
+  // the sample values are placeholder text, not real defaults — clear
+  // as soon as the field is focused instead of waiting for the first
+  // keystroke, so nothing has to be typed over/deleted first
+  el.querySelectorAll('.cart-drawer__field input[placeholder]').forEach((input) => {
+    const sample = input.placeholder;
+    input.addEventListener('focus', () => {
+      input.placeholder = '';
+    });
+    input.addEventListener('blur', () => {
+      if (!input.value) input.placeholder = sample;
+    });
   });
 
   renderCartDrawer(p);
