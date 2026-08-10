@@ -406,7 +406,11 @@ button { font-family: inherit; }
      assuming the desktop horizontal-text height), just rotated —
      narrow phones don't have the spare width for a horizontal list */
   .year-rail__item {
-    right: 14px;
+    /* pulled in tighter to the true edge, and narrower (line-height
+       is this column's width in vertical-rl), so it clears the
+       catalogue's 30px card padding instead of overlapping it */
+    right: 2px;
+    line-height: 22px;
     writing-mode: vertical-rl;
   }
 }
@@ -868,6 +872,7 @@ button { font-family: inherit; }
   margin-bottom: 10px;
 }
 .cart-drawer__check input { width: 16px; height: 16px; flex: 0 0 auto; accent-color: var(--ink); }
+.cart-drawer__policy-link { color: inherit; text-decoration: underline; }
 
 .cart-drawer__agree { margin-top: 24px; }
 /* promo code sits above the agreement checkbox now, so the top gap
@@ -890,6 +895,12 @@ button { font-family: inherit; }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* pinned to the bottom of the drawer when the content above it is
+     short (auto margin absorbs the leftover space in the flex
+     column); once the content is tall enough to need scrolling, the
+     margin has nothing left to absorb and this just scrolls with
+     everything else instead of overlapping it */
+  margin-top: auto;
   padding: 20px 0;
   font-size: var(--font-a-size);
   color: var(--font-a-color);
