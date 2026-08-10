@@ -401,7 +401,14 @@ button { font-family: inherit; }
 .year-rail__item.is-current { color: var(--ink); }
 
 @media (max-width: 980px) {
-  .year-rail { display: none; }
+  /* same docking behaviour as desktop (see initYearScrollspy in
+     site.js, which measures each item's own rendered size rather than
+     assuming the desktop horizontal-text height), just rotated —
+     narrow phones don't have the spare width for a horizontal list */
+  .year-rail__item {
+    right: 14px;
+    writing-mode: vertical-rl;
+  }
 }
 
 /* ===========================================================
@@ -863,7 +870,11 @@ button { font-family: inherit; }
 .cart-drawer__check input { width: 16px; height: 16px; flex: 0 0 auto; accent-color: var(--ink); }
 
 .cart-drawer__agree { margin-top: 24px; }
-.cart-drawer__promo { display: flex; align-items: baseline; gap: 10px; margin-top: 16px; font-size: var(--font-a-size); color: var(--font-a-color); }
+/* promo code sits above the agreement checkbox now, so the top gap
+   comes from .cart-drawer__agree's own margin instead, and the
+   checkbox gets a matching gap from the promo row above it */
+.cart-drawer__agree .cart-drawer__check { margin-top: 16px; }
+.cart-drawer__promo { display: flex; align-items: baseline; gap: 10px; font-size: var(--font-a-size); color: var(--font-a-color); }
 .cart-drawer__promo input {
   flex: 1 1 auto;
   min-width: 0;

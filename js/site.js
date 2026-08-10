@@ -420,13 +420,21 @@ function initYearScrollspy(years) {
   const markers = years.map((y) => document.querySelector(`[data-year-marker="${y}"]`));
   if (!items.length || markers.some((m) => !m)) return;
 
-  const headerH = 58;
-  const dockGap = 26;
-  const restGap = 26;
+  const header = document.querySelector('.header');
   const restBottomMargin = 40;
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
   const update = () => {
+    // measured live, not hardcoded: the header's own height differs
+    // between the desktop and mobile layouts, and an item's rendered
+    // size differs between desktop's horizontal text and mobile's
+    // vertical (writing-mode: vertical-rl) text — a fixed gap tuned
+    // for one would either leave a gap or overlap items in the other
+    const headerH = header ? header.getBoundingClientRect().height : 58;
+    const itemSize = items[0].getBoundingClientRect().height || 26;
+    const dockGap = itemSize + 10;
+    const restGap = dockGap;
+
     const scrollY = window.scrollY;
     const pageBottom = document.body.scrollHeight;
     const restBase = window.innerHeight - restBottomMargin;
@@ -456,6 +464,7 @@ function initYearScrollspy(years) {
   // of the fixed header
   items.forEach((item, i) => {
     item.addEventListener('click', () => {
+      const headerH = header ? header.getBoundingClientRect().height : 58;
       const targetY = markers[i].getBoundingClientRect().top + window.scrollY - headerH - 10;
       window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
     });
@@ -550,11 +559,11 @@ function mountCartDrawer(prefix) {
         <label class="cart-drawer__check"><input type="checkbox">worldwide</label>
       </div>
       <div class="cart-drawer__agree">
-        <label class="cart-drawer__check"><input type="checkbox">я согласен на обработку персональных данных</label>
         <div class="cart-drawer__promo">
           <span>promo code:</span>
           <input type="text">
         </div>
+        <label class="cart-drawer__check"><input type="checkbox">я согласен на обработку персональных данных</label>
       </div>
     </div>
     <div class="cart-drawer__foot">
