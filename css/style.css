@@ -1074,15 +1074,23 @@ button { font-family: inherit; }
   .sketch-card__caption {
     font-size: 13px;
   }
-  /* long product names wrap onto a second line (see white-space:
-     normal below) — reserving room for two lines up front, instead
-     of only as tall as each title actually needs, keeps every card's
-     image/price rhythm lined up with its row neighbours regardless of
-     which one has the longer name, so a long name never staggers the
-     grid or scrolls further into the header than a short one does */
+  /* narrower than the card itself and centred within it (not just
+     its own text) — long names wrap onto more, shorter lines instead
+     of fewer, wider ones, so no single line is ever wide enough to
+     reach the header's menu/logo/cart icons at the edges and centre
+     of the screen, wherever a card happens to land under them while
+     scrolling. 120px keeps every line within the ~144px/142px gaps
+     either side of the centred logo, for both grid columns. */
   .card__title {
+    max-width: 120px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 14px;
     min-height: 28px;
+    /* forces a break even mid-word (e.g. a long quoted name with no
+       spaces) instead of overflowing past max-width when there's no
+       natural space to wrap at */
+    overflow-wrap: break-word;
   }
   .product-page { padding: 90px 24px 90px; }
   .product { grid-template-columns: 1fr; gap: 40px; }
