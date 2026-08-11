@@ -434,9 +434,15 @@ button { font-family: inherit; }
   .year-filter__chevron { transition: transform .2s ease; }
   .year-filter.is-open .year-filter__chevron { transform: rotate(180deg); }
 
+  /* width: fit-content + a JS-computed margin-left (see positionList
+     in tattoo.html) lines this list's left edge up under the
+     currently-selected value in the toggle above, rather than
+     centring it under the toggle as a whole */
   .year-filter__list {
     display: none;
-    margin-top: 10px;
+    width: fit-content;
+    margin: 10px 0 0;
+    text-align: left;
   }
   .year-filter.is-open .year-filter__list { display: block; }
   .year-filter__list a {

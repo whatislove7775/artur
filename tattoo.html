@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260826">
+<link rel="stylesheet" href="css/style.css?v=20260827">
 </head>
 <body>
 
@@ -23,8 +23,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260826"></script>
-<script src="js/site.js?v=20260826"></script>
+<script src="js/data.js?v=20260827"></script>
+<script src="js/site.js?v=20260827"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -68,25 +68,51 @@
         <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.3"/>
       </svg>
     </button>
-    <div class="year-filter__list" data-year-list>
-      <a href="#" data-year-option="all">all</a>
-      ${years.map((y) => `<a href="#" data-year-option="${y}">${y}</a>`).join('')}
-    </div>`;
+    <div class="year-filter__list" data-year-list></div>`;
 
   const currentLabel = yearFilter.querySelector('[data-year-current]');
+  const list = yearFilter.querySelector('[data-year-list]');
+
+  // the list's left edge lines up under the currently-selected value
+  // (not the "year:" label, and not centred on the toggle as a whole)
+  // — both shift as the label's own text changes width, so this is
+  // re-measured on every render rather than set once in CSS
+  function positionList() {
+    const filterRect = yearFilter.getBoundingClientRect();
+    const currentRect = currentLabel.getBoundingClientRect();
+    list.style.marginLeft = `${currentRect.left - filterRect.left}px`;
+  }
+
+  // excludes whichever value is currently selected — picking a year
+  // only makes sense for the years you're not already looking at
+  function renderOptions(current) {
+    const options = ['all', ...years].filter((y) => String(y) !== String(current));
+    list.innerHTML = options.map((y) => `<a href="#" data-year-option="${y}">${y}</a>`).join('');
+    list.querySelectorAll('[data-year-option]').forEach((opt) => {
+      opt.addEventListener('click', (e) => {
+        e.preventDefault();
+        selectYear(opt.dataset.yearOption);
+      });
+    });
+  }
+
+  function selectYear(val) {
+    currentLabel.textContent = val;
+    yearFilter.classList.remove('is-open');
+    const shownYears = val === 'all' ? years : [Number(val)];
+    grid.innerHTML = shownYears.map((y) => byYear(y).map((s) => sketchCardMarkup('', s)).join('')).join('');
+    renderOptions(val);
+    positionList();
+  }
+
+  renderOptions('all');
+  positionList();
+
   yearFilter.querySelector('[data-year-toggle]').addEventListener('click', () => {
+    positionList();
     yearFilter.classList.toggle('is-open');
   });
-  yearFilter.querySelectorAll('[data-year-option]').forEach((opt) => {
-    opt.addEventListener('click', (e) => {
-      e.preventDefault();
-      const val = opt.dataset.yearOption;
-      currentLabel.textContent = val;
-      yearFilter.classList.remove('is-open');
-      const shownYears = val === 'all' ? years : [Number(val)];
-      grid.innerHTML = shownYears.map((y) => byYear(y).map((s) => sketchCardMarkup('', s)).join('')).join('');
-    });
-  });
+  window.addEventListener('resize', positionList);
 </script>
 </body>
 </html>
