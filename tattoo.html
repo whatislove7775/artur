@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260822">
+<link rel="stylesheet" href="css/style.css?v=20260823">
 </head>
 <body>
 
 <header class="header"></header>
 
 <div class="hero-mobile" id="heroMobile"></div>
+
+<div class="year-filter" data-year-filter></div>
 
 <main class="catalogue" id="catalogue">
   <div class="grid-2" data-grid></div>
@@ -21,8 +23,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260822"></script>
-<script src="js/site.js?v=20260822"></script>
+<script src="js/data.js?v=20260823"></script>
+<script src="js/site.js?v=20260823"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -49,7 +51,42 @@
   const rail = document.querySelector('[data-years]');
   rail.innerHTML = years.map((y) => `<span class="year-rail__item">${y}</span>`).join('');
 
+  // desktop only, in practice — the rail this drives is hidden on
+  // mobile/tablet in favour of the year-filter dropdown below, which
+  // just re-renders the grid directly instead of scrolling to it
   initYearScrollspy(years);
+
+  // mobile/tablet: "year: all" dropdown — newest-to-oldest by default
+  // (byYear/sketchYears already sort that way), or a single year once
+  // picked. Doesn't touch the desktop rail/scrollspy above; it's
+  // simply hidden at this width, so nothing needs to stay in sync.
+  const yearFilter = document.querySelector('[data-year-filter]');
+  yearFilter.innerHTML = `
+    <button type="button" class="year-filter__toggle" data-year-toggle>
+      year: <span data-year-current>all</span>
+      <svg class="year-filter__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+        <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.3"/>
+      </svg>
+    </button>
+    <div class="year-filter__list" data-year-list>
+      <a href="#" data-year-option="all">all</a>
+      ${years.map((y) => `<a href="#" data-year-option="${y}">${y}</a>`).join('')}
+    </div>`;
+
+  const currentLabel = yearFilter.querySelector('[data-year-current]');
+  yearFilter.querySelector('[data-year-toggle]').addEventListener('click', () => {
+    yearFilter.classList.toggle('is-open');
+  });
+  yearFilter.querySelectorAll('[data-year-option]').forEach((opt) => {
+    opt.addEventListener('click', (e) => {
+      e.preventDefault();
+      const val = opt.dataset.yearOption;
+      currentLabel.textContent = val;
+      yearFilter.classList.remove('is-open');
+      const shownYears = val === 'all' ? years : [Number(val)];
+      grid.innerHTML = shownYears.map((y) => byYear(y).map((s) => sketchCardMarkup('', s)).join('')).join('');
+    });
+  });
 </script>
 </body>
 </html>
