@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artasimn — About</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=20260824">
+</head>
+<body>
+
+<header class="header"></header>
+
+<main class="about" id="about"></main>
+
+<footer class="footer"></footer>
+
+<script src="js/data.js?v=20260824"></script>
+<script src="js/site.js?v=20260824"></script>
+<script>
+  mountHeader();
+  mountFooter();
+  document.querySelector('.header').classList.add('is-transparent');
+
+  document.getElementById('about').innerHTML = `
+    <p class="about__intro">Artasimn (Артур&nbsp;А.) работает в&nbsp;Tattoo Office, любит татуировки и&nbsp;создавать предметы. Купить его ювелирные украшения и&nbsp;одежду можно в&nbsp;этом магазине. Записаться к&nbsp;нему на&nbsp;тату-сеанс можно в&nbsp;телеграм или инстаграм*.</p>
+    ${accordionMarkup(
+      'ABOUT TATTOO OFFICE',
+      '<p>Tattoo Office - это коворкинг для тату мастеров, где они могут поработать со&nbsp;своими клиентами, а&nbsp;клиенты - заказать сеанс у&nbsp;конкретного мастера. Пространство существует с&nbsp;2023 года.</p>',
+      true
+    )}
+    ${accordionMarkup('MEETINGS', '<p>Париж, Берлин, Москва, Санкт-Петербург</p>', true)}`;
+
+  initAccordions();
+</script>
+</body>
+</html>
