@@ -611,6 +611,27 @@ button { font-family: inherit; }
 
 .product__note { margin-top: 22px; }
 
+/* size picker — shown instead of .product__note for products that
+   have a .sizes list; plain small text buttons, same treatment as
+   .product__note otherwise, just individually selectable */
+.product__sizes {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+.product__size {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 4px 12px;
+  font: inherit;
+  font-size: var(--font-b-size);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--font-b-color);
+}
+.product__size:hover { color: var(--ink); border-color: var(--ink); }
+.product__size.is-active { color: var(--ink); border-color: var(--ink); }
+
 /* accordion: DESCRIPTION / DELIVERY — same top margin whether it's
    the first one (below "one size"/the order links) or a second one
    stacked below another accordion, so the spacing reads consistently */
