@@ -35,6 +35,7 @@ function headerMarkup(prefix) {
     </div>
     <nav class="mobile-menu__links">
       <a href="${p}index.html">home</a>
+      <a href="${p}about.html">about</a>
       <a href="${p}index.html?cat=garment">garment</a>
       <a href="${p}index.html?cat=jewellery">jewellery</a>
       <a href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
@@ -126,7 +127,7 @@ function footerMarkup() {
   <div class="footer__links">
     <a href="#">ОФЕРТА</a>
     <a href="privacy.html">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a>
-    <a href="#">ИНФО</a>
+    <a href="about.html">ИНФО</a>
   </div>`;
 }
 
