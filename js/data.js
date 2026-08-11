@@ -25,7 +25,8 @@ const PRODUCTS = [
       'assets/products/tee-johnny-cash/1.png',
       'assets/products/tee-johnny-cash/2.png'
     ],
-    material: '100% cotton, black color, 200 gm'
+    material: '100% cotton, black color, 200 gm',
+    sizes: ['S', 'M', 'L', 'XL']
   },
   {
     id: 'hoodie-everyday',
@@ -37,7 +38,8 @@ const PRODUCTS = [
       'assets/products/hoodie-everyday/2.png',
       'assets/products/hoodie-everyday/3.png'
     ],
-    material: '100% cotton, black color'
+    material: '100% cotton, black color',
+    sizes: ['S', 'M', 'L', 'XL']
   },
   {
     id: 'pendant-angelisdead',

@@ -34,6 +34,7 @@ function headerMarkup(prefix) {
       <a href="#" class="mobile-menu__close" data-menu-toggle>close</a>
     </div>
     <nav class="mobile-menu__links">
+      <a href="${p}index.html">home</a>
       <a href="${p}index.html?cat=garment">garment</a>
       <a href="${p}index.html?cat=jewellery">jewellery</a>
       <a href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260821">
+<link rel="stylesheet" href="css/style.css?v=20260822">
 </head>
 <body>
 
@@ -17,8 +17,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260821"></script>
-<script src="js/site.js?v=20260821"></script>
+<script src="js/data.js?v=20260822"></script>
+<script src="js/site.js?v=20260822"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -33,6 +33,18 @@
           .map((_, i) => `<span${i === 0 ? ' class="is-active"' : ''} data-i="${i}"></span>`)
           .join('')}</div>`
       : '';
+
+  const sizeMarkup =
+    item.sizes && item.sizes.length
+      ? `<div class="product__sizes" data-sizes>
+          ${item.sizes
+            .map(
+              (s, i) =>
+                `<button type="button" class="product__size${i === 0 ? ' is-active' : ''}" data-size="${s}">${s}</button>`
+            )
+            .join('')}
+        </div>`
+      : `<div class="product__note">one size</div>`;
 
   document.getElementById('product').innerHTML = `
     <div class="product__left">
@@ -59,7 +71,7 @@
       <div class="product__actions">
         <a href="#" data-add-to-card>+ to cart</a>
       </div>
-      <div class="product__note">one size</div>
+      ${sizeMarkup}
       ${accordionMarkup(
         'DESCRIPTION',
         `<p>${item.material}</p>`,
@@ -117,6 +129,13 @@
   );
 
   initAccordions();
+
+  document.querySelectorAll('.product__size').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.product__size').forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
 
   document.querySelector('[data-add-to-card]').addEventListener('click', (e) => {
     e.preventDefault();
