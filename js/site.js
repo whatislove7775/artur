@@ -11,6 +11,7 @@ function headerMarkup(prefix) {
     <img class="header__logo-mobile" src="${p}assets/logo-mobile.svg" alt="Artasimn">
   </a>
   <nav class="nav">
+    <a href="${p}about.html">about</a>
     <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span></a>
     <span class="nav-swap">
       <a class="nav-swap__default" href="${p}tattoo.html">tattoo</a>
