@@ -165,8 +165,10 @@ button { font-family: inherit; }
   gap: 44px;
   justify-self: center;
   /* nudged left of true-centre so it clears the right-hand catalogue
-     column's title/price once the page is scrolled */
-  transform: translateX(-90px);
+     column's title/price once the page is scrolled — adding "about"
+     widened the row, and since it's centred, that widening pushed the
+     right edge further right too, so the offset grew to match */
+  transform: translateX(-133px);
 }
 
 .nav a:hover { opacity: .55; }
