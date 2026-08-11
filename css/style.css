@@ -401,18 +401,54 @@ button { font-family: inherit; }
 .year-rail__item.is-current { color: var(--ink); }
 
 @media (max-width: 980px) {
-  /* same docking behaviour as desktop (see initYearScrollspy in
-     site.js, which measures each item's own rendered size rather than
-     assuming the desktop horizontal-text height), just rotated —
-     narrow phones don't have the spare width for a horizontal list */
-  .year-rail__item {
-    /* pulled in tighter to the true edge, and narrower (line-height
-       is this column's width in vertical-rl), so it clears the
-       catalogue's 30px card padding instead of overlapping it */
-    right: 2px;
-    line-height: 22px;
-    writing-mode: vertical-rl;
+  /* replaced by .year-filter (a simple dropdown right under the
+     header) on mobile/tablet — narrow phones don't have the spare
+     width for a side rail, rotated or not */
+  .year-rail { display: none; }
+}
+
+/* ===========================================================
+   YEAR FILTER — mobile/tablet-only dropdown replacement for the
+   year rail, sits right under the header on tattoo.html
+   =========================================================== */
+.year-filter { display: none; }
+
+@media (max-width: 980px) {
+  .year-filter {
+    display: block;
+    text-align: center;
+    padding: 66px 0 0;
   }
+  .year-filter__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: var(--font-a-size);
+    color: var(--font-a-color);
+  }
+  .year-filter__chevron { transition: transform .2s ease; }
+  .year-filter.is-open .year-filter__chevron { transform: rotate(180deg); }
+
+  .year-filter__list {
+    display: none;
+    margin-top: 20px;
+  }
+  .year-filter.is-open .year-filter__list { display: block; }
+  .year-filter__list a {
+    display: block;
+    padding: 10px 0;
+    font-size: var(--font-a-size);
+    color: var(--font-a-color);
+  }
+  .year-filter__list a:hover { color: var(--font-b-color); }
+
+  /* the filter itself now carries the header clearance (see its own
+     padding-top above), so the grid right after it only needs a
+     little breathing room, not the full header-height offset again */
+  .year-filter ~ .catalogue.catalogue--top { padding-top: 30px; }
 }
 
 /* ===========================================================
