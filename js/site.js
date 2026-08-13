@@ -51,13 +51,18 @@ function headerMarkup(prefix) {
 function adeptHeaderMarkup(prefix) {
   const p = prefix || '';
   return `
+  <a class="adept__back" href="${p}index.html">back</a>
   <a class="adept__logo" href="${p}index.html">
-    <img src="${p}assets/adept/logo-adept.svg" alt="A.DEPT">
+    <img class="adept__logo-full" src="${p}assets/adept/logo-adept.svg" alt="A.DEPT">
+    <img class="adept__logo-mobile" src="${p}assets/adept/favicon-adept.svg" alt="A.DEPT">
   </a>
   <div class="adept__brand">artasimn.department</div>
   <div class="adept__links">
-    <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#" data-cart-open>cart</a>
+    <a class="adept__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
+    <a class="adept__cart" href="#" data-cart-open>
+      <span class="adept__cart-text">cart</span>
+      <img class="adept__cart-icon" src="${p}assets/icons/cart-mobile.svg" alt="cart">
+    </a>
   </div>`;
 }
 
@@ -181,9 +186,9 @@ function initHeroScrollZoom() {
   window.addEventListener('resize', update);
 }
 
-function footerMarkup() {
+function footerMarkup(brand) {
   return `
-  <div class="footer__brand">artasimn</div>
+  <div class="footer__brand">${brand || 'artasimn'}</div>
   <p class="footer__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
   <div class="footer__links">
     <a href="#">ОФЕРТА</a>
@@ -229,9 +234,9 @@ function mountHeader(prefix) {
   mountBackToTop();
 }
 
-function mountFooter() {
+function mountFooter(brand) {
   const el = document.querySelector('.footer');
-  if (el) el.innerHTML = footerMarkup();
+  if (el) el.innerHTML = footerMarkup(brand);
 }
 
 /* Fixed corner "back to top" button, mobile and desktop alike — hidden
