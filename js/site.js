@@ -52,10 +52,13 @@ function adeptHeaderMarkup(prefix) {
   const p = prefix || '';
   return `
   <a class="adept__back" href="${p}index.html">back</a>
-  <a class="adept__logo" href="${p}index.html">
-    <img class="adept__logo-full" src="${p}assets/adept/logo-adept.svg" alt="A.DEPT">
-    <img class="adept__logo-mobile" src="${p}assets/adept/favicon-adept.svg" alt="A.DEPT">
-  </a>
+  <div class="adept__logo-group">
+    <a class="adept__logo" href="${p}index.html">
+      <img class="adept__logo-full" src="${p}assets/adept/logo-adept.svg" alt="A.DEPT">
+      <img class="adept__logo-mobile" src="${p}assets/adept/favicon-adept.svg" alt="A.DEPT">
+    </a>
+    <a class="adept__back-desktop" href="${p}index.html">back</a>
+  </div>
   <div class="adept__brand">artasimn.department</div>
   <div class="adept__links">
     <a class="adept__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
