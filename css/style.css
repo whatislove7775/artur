@@ -1219,7 +1219,7 @@ button { font-family: inherit; }
     position: fixed;
     inset: 0;
     z-index: 600;
-    background: #fff;
+    background: #fff url(../assets/menu-bg.svg) no-repeat center center / cover;
   }
   .header.nav-open .mobile-menu { display: flex; }
   .mobile-menu__bar {
