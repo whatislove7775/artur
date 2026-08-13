@@ -1343,6 +1343,11 @@ body.dark-theme .footer { background: #000; }
   flex-direction: column;
   gap: 70px;
 }
+.adept__products .card__frame {
+  aspect-ratio: 1 / 1;
+  background: #000;
+}
+.adept__products .card__frame img { object-fit: cover; }
 @media (max-width: 980px) {
   .adept__header {
     grid-template-columns: 1fr auto;
