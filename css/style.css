@@ -1299,13 +1299,13 @@ body.dark-theme .footer { background: #000; }
   height: 100%;
   object-fit: cover;
 }
-/* "намного темнее" — the raw footage reads too bright/legible on its
-   own to sit behind white text and product photos, so it's dimmed
-   most of the way to black rather than just lightly tinted */
+/* dims the raw footage so it sits quietly behind white text and product
+   photos without disappearing outright — the flag is already mostly
+   black, so too heavy a veil here hides it completely */
 .adept__veil {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, .82);
+  background: rgba(0, 0, 0, .45);
 }
 
 .adept__header {
