@@ -5,14 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — a.dept</title>
 <link rel="icon" type="image/svg+xml" href="assets/adept/favicon-adept.svg">
-<link rel="stylesheet" href="css/style.css?v=20260831">
+<link rel="stylesheet" href="css/style.css?v=20260832">
 </head>
 <body class="adept dark-theme">
 
 <div class="adept__bg">
-  <video class="adept__video" autoplay muted loop playsinline>
-    <source src="assets/adept/bg.mp4" type="video/mp4">
-  </video>
+  <img class="adept__bg-photo" src="assets/adept/bg.jpg" alt="">
   <div class="adept__veil"></div>
 </div>
 
@@ -24,11 +22,11 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260831"></script>
-<script src="js/site.js?v=20260831"></script>
+<script src="js/data.js?v=20260832"></script>
+<script src="js/site.js?v=20260832"></script>
 <script>
   mountAdeptHeader();
-  mountFooter();
+  mountFooter('artasimn.department');
 
   renderCards('[data-adept-grid]', ADEPT_PRODUCTS);
 </script>
