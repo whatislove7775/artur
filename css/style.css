@@ -1282,6 +1282,10 @@ body.dark-theme .product__size { border-color: #444; }
 body.dark-theme .product__size:hover,
 body.dark-theme .product__size.is-active { border-color: #fff; }
 body.dark-theme .footer { background: #000; }
+body.dark-theme .cart-drawer { background: #000; border-left: 1px solid #fff; }
+body.dark-theme .cart-drawer__row,
+body.dark-theme .cart-drawer__field { border-bottom-color: #333; }
+body.dark-theme .cart-drawer__promo input { border-bottom-color: #333; }
 
 /* ===========================================================
    A.DEPT — its own page, permanently dark with a photo backdrop
