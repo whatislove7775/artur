@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — a.dept</title>
 <link rel="icon" type="image/svg+xml" href="assets/adept/favicon-adept.svg">
-<link rel="stylesheet" href="css/style.css?v=20260829">
+<link rel="stylesheet" href="css/style.css?v=20260830">
 </head>
 <body class="adept dark-theme">
 
@@ -16,16 +16,7 @@
   <div class="adept__veil"></div>
 </div>
 
-<header class="adept__header">
-  <a class="adept__logo" href="index.html">
-    <img src="assets/adept/logo-adept.svg" alt="A.DEPT">
-  </a>
-  <div class="adept__brand">artasimn.department</div>
-  <div class="adept__links">
-    <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
-    <a href="#" data-cart-open>cart</a>
-  </div>
-</header>
+<header></header>
 
 <main class="adept__main">
   <div class="adept__products" data-adept-grid></div>
@@ -33,11 +24,10 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260829"></script>
-<script src="js/site.js?v=20260829"></script>
+<script src="js/data.js?v=20260830"></script>
+<script src="js/site.js?v=20260830"></script>
 <script>
-  mountCartDrawer('');
-  mountBackToTop();
+  mountAdeptHeader();
   mountFooter();
 
   renderCards('[data-adept-grid]', ADEPT_PRODUCTS);

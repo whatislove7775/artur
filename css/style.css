@@ -1273,6 +1273,11 @@ body.dark-theme .header { background: #000; }
 body.dark-theme .header__logo-full,
 body.dark-theme .header__logo-mobile { filter: brightness(0) invert(1); }
 body.dark-theme .thumb { background: #000; }
+body.dark-theme .product__main {
+  aspect-ratio: 1 / 1;
+  background: #000;
+}
+body.dark-theme .product__main img { object-fit: cover; }
 body.dark-theme .product__size { border-color: #444; }
 body.dark-theme .product__size:hover,
 body.dark-theme .product__size.is-active { border-color: #fff; }
