@@ -1201,7 +1201,7 @@ button { font-family: inherit; }
      same as on desktop. */
   .header { padding: 14px 18px; }
   .header__logo-full { display: none; }
-  .header__logo-mobile { display: block; height: 20px; width: auto; }
+  .header__logo-mobile { display: block; height: 26px; width: auto; }
   .header__logo { justify-self: center; }
   .header__menu-toggle { display: flex; align-items: center; justify-self: start; }
   .header__tattoo-office { display: none; }
@@ -1253,5 +1253,106 @@ button { font-family: inherit; }
   .footer__brand { order: 1; }
   .footer__links { order: 2; justify-content: center; text-align: center; }
   .footer__disclaimer { order: 3; max-width: 100%; }
+}
+
+/* ===========================================================
+   DARK THEME — product.html when the id is one of a.dept's own
+   products (see the adeptItem check in product.html). Almost
+   everything on that page already reads its colour from --ink /
+   --font-a-color / --font-b-color, so redefining those here flips
+   the whole page without touching each component individually; only
+   the handful of places with a hardcoded colour need their own line.
+   =========================================================== */
+body.dark-theme {
+  background: #000;
+  --ink: #fff;
+  --font-a-color: #fff;
+  --font-b-color: #aaa;
+}
+body.dark-theme .header { background: #000; }
+body.dark-theme .header__logo-full,
+body.dark-theme .header__logo-mobile { filter: brightness(0) invert(1); }
+body.dark-theme .thumb { background: #000; }
+body.dark-theme .product__size { border-color: #444; }
+body.dark-theme .product__size:hover,
+body.dark-theme .product__size.is-active { border-color: #fff; }
+body.dark-theme .footer { background: #000; }
+
+/* ===========================================================
+   A.DEPT — its own page, permanently dark with a looping video
+   backdrop instead of the site's usual white/photo header
+   =========================================================== */
+.adept__bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #000;
+}
+.adept__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* "намного темнее" — the raw footage reads too bright/legible on its
+   own to sit behind white text and product photos, so it's dimmed
+   most of the way to black rather than just lightly tinted */
+.adept__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .82);
+}
+
+.adept__header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 58px;
+  font-size: var(--font-a-size);
+  color: #fff;
+}
+.adept__logo { justify-self: start; }
+.adept__logo img { height: 26px; width: auto; }
+.adept__brand { justify-self: center; white-space: nowrap; }
+.adept__links {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  white-space: nowrap;
+}
+.adept__links a:hover { opacity: .55; }
+
+.adept__main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 140px 60px 100px;
+}
+.adept__products {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+}
+@media (max-width: 980px) {
+  .adept__header {
+    grid-template-columns: 1fr auto;
+    padding: 16px 20px;
+    gap: 12px;
+  }
+  .adept__logo img { height: 20px; }
+  .adept__brand { display: none; }
+  .adept__links { gap: 20px; font-size: var(--font-b-size); }
+  .adept__main { padding: 100px 24px 80px; justify-content: center; }
+  .adept__products { max-width: 100%; }
 }
 
