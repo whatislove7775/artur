@@ -69,6 +69,24 @@ const PRODUCTS = [
   }
 ];
 
+/* a.dept's own small catalogue — separate from PRODUCTS above, never
+   shows up in the main items grid or category filters. product.html
+   checks this list too (after PRODUCTS), and switches to the dark
+   theme + a.dept favicon whenever it finds the id here instead. */
+const ADEPT_PRODUCTS = [
+  {
+    id: 'adept-tee-01',
+    title: 'JOHNNY CASH , JIM MARSHAL FOR ADEPT',
+    price: '5 500 p',
+    images: [
+      'assets/products/adept-tee/1.png',
+      'assets/products/adept-tee/2.webp'
+    ],
+    material: '100% cotton, black color, 200 gm',
+    sizes: ['S', 'M', 'L', 'XL']
+  }
+];
+
 /* Tattoo sketches — a portfolio catalogue, not a product for sale.
    Ordered newest first; "year" drives the scrollspy year-list on
    tattoo.html. */

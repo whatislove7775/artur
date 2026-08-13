@@ -18,7 +18,7 @@ function headerMarkup(prefix) {
       <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment</a>
     </span>
     <span class="nav-swap">
-      <a class="nav-swap__default" href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
+      <a class="nav-swap__default" href="${p}adept.html">a.dept</a>
       <a class="nav-swap__hover" href="${p}index.html?cat=jewellery">jewellery</a>
     </span>
   </nav>
@@ -39,7 +39,7 @@ function headerMarkup(prefix) {
       <a href="${p}about.html">about</a>
       <a href="${p}index.html?cat=garment">garment</a>
       <a href="${p}index.html?cat=jewellery">jewellery</a>
-      <a href="https://artasimn-department.com" target="_blank" rel="noopener">a.dept</a>
+      <a href="${p}adept.html">a.dept</a>
       <a href="${p}tattoo.html">tattoo</a>
       <a href="#" data-cart-open data-mobile-menu-cart>cart</a>
     </nav>
@@ -693,7 +693,7 @@ function renderCartDrawer(prefix) {
   let total = 0;
   rowsEl.innerHTML = cart
     .map((row) => {
-      const item = PRODUCTS.find((i) => i.id === row.id);
+      const item = PRODUCTS.find((i) => i.id === row.id) || ADEPT_PRODUCTS.find((i) => i.id === row.id);
       if (!item) return '';
       const lineTotal = parsePrice(item.price) * row.qty;
       total += lineTotal;
