@@ -1282,6 +1282,7 @@ body.dark-theme .product__size { border-color: #444; }
 body.dark-theme .product__size:hover,
 body.dark-theme .product__size.is-active { border-color: #fff; }
 body.dark-theme .footer { background: #000; }
+body.adept .footer { position: relative; z-index: 1; }
 
 /* ===========================================================
    A.DEPT — its own page, permanently dark with a photo backdrop
@@ -1332,7 +1333,13 @@ body.dark-theme .footer { background: #000; }
   color: #fff;
 }
 .adept__back { display: none; justify-self: start; }
-.adept__logo { justify-self: start; }
+.adept__logo-group {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.adept__back-desktop:hover { opacity: .55; }
 .adept__logo-full { height: 26px; width: auto; }
 .adept__logo-mobile { display: none; height: 28px; width: auto; }
 .adept__brand { justify-self: center; white-space: nowrap; }
@@ -1346,7 +1353,14 @@ body.dark-theme .footer { background: #000; }
 .adept__links a:hover { opacity: .55; }
 .adept__cart-icon { width: 20px; height: auto; display: none; }
 
+/* position+z-index here isn't for layout — .adept__bg is a positioned,
+   z-index:0 element, which (per CSS stacking rules) paints above plain
+   static in-flow content regardless of DOM order. Without this, the
+   veil sits visually on top of the product card text. Footer needs the
+   same treatment (see body.adept .footer below). */
 .adept__main {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   justify-content: flex-end;
@@ -1373,7 +1387,8 @@ body.dark-theme .footer { background: #000; }
     font-size: var(--font-b-size);
   }
   .adept__back { display: block; }
-  .adept__logo { justify-self: center; }
+  .adept__logo-group { justify-self: center; }
+  .adept__back-desktop { display: none; }
   .adept__logo-full { display: none; }
   .adept__logo-mobile { display: block; }
   .adept__brand { display: none; }
