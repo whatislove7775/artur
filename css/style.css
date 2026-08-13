@@ -1114,6 +1114,14 @@ button { font-family: inherit; }
     height: 100svh;
   }
   .menu-tile { aspect-ratio: auto; }
+  /* the .6s hover transition is for desktop's discrete on/off hover
+     jump — on mobile the scale is instead driven continuously by
+     scroll position (see initHeroScrollZoom in site.js), which needs
+     to track the scroll 1:1 rather than chase it on a half-second lag */
+  .menu-tile img,
+  .hero-mobile__img {
+    transition: none;
+  }
   /* always-on instead of hover-revealed — there's no hover on touch */
   .menu-tile__label {
     inset: 0;
