@@ -121,6 +121,41 @@ function initHeroHeader() {
   window.addEventListener('resize', update);
 }
 
+/* mobile/tablet-only: the hero photo and each menu-strip tile scale
+   up within their own clipped frame as they scroll past — resting at
+   their normal size while fully in view, growing as each one scrolls
+   up and out from under the fixed header. Desktop doesn't get this;
+   its menu-strip tiles already have their own hover-triggered scale
+   instead (see @media (hover: hover) in style.css). */
+function initHeroScrollZoom() {
+  if (window.innerWidth > 980) return;
+  const targets = [];
+  const heroImg = document.querySelector('.hero-mobile__img');
+  if (heroImg) targets.push({ el: heroImg, base: 1, max: 0.15 });
+  document.querySelectorAll('.menu-tile img').forEach((img) => {
+    targets.push({ el: img, base: 1.02, max: 0.13 });
+  });
+  if (!targets.length) return;
+
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  let ticking = false;
+  const update = () => {
+    targets.forEach(({ el, base, max }) => {
+      const progress = clamp(-el.getBoundingClientRect().top / window.innerHeight, 0, 1);
+      el.style.transform = `scale(${base + progress * max})`;
+    });
+    ticking = false;
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', update);
+}
+
 function footerMarkup() {
   return `
   <div class="footer__brand">artasimn</div>
