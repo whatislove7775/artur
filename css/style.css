@@ -1273,6 +1273,11 @@ body.dark-theme .header { background: #000; }
 body.dark-theme .header__logo-full,
 body.dark-theme .header__logo-mobile { filter: brightness(0) invert(1); }
 body.dark-theme .thumb { background: #000; }
+body.dark-theme .product__main {
+  aspect-ratio: 1 / 1;
+  background: #000;
+}
+body.dark-theme .product__main img { object-fit: cover; }
 body.dark-theme .product__size { border-color: #444; }
 body.dark-theme .product__size:hover,
 body.dark-theme .product__size.is-active { border-color: #fff; }
@@ -1343,6 +1348,11 @@ body.dark-theme .footer { background: #000; }
   flex-direction: column;
   gap: 70px;
 }
+.adept__products .card__frame {
+  aspect-ratio: 1 / 1;
+  background: #000;
+}
+.adept__products .card__frame img { object-fit: cover; }
 @media (max-width: 980px) {
   .adept__header {
     grid-template-columns: 1fr auto;

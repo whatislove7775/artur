@@ -46,6 +46,31 @@ function headerMarkup(prefix) {
   </div>`;
 }
 
+/* a.dept's own header — reused as-is on adept.html and on a.dept product
+   pages, instead of the site's usual logo/nav header */
+function adeptHeaderMarkup(prefix) {
+  const p = prefix || '';
+  return `
+  <a class="adept__logo" href="${p}index.html">
+    <img src="${p}assets/adept/logo-adept.svg" alt="A.DEPT">
+  </a>
+  <div class="adept__brand">artasimn.department</div>
+  <div class="adept__links">
+    <a href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
+    <a href="#" data-cart-open>cart</a>
+  </div>`;
+}
+
+function mountAdeptHeader(prefix) {
+  const el = document.querySelector('header');
+  if (el) {
+    el.className = 'adept__header';
+    el.innerHTML = adeptHeaderMarkup(prefix);
+  }
+  mountCartDrawer(prefix);
+  mountBackToTop();
+}
+
 /* mobile/tablet only: "menu" opens a full-screen overlay panel (close
    top-right, links right-aligned below) instead of the desktop dropdown
    — see the ≤980px breakpoint in style.css */
