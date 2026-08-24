@@ -32,17 +32,39 @@ function headerMarkup(prefix) {
   </div>
   <div class="mobile-menu">
     <div class="mobile-menu__bar">
-      <a href="#" class="mobile-menu__close" data-menu-toggle>close</a>
+      <a href="#" class="mobile-menu__close" data-menu-toggle aria-label="close">&times;</a>
     </div>
     <nav class="mobile-menu__links">
-      <a href="${p}index.html">home</a>
-      <a href="${p}about.html">about</a>
-      <a href="${p}index.html?cat=garment">garment</a>
-      <a href="${p}index.html?cat=jewellery">jewellery</a>
-      <a href="${p}adept.html">a.dept</a>
-      <a href="${p}tattoo.html">tattoo</a>
-      <a href="#" data-cart-open data-mobile-menu-cart>cart</a>
+      <a class="mobile-menu__link" href="${p}index.html">
+        <span>home</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/home.svg" alt="">
+      </a>
+      <a class="mobile-menu__link" href="${p}about.html">
+        <span>about</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/about.svg" alt="">
+      </a>
+      <a class="mobile-menu__link" href="${p}index.html?cat=garment">
+        <span>garment</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/garment.svg" alt="">
+      </a>
+      <a class="mobile-menu__link" href="${p}index.html?cat=jewellery">
+        <span>jewellery</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/jewellery.svg" alt="">
+      </a>
+      <a class="mobile-menu__link" href="${p}tattoo.html">
+        <span>tattoo</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/tattoo.svg" alt="">
+      </a>
+      <a class="mobile-menu__link" href="${p}adept.html">
+        <span>a.dept</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/adept.svg" alt="">
+      </a>
+      <a class="mobile-menu__link" href="#" data-cart-open data-mobile-menu-cart>
+        <span>cart</span>
+        <img class="mobile-menu__icon" src="${p}assets/menu-icons/cart.svg" alt="">
+      </a>
     </nav>
+    <p class="mobile-menu__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
   </div>`;
 }
 
