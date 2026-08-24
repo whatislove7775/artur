@@ -545,12 +545,24 @@ function initAccordions(root) {
    below the previous one. */
 function initYearScrollspy(years) {
   const items = Array.from(document.querySelectorAll('.year-rail__item'));
-  const markers = years.map((y) => document.querySelector(`[data-year-marker="${y}"]`));
-  if (!items.length || markers.some((m) => !m)) return;
+  if (!items.length) return;
 
   const header = document.querySelector('.header');
   const restBottomMargin = 40;
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+  // each year's cards are grouped in the DOM, but the two-column
+  // masonry (.sketch-grid) reflows them across columns to fill gaps —
+  // a single marker element's own rendered position is no longer a
+  // reliable stand-in for "where this year starts" once that
+  // happens, so every card is read instead and each year's boundary
+  // is the topmost of its own cards, whichever column it landed in
+  const cardsByYear = years.map((y) =>
+    Array.from(document.querySelectorAll(`.sketch-card[data-year="${y}"]`))
+  );
+  if (cardsByYear.some((c) => !c.length)) return;
+  const topOf = (cards, scrollY) =>
+    Math.min(...cards.map((c) => c.getBoundingClientRect().top + scrollY));
 
   const update = () => {
     // measured live, not hardcoded: the header's own height differs
@@ -568,11 +580,8 @@ function initYearScrollspy(years) {
     const restBase = window.innerHeight - restBottomMargin;
 
     years.forEach((year, i) => {
-      const startY = markers[i].getBoundingClientRect().top + scrollY;
-      const endY =
-        i + 1 < years.length
-          ? markers[i + 1].getBoundingClientRect().top + scrollY
-          : pageBottom;
+      const startY = topOf(cardsByYear[i], scrollY);
+      const endY = i + 1 < years.length ? topOf(cardsByYear[i + 1], scrollY) : pageBottom;
       const progress = clamp((scrollY - startY) / Math.max(1, endY - startY), 0, 1);
 
       const restTop = restBase - (years.length - i) * restGap;
@@ -593,7 +602,7 @@ function initYearScrollspy(years) {
   items.forEach((item, i) => {
     item.addEventListener('click', () => {
       const headerH = header ? header.getBoundingClientRect().height : 58;
-      const targetY = markers[i].getBoundingClientRect().top + window.scrollY - headerH - 10;
+      const targetY = topOf(cardsByYear[i], window.scrollY) - headerH - 10;
       window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
     });
   });
@@ -841,6 +850,58 @@ function sketchCardMarkup(prefix, sketch, number) {
     <div class="card__dots" aria-hidden="true"><span></span></div>
     ${meta}
   </a>`;
+}
+
+/* tattoo.html desktop: waterfall two-column masonry. cards is an
+   array of already-built .sketch-card elements, in the order they
+   should read (chronological, newest year first, same as the DOM
+   order everywhere else on the site). They're staged into the first
+   column so every one renders at the real column width before its
+   height is measured (with a fixed aspect-ratio image and .card__dots/
+   caption below it, height depends on layout width, not just the
+   image's own intrinsic size) — only once every image has actually
+   loaded (a not-yet-loaded image reports 0 height, since the frame
+   takes its size from the image) are they redistributed, each into
+   whichever column is currently shortest. That keeps a later card
+   from ever landing above an earlier one in the other column, unlike
+   CSS multi-column's own balance-by-total-height algorithm. Calls
+   onSettled() once the real layout is in place, since anything that
+   measures card position (initYearScrollspy) needs to run after it. */
+function layoutSketchMasonry(container, cards, onSettled) {
+  const cols = [document.createElement('div'), document.createElement('div')];
+  cols.forEach((c) => (c.className = 'sketch-masonry__col'));
+  container.innerHTML = '';
+  cols.forEach((c) => container.appendChild(c));
+  cards.forEach((c) => cols[0].appendChild(c));
+
+  const settle = () => {
+    const heights = [0, 0];
+    cards.forEach((card) => {
+      const h = card.getBoundingClientRect().height;
+      const target = heights[0] <= heights[1] ? 0 : 1;
+      cols[target].appendChild(card);
+      heights[target] += h + 70;
+    });
+    if (onSettled) onSettled();
+  };
+
+  const imgs = cards.map((c) => c.querySelector('img'));
+  if (!imgs.length) {
+    settle();
+    return;
+  }
+  let remaining = imgs.length;
+  const done = () => {
+    remaining -= 1;
+    if (remaining <= 0) settle();
+  };
+  imgs.forEach((img) => {
+    if (img.complete && img.naturalWidth) done();
+    else {
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    }
+  });
 }
 
 /* ===========================================================

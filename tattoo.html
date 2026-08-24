@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260845">
+<link rel="stylesheet" href="css/style.css?v=20260847">
 </head>
 <body>
 
@@ -24,8 +24,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260845"></script>
-<script src="js/site.js?v=20260845"></script>
+<script src="js/data.js?v=20260847"></script>
+<script src="js/site.js?v=20260847"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -113,19 +113,27 @@
     document.querySelector('.header').classList.add('is-transparent');
 
     const grid = document.querySelector('[data-grid]');
-    grid.innerHTML = years
-      .map(
-        (year) =>
-          `<div class="year-marker" data-year-marker="${year}"></div>` +
-          byYear(year)
-            .map((s) => sketchCardMarkup('', s))
-            .join('')
-      )
-      .join('');
+    grid.classList.remove('sketch-grid');
+    grid.classList.add('sketch-masonry');
 
-    const rail = document.querySelector('[data-years]');
-    rail.innerHTML = years.map((y) => `<span class="year-rail__item">${y}</span>`).join('');
-    initYearScrollspy(years);
+    // real DOM nodes (not an innerHTML string) so layoutSketchMasonry
+    // can move each one into whichever column it lands in, tagged
+    // with its year up front for initYearScrollspy to read later
+    const cards = years.flatMap((year) =>
+      byYear(year).map((s) => {
+        const wrap = document.createElement('div');
+        wrap.innerHTML = sketchCardMarkup('', s);
+        const card = wrap.firstElementChild;
+        card.dataset.year = year;
+        return card;
+      })
+    );
+
+    layoutSketchMasonry(grid, cards, () => {
+      const rail = document.querySelector('[data-years]');
+      rail.innerHTML = years.map((y) => `<span class="year-rail__item">${y}</span>`).join('');
+      initYearScrollspy(years);
+    });
   }
 </script>
 </body>

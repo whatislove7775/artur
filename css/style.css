@@ -485,11 +485,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   align-items: start;
 }
 
-/* invisible scroll-position marker dropped in front of each year's
-   first sketch — spans both columns, takes no height, doesn't disturb
-   the 2-up card flow. Read by initYearScrollspy in site.js. */
-.year-marker { grid-column: 1 / -1; height: 0; }
-
 /* ===========================================================
    TATTOO YEAR RAIL — scrollspy list on tattoo.html
    =========================================================== */
@@ -618,17 +613,27 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   color: var(--font-b-color);
 }
 
-/* tattoo.html desktop: same two-column grid as the product catalogue
-   (.grid-2) — .sketch-card__frame already matches .card__frame's own
-   fixed-ratio/contain treatment, so this reads as one consistent
-   catalogue style across both sections. The ≤980px breakpoint below
-   replaces this with the mobile-only masonry feed instead. */
-.sketch-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 90px;
-  row-gap: 70px;
-  align-items: start;
+/* tattoo.html desktop: two-column masonry, laid out by JS
+   (layoutSketchMasonry in site.js) rather than CSS columns — CSS
+   columns balance their two columns by total height, which can (and
+   did) drop a card from partway through the list at the very top of
+   column 2, well above cards from earlier in the list still filling
+   out column 1. That breaks the year-rail scrollspy's assumption
+   that scrolling down means moving forward through the years. A
+   waterfall layout (each card goes into whichever column is
+   currently shortest) keeps insertion order intact instead, so a
+   later year's cards never land above an earlier year's. */
+.sketch-masonry {
+  display: flex;
+  gap: 90px;
+  align-items: flex-start;
+}
+.sketch-masonry__col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
 }
 
 /* ===========================================================
@@ -1420,21 +1425,17 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
   .grid-2 { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 40px; }
 
-  /* tattoo.html's mobile feed: two-column masonry (CSS columns, not
-     grid) so each column flows independently — no shared row height
-     forcing every sketch into the same box. Each image keeps its own
-     natural aspect ratio instead of being cropped/letterboxed. */
+  /* mobile-only: each year's own page in the swipeable pager gets its
+     own CSS-columns masonry — no scrollspy depends on card order here
+     (year switching is driven by the swipeable pager instead), so
+     CSS columns' own balance-by-height behaviour is fine */
   .sketch-grid {
     display: block;
     columns: 2;
     column-gap: 16px;
   }
-  .sketch-grid .sketch-card {
-    break-inside: avoid;
-    margin-bottom: 32px;
-  }
+  .sketch-grid .sketch-card { break-inside: avoid; margin-bottom: 32px; }
   .sketch-grid .sketch-card__frame { background: none; }
-  .sketch-grid .year-marker { display: none; }
   /* the header-clearance margin only made sense for the old single
      column, flush to the left edge — centred two-up cards don't need
      it, and smaller type suits the narrower columns */
@@ -1809,11 +1810,17 @@ body.dark-theme .footer { background: #000; }
   z-index: 1;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 400;
-  font-size: calc(var(--w) * .0653);
+  font-size: calc(var(--w) * .058);
   line-height: 1;
   white-space: nowrap;
   color: #111;
 }
+/* Artasimn.com's icon (the wordmark emblem) sits visually higher in
+   its own slice than the others, so its label needs a small nudge
+   down to look centred on it; T.office's icon sits lower, so its
+   label nudges up to match */
+.alinks__item:nth-child(3) .alinks__label { top: calc(var(--w) * .012); }
+.alinks__item:nth-child(5) .alinks__label { top: calc(var(--w) * -.012); }
 
 .alinks__disclaimer {
   margin: calc(var(--w) * .163) 0 0;
@@ -1828,4 +1835,12 @@ body.dark-theme .footer { background: #000; }
   font-family: 'Times New Roman', Times, serif;
   font-size: calc(var(--w) * .0434);
   color: #111;
+}
+
+/* desktop only: the mockup's own 800px width reads oversized once
+   there's a full monitor around it — scale the whole composition
+   down as a unit (same --w-driven proportions, just a smaller base)
+   instead of shrinking one page element at a time */
+@media (min-width: 981px) {
+  .alinks { --w: min(560px, 100vw); }
 }
