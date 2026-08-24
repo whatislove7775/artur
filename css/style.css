@@ -575,7 +575,7 @@ button { font-family: inherit; }
 @media (max-width: 980px) {
   .year-tabs {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 22px;
     overflow-x: auto;
     scrollbar-width: none;
@@ -1193,7 +1193,7 @@ button { font-family: inherit; }
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-a-size);
+    font-size: 26px;
     opacity: 1;
   }
 
@@ -1344,6 +1344,10 @@ button { font-family: inherit; }
   .mobile-menu__link span:first-child {
     text-decoration: underline;
     text-decoration-thickness: 1px;
+    /* the mockup's underline runs straight through descenders (the "y"
+       in Jewellery) instead of breaking around them, so it's forced
+       off rather than left at the browser default */
+    text-decoration-skip-ink: none;
     white-space: nowrap;
   }
   /* square outline around each icon, matching the reference mockup —
@@ -1359,7 +1363,7 @@ button { font-family: inherit; }
     align-items: center;
     justify-content: center;
   }
-  .mobile-menu__icon { width: 20px; height: 20px; object-fit: contain; }
+  .mobile-menu__icon { width: 28px; height: 28px; object-fit: contain; }
   /* the staggered left offsets below are lifted directly from the
      mockup's cascading zigzag layout, not a formula */
   .mobile-menu__link:nth-child(1) { margin-left: 0; }
