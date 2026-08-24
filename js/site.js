@@ -1,10 +1,38 @@
 /* Shared chrome: header, footer, product cards, scrub-through hover */
 
+/* three-bar menu icon that morphs into an × via CSS (see .header.nav-open
+   in style.css) — no image asset, bars are just background:currentColor
+   so they automatically match the header's ink/inverted colour */
+function hamburgerMarkup() {
+  return `<span class="hamburger" aria-hidden="true">
+    <span class="hamburger__bar"></span>
+    <span class="hamburger__bar"></span>
+    <span class="hamburger__bar"></span>
+  </span>`;
+}
+
+/* shopping-cart / × pair, crossfading based on body.cart-open (set by
+   openCartDrawer/closeCartDrawer) — same morph idea as the hamburger
+   above, stroke="currentColor" so it follows the header's colour too */
+function cartIconMarkup() {
+  return `<span class="icon-toggle" aria-hidden="true">
+    <svg class="icon-toggle__a" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="21" r="1"></circle>
+      <circle cx="19" cy="21" r="1"></circle>
+      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+    </svg>
+    <svg class="icon-toggle__b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </span>`;
+}
+
 function headerMarkup(prefix) {
   const p = prefix || '';
   return `
   <a href="#" class="header__menu-toggle" data-menu-toggle>
-    <img class="header__menu-toggle-icon" src="${p}assets/icons/menu-mobile.svg" alt="menu">
+    ${hamburgerMarkup()}
   </a>
   <a class="header__logo" href="${p}index.html">
     <img class="header__logo-full" src="${p}assets/logo.svg" alt="Artasimn">
@@ -27,13 +55,10 @@ function headerMarkup(prefix) {
     <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
     <a class="header__cart" href="#" data-cart-open>
       <span class="header__cart-text">cart</span>
-      <img class="header__cart-icon" src="${p}assets/icons/cart-mobile.svg" alt="cart">
+      ${cartIconMarkup()}
     </a>
   </div>
   <div class="mobile-menu">
-    <div class="mobile-menu__bar">
-      <a href="#" class="mobile-menu__close" data-menu-toggle aria-label="close">&times;</a>
-    </div>
     <nav class="mobile-menu__links">
       <a class="mobile-menu__link" href="${p}index.html">
         <span>home</span>
@@ -87,7 +112,7 @@ function adeptHeaderMarkup(prefix) {
     <a class="adept__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
     <a class="adept__cart" href="#" data-cart-open>
       <span class="adept__cart-text">cart</span>
-      <img class="adept__cart-icon" src="${p}assets/icons/cart-mobile.svg" alt="cart">
+      ${cartIconMarkup()}
     </a>
   </div>`;
 }
@@ -162,19 +187,12 @@ function initHeroHeader() {
     const photoEdge = useHero && strip ? strip : target;
     const overHero = photoEdge.getBoundingClientRect().bottom > 0;
 
-    if (useHero && hero.classList.contains('hero-mobile--half')) {
-      // section-page heroes (tattoo.html, filtered categories): no
-      // white backdrop at rest at all — transparent + white icons the
-      // whole time the photo is on screen, solid again once scrolled
-      // past it. Different from the homepage's hero below, which
-      // deliberately keeps a solid white bar until the first scroll.
+    if (useHero) {
+      // no white backdrop at rest at all, on any hero-mobile page —
+      // transparent + white icons the whole time the photo is on
+      // screen, solid again once scrolled past it
       header.classList.toggle('is-transparent', overHero);
       header.classList.toggle('is-inverted', overHero);
-      if (heroOverlay) heroOverlay.classList.toggle('is-hidden', window.scrollY > 40);
-    } else if (useHero) {
-      const scrolled = window.scrollY > 0;
-      header.classList.toggle('is-transparent', scrolled);
-      header.classList.toggle('is-inverted', scrolled && overHero);
       if (heroOverlay) heroOverlay.classList.toggle('is-hidden', window.scrollY > 40);
     } else {
       header.classList.toggle('is-transparent', !overHero);
@@ -734,11 +752,13 @@ function mountCartDrawer(prefix) {
 function openCartDrawer() {
   const el = document.querySelector('.cart-drawer');
   if (el) el.classList.add('is-open');
+  document.body.classList.add('cart-open');
 }
 
 function closeCartDrawer() {
   const el = document.querySelector('.cart-drawer');
   if (el) el.classList.remove('is-open', 'is-checkout');
+  document.body.classList.remove('cart-open');
 }
 
 function renderCartDrawer(prefix) {
