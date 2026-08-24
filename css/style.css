@@ -1282,7 +1282,7 @@ button { font-family: inherit; }
     position: fixed;
     inset: 0;
     z-index: 600;
-    background: #fff url(../assets/menu-bg.svg) no-repeat center center / cover;
+    background: #fff;
   }
   .header.nav-open .mobile-menu { display: flex; }
   .mobile-menu__bar {
@@ -1311,9 +1311,15 @@ button { font-family: inherit; }
     gap: 10px;
     text-transform: capitalize;
   }
-  .mobile-menu__link span:first-child { text-decoration: underline; white-space: nowrap; }
+  .mobile-menu__link span:first-child {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    white-space: nowrap;
+  }
   /* square outline around each icon, matching the reference mockup —
-     the icon itself sits inside at a smaller, consistent size */
+     the icon itself sits inside at a smaller, consistent size. Border
+     width matches the label's underline thickness above exactly, so
+     both read as the same line weight. */
   .mobile-menu__icon-box {
     flex: 0 0 auto;
     width: 34px;
