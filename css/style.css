@@ -1585,9 +1585,9 @@ body.dark-theme .footer { background: #000; }
 .alinks__label {
   position: relative;
   z-index: 1;
-  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 700;
-  font-size: 26px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 400;
+  font-size: 34px;
   color: #111;
 }
 
@@ -1609,7 +1609,7 @@ body.dark-theme .footer { background: #000; }
 @media (max-width: 560px) {
   .alinks__title { font-size: 44px; }
   .alinks__list { margin-top: 50px; }
-  .alinks__label { font-size: 22px; }
+  .alinks__label { font-size: 28px; }
   .alinks__disclaimer { margin-top: 90px; }
 }
 
