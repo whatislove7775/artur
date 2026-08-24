@@ -5,20 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260841">
+<link rel="stylesheet" href="css/style.css?v=20260842">
 </head>
 <body>
 
 <header class="header"></header>
 
 <main class="product-page">
+  <a class="back-link" id="backLink" href="items.html">&larr; back</a>
   <div class="product" id="product"></div>
 </main>
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260841"></script>
-<script src="js/site.js?v=20260841"></script>
+<script src="js/data.js?v=20260842"></script>
+<script src="js/site.js?v=20260842"></script>
 <script>
   const id = new URLSearchParams(location.search).get('id');
   const adeptItem = ADEPT_PRODUCTS.find((p) => p.id === id);
@@ -33,9 +34,11 @@
     document.querySelector('link[rel="icon"]').href = 'assets/adept/favicon-adept.svg';
     mountAdeptHeader();
     mountFooter('artasimn.department');
+    document.getElementById('backLink').href = 'adept.html';
   } else {
     mountHeader();
     mountFooter();
+    document.querySelector('.header').classList.add('is-transparent');
   }
 
   const dots =
