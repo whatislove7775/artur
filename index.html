@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260837">
+<link rel="stylesheet" href="css/style.css?v=20260838">
 </head>
 <body>
 
@@ -31,8 +28,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260837"></script>
-<script src="js/site.js?v=20260837"></script>
+<script src="js/data.js?v=20260838"></script>
+<script src="js/site.js?v=20260838"></script>
 <script>
   const cat = new URLSearchParams(location.search).get('cat');
   const validCat = cat === 'jewellery' || cat === 'garment' ? cat : null;
@@ -42,15 +39,27 @@
 
   if (validCat) {
     // a category was picked from the photo-menu (or the items mega-menu)
-    // — the 4-tile grid and the big mobile intro photo have both done
-    // their job, so they go away entirely; the page behaves exactly
-    // like items.html from here, permanently transparent header and no
-    // hero on any viewport width.
+    // — the 4-tile grid, marquee and "recommended:" heading have all
+    // done their job, so they go away entirely
     document.getElementById('menuStrip').remove();
-    document.getElementById('heroMobile').remove();
+    document.getElementById('marquee').remove();
     document.getElementById('catalogueHeading').remove();
-    document.getElementById('catalogue').classList.add('catalogue--top');
-    document.querySelector('.header').classList.add('is-transparent');
+
+    if (window.innerWidth <= 980) {
+      // mobile: same half-screen intro-photo-plus-caption treatment as
+      // every other section (see tattoo.html), instead of no hero at all
+      const heroByCat = {
+        jewellery: { img: 'assets/menu/jewellery.png', label: 'Jewellery' },
+        garment: { img: 'assets/menu/garment.png', label: 'Garment' }
+      };
+      mountHeroMobile('', heroByCat[validCat]);
+      document.getElementById('heroMobile').classList.add('hero-mobile--half');
+    } else {
+      // desktop: unchanged — permanently transparent header, no hero
+      document.getElementById('heroMobile').remove();
+      document.getElementById('catalogue').classList.add('catalogue--top');
+      document.querySelector('.header').classList.add('is-transparent');
+    }
   } else {
     mountMenuStrip('', validCat);
     mountHeroMobile('');

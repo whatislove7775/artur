@@ -2,6 +2,16 @@
    ARTASIMN — full redesign
    =========================================================== */
 
+/* the exact blackletter the "Artasimn" logo itself is set in — self
+   hosted (not a Google Font lookalike) so it matches precisely and
+   doesn't depend on an external request */
+@font-face {
+  font-family: 'Blackletter';
+  src: url('../assets/fonts/blackletter.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --ink: #111;
   --bar-h: 64px;
@@ -268,7 +278,7 @@ button { font-family: inherit; }
   bottom: 16px;
   z-index: 2;
   color: #fff;
-  font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+  font-family: 'Blackletter', serif;
   font-size: 20px;
   letter-spacing: .01em;
   opacity: 0;
@@ -380,7 +390,7 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+  font-family: 'Blackletter', serif;
   font-size: 40px;
   font-weight: 400;
   transition: opacity .3s ease;
@@ -569,7 +579,10 @@ button { font-family: inherit; }
     gap: 22px;
     overflow-x: auto;
     scrollbar-width: none;
-    padding: 20px 24px;
+    /* generous side padding so even the first/last year can still
+       scroll all the way to the centre of the strip, not just as far
+       as the natural scroll bounds would otherwise allow */
+    padding: 20px 45vw;
   }
   .year-tabs::-webkit-scrollbar { display: none; }
   .year-tabs__item {
@@ -584,6 +597,23 @@ button { font-family: inherit; }
   .year-tabs__item.is-active {
     font-size: 22px;
     color: var(--ink);
+  }
+
+  /* ===========================================================
+     YEAR PAGER — the catalogue itself, one full-width swipeable page
+     per year (scroll-snap), driving the year-tabs above in sync
+     =========================================================== */
+  .year-pager {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .year-pager::-webkit-scrollbar { display: none; }
+  .year-page {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    padding: 0 24px;
   }
 }
 
@@ -1512,7 +1542,7 @@ body.dark-theme .footer { background: #000; }
 }
 .alinks__title {
   margin: 0;
-  font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+  font-family: 'Blackletter', serif;
   font-weight: 400;
   font-size: 56px;
   color: #111;
