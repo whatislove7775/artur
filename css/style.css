@@ -581,16 +581,19 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    =========================================================== */
 .sketch-card { display: block; }
 
+/* no fixed ratio, unlike .card__frame: sketches range from tall
+   portraits to wide, short pieces, and a fixed box would letterbox
+   the short ones — leaving a large dead gap between the artwork and
+   its caption. The frame takes the image's own height instead, so
+   the card always ends right where the sketch does. */
 .sketch-card__frame {
   width: 100%;
-  aspect-ratio: 4 / 5;
   overflow: hidden;
   background: #fff;
 }
 .sketch-card__frame img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
   transition: transform .5s ease;
 }
 .sketch-card:hover .sketch-card__frame img { transform: scale(1.03); }
@@ -997,116 +1000,137 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    =========================================================== */
 .about-page {
   width: 100%;
-  max-width: 1100px;
+  /* 1120 - 2x60 padding = a 1000px content box, which every column
+     position below is expressed as a percentage of (taken straight
+     off the mockup) */
+  max-width: 1120px;
   margin: 0 auto;
   padding: 118px 60px 140px;
 }
 
+/* every band of the page shares one column skeleton, so the text, the
+   photos, the Works entries and their thumbnail grids all line up on
+   the same two vertical rules the mockup uses: a narrow text/photo
+   column starting ~9% in, and a right column starting at ~53% */
+.about-row {
+  display: grid;
+  grid-template-columns: 8.9fr 37.9fr 6.4fr 46.8fr;
+  align-items: start;
+}
+.about-row__left { grid-column: 2; }
+.about-row__right { grid-column: 4; }
+
 .about__heading {
-  margin: 0 0 24px;
+  margin: 0 0 18px;
   font-family: 'Blackletter', serif;
   font-weight: 400;
-  font-size: 32px;
+  font-size: 30px;
   color: var(--ink);
 }
 
-.about-block { font-size: var(--font-a-size); color: var(--font-a-color); line-height: 1.6; }
-.about-block + .about-block { margin-top: 70px; }
-.about-block p { margin: 0 0 18px; }
+/* deliberately smaller than the site's --font-a-size: the mockup sets
+   this text at ~46 characters per line in that narrow column, which
+   only holds at this size */
+.about-block { font-size: 16px; color: var(--font-a-color); line-height: 1.6; }
+.about-block + .about-block { margin-top: 190px; }
+.about-block p { margin: 0 0 16px; }
 .about-block p:last-child { margin-bottom: 0; }
 
-/* intro + "My name is Artasimn" share one sticky right-hand column —
-   the portrait/signature stay put while both of those text blocks
-   scroll past (matching the mockup's red guide line), then release
-   naturally once this container ends, just above the photo/Tattoo
-   Office section below */
-.about-top {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 70px;
-  align-items: start;
-}
-.about-top__aside {
+/* the portrait column stays put while both text blocks scroll past
+   (the mockup's red guide line), then releases at the end of the row
+   — just above the Tattoo Office photos */
+.about-row--top .about-row__right {
   position: sticky;
   top: 100px;
   text-align: center;
 }
 .about-portrait {
-  width: 220px;
-  height: 220px;
+  width: 170px;
+  height: 170px;
   margin: 0 auto;
   border-radius: 50%;
   overflow: hidden;
   background: #e4e4e4;
 }
 .about-portrait img { width: 100%; height: 100%; object-fit: cover; }
-.about-signature { width: 160px; margin: 18px auto 0; }
+.about-signature { width: 140px; margin: 16px auto 0; }
 .about-signature img { width: 100%; height: auto; }
 .about-caption {
-  margin: 14px 0 0;
+  margin: 12px 0 0;
   font-size: var(--font-b-size);
   color: var(--font-b-color);
   line-height: 1.5;
 }
 
-/* generic grey placeholder used everywhere a real photo isn't wired
-   up yet (the two Tattoo Office photos, every Works thumbnail) —
-   aspect-ratio keeps each one predictable without needing an actual
-   image to size against */
+/* generic grey stand-in for every photo that isn't wired to a real
+   asset yet — the ratio is set per use so each one keeps the shape
+   the mockup gives it without needing an actual image to size against */
 .about-placeholder { width: 100%; aspect-ratio: 1 / 1; background: #e4e4e4; }
 
-.about-photos {
-  margin-top: 90px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  max-width: 640px;
-}
-.about-photos figure { margin: 0; }
-.about-photos figcaption {
-  margin-top: 10px;
+.about-figure { margin: 0; }
+.about-figure figcaption,
+.about-mark figcaption {
+  margin-top: 8px;
   font-size: var(--font-b-size);
   color: var(--font-b-color);
 }
 
-.about-works { margin-top: 90px; }
-.work { display: grid; grid-template-columns: 320px 1fr; gap: 50px; align-items: start; }
-.work + .work { margin-top: 80px; }
-.work__main { margin: 0; }
-.work__main figcaption {
-  margin-top: 10px;
-  font-size: var(--font-b-size);
-  color: var(--font-b-color);
+/* photo + its small companion mark share the left column, exactly as
+   the photo + title pair does in each Works entry below */
+.about-row__left--split {
+  display: grid;
+  grid-template-columns: 68% 1fr;
+  gap: 12px;
+  align-items: start;
 }
+.about-mark { width: 44px; }
+.about-mark .about-placeholder { border-radius: 50%; }
+
+.about-row--office { margin-top: 90px; }
+.about-row--office .about-placeholder { aspect-ratio: 4 / 3; }
+
+.about-row--works-head { margin-top: 80px; }
+.about-row--works-head .about__heading { margin-bottom: 0; }
+
+.work { margin-top: 40px; }
+.work + .work { margin-top: 113px; }
 .work__title {
-  font-size: var(--font-a-size);
+  font-size: 16px;
   color: var(--font-a-color);
   line-height: 1.4;
 }
 .work__grid-heading {
-  margin-top: 24px;
   font-size: var(--font-b-size);
   color: var(--font-b-color);
 }
+/* 25% of the page's content box, per the mockup — a little over half
+   the right column it sits in */
 .work__grid {
-  margin-top: 14px;
+  width: 53.4%;
+  margin-top: 12px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 6px;
 }
 
 @media (max-width: 980px) {
   .about-page { padding: 90px 24px 100px; }
-  .about-top { grid-template-columns: 1fr; gap: 40px; }
-  /* the portrait/signature/caption column renders after the text in
-     the DOM (so it can be the sticky second grid column on desktop),
-     but the mobile mockup wants it first, above "About Artasimn" —
-     grid items honour `order` same as flex, so this reorders it
-     visually without touching the markup */
-  .about-top__aside { position: static; order: -1; }
-  .about-photos { grid-template-columns: 1fr 1fr; max-width: 100%; }
-  .work { grid-template-columns: 1fr; gap: 20px; }
-  .work__grid { grid-template-columns: repeat(3, 1fr); }
+  /* the four-column skeleton collapses to one full-width column —
+     every band then reads as a simple vertical stack */
+  .about-row { grid-template-columns: 1fr; gap: 30px; }
+  .about-row__left,
+  .about-row__right { grid-column: 1; }
+  /* the portrait column comes after the text in the DOM (so it can be
+     the sticky right-hand column on desktop), but the mobile mockup
+     wants it first, above "About Artasimn" — grid items honour
+     `order` same as flex, so this reorders it without touching the
+     markup */
+  .about-row--top .about-row__right { position: static; order: -1; }
+  .about-block + .about-block { margin-top: 60px; }
+  .about-row--office,
+  .about-row--works-head { margin-top: 60px; }
+  .work + .work { margin-top: 60px; }
+  .work__grid { width: 100%; grid-template-columns: repeat(4, 1fr); }
 }
 
 /* ===========================================================
@@ -1409,11 +1433,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
     break-inside: avoid;
     margin-bottom: 32px;
   }
-  .sketch-grid .sketch-card__frame {
-    aspect-ratio: auto;
-    background: none;
-  }
-  .sketch-grid .sketch-card__frame img { height: auto; object-fit: contain; }
+  .sketch-grid .sketch-card__frame { background: none; }
   .sketch-grid .year-marker { display: none; }
   /* the header-clearance margin only made sense for the old single
      column, flush to the left edge — centred two-up cards don't need
@@ -1722,30 +1742,41 @@ body.dark-theme .footer { background: #000; }
    =========================================================== */
 .alinks-page { background: #fff; }
 .alinks {
+  /* every size on this page is a fixed fraction of one design width
+     rather than a px value, so the whole composition (icon vs label
+     vs gap) holds the mockup's exact proportions at any viewport and
+     simply scales as a unit — 800px is the mockup's own width, which
+     is where it renders 1:1 */
+  --w: min(800px, 100vw);
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 24px 80px;
+  padding: calc(var(--w) * .125) 12px calc(var(--w) * .16);
   text-align: center;
 }
 .alinks__title {
   margin: 0;
   font-family: 'Blackletter', serif;
   font-weight: 400;
-  font-size: 56px;
+  font-size: calc(var(--w) * .104);
+  line-height: 1.15;
   color: #111;
 }
 .alinks__subtitle {
   margin: 6px 0 0;
   font-family: 'Times New Roman', Times, serif;
-  font-size: 16px;
+  font-size: calc(var(--w) * .0477);
   color: #333;
 }
 
+/* deliberately far narrower than the labels it sits behind: at this
+   width each slice of the sprite is short enough that consecutive
+   icons stack edge to edge into one continuous vertical chain (the
+   mockup's look), while the labels overflow it left and right */
 .alinks__list {
-  width: min(320px, 84vw);
-  margin: 70px auto 0;
+  width: calc(var(--w) * .343);
+  margin: calc(var(--w) * .157) auto 0;
   display: flex;
   flex-direction: column;
 }
@@ -1758,18 +1789,14 @@ body.dark-theme .footer { background: #000; }
   text-decoration: none;
 }
 .alinks__item--stub { cursor: default; }
-/* the same single graphic, shown whole (never cropped into per-icon
-   slices) and identically on every button */
+/* one 280x166.5 slice of the six-icon sprite, at full size (no
+   scale-down) so it fills its slot edge to edge */
 .alinks__icon {
   position: absolute;
   inset: 0;
   background-image: url(../assets/alinks/bg.svg);
   background-repeat: no-repeat;
   background-size: 100% 600%;
-  /* shrinks the icon graphic uniformly around the box's own centre —
-     the label below is centred on that same box, so scaling this way
-     keeps both aligned on one shared centre */
-  transform: scale(.62);
 }
 .alinks__icon[data-icon="0"] { background-position: 0 0%; }
 .alinks__icon[data-icon="1"] { background-position: 0 20%; }
@@ -1781,29 +1808,24 @@ body.dark-theme .footer { background: #000; }
   position: relative;
   z-index: 1;
   font-family: 'Courier New', Courier, monospace;
-  font-weight: 700;
-  font-size: 30px;
+  font-weight: 400;
+  font-size: calc(var(--w) * .0653);
+  line-height: 1;
+  white-space: nowrap;
   color: #111;
 }
 
 .alinks__disclaimer {
-  margin: 120px 0 0;
-  max-width: 480px;
+  margin: calc(var(--w) * .163) 0 0;
+  max-width: calc(var(--w) * .80);
   font-family: 'Times New Roman', Times, serif;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: calc(var(--w) * .0434);
+  line-height: 1.35;
   color: #111;
 }
 .alinks__copyright {
-  margin: 20px 0 0;
+  margin: calc(var(--w) * .113) 0 0;
   font-family: 'Times New Roman', Times, serif;
-  font-size: 15px;
+  font-size: calc(var(--w) * .0434);
   color: #111;
-}
-
-@media (max-width: 560px) {
-  .alinks__title { font-size: 44px; }
-  .alinks__list { margin-top: 50px; }
-  .alinks__label { font-size: 28px; }
-  .alinks__disclaimer { margin-top: 90px; }
 }
