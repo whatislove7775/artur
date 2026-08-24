@@ -162,7 +162,16 @@ function initHeroHeader() {
     const photoEdge = useHero && strip ? strip : target;
     const overHero = photoEdge.getBoundingClientRect().bottom > 0;
 
-    if (useHero) {
+    if (useHero && hero.classList.contains('hero-mobile--half')) {
+      // section-page heroes (tattoo.html, filtered categories): no
+      // white backdrop at rest at all — transparent + white icons the
+      // whole time the photo is on screen, solid again once scrolled
+      // past it. Different from the homepage's hero below, which
+      // deliberately keeps a solid white bar until the first scroll.
+      header.classList.toggle('is-transparent', overHero);
+      header.classList.toggle('is-inverted', overHero);
+      if (heroOverlay) heroOverlay.classList.toggle('is-hidden', window.scrollY > 40);
+    } else if (useHero) {
       const scrolled = window.scrollY > 0;
       header.classList.toggle('is-transparent', scrolled);
       header.classList.toggle('is-inverted', scrolled && overHero);
