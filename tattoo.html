@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20260837">
+<link rel="stylesheet" href="css/style.css?v=20260838">
 </head>
 <body>
 
@@ -19,6 +16,7 @@
 <nav class="year-tabs" data-year-tabs></nav>
 
 <main class="catalogue" id="catalogue">
+  <div class="year-pager" data-year-pager></div>
   <div class="grid-2 sketch-grid" data-grid></div>
 </main>
 
@@ -26,8 +24,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260837"></script>
-<script src="js/site.js?v=20260837"></script>
+<script src="js/data.js?v=20260838"></script>
+<script src="js/site.js?v=20260838"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -42,35 +40,75 @@
     mountHeroMobile('', { img: 'assets/menu/tattoo.png', label: 'Tattoo' });
     document.getElementById('heroMobile').classList.add('hero-mobile--half');
     initHeroHeader();
+    document.querySelector('[data-grid]').remove();
 
-    const grid = document.querySelector('[data-grid]');
+    // oldest-to-newest, left-to-right — matches how the tabs read, and
+    // how the pager pages are laid out below
+    const yearsAsc = [...years].reverse();
     const tabs = document.querySelector('[data-year-tabs]');
+    const pager = document.querySelector('[data-year-pager]');
 
-    function renderYear(year) {
+    tabs.innerHTML = yearsAsc
+      .map((y) => `<button type="button" class="year-tabs__item" data-year="${y}">${y}</button>`)
+      .join('');
+    pager.innerHTML = yearsAsc
+      .map(
+        (y) =>
+          `<div class="year-page" data-year-page="${y}">
+             <div class="grid-2 sketch-grid">
+               ${byYear(y)
+                 .map((s, i) => sketchCardMarkup('', s, i + 1))
+                 .join('')}
+             </div>
+           </div>`
+      )
+      .join('');
+
+    function setActive(year) {
       tabs.querySelectorAll('.year-tabs__item').forEach((btn) => {
         btn.classList.toggle('is-active', Number(btn.dataset.year) === year);
       });
-      grid.innerHTML = byYear(year)
-        .map((s, i) => sketchCardMarkup('', s, i + 1))
-        .join('');
       const active = tabs.querySelector('.year-tabs__item.is-active');
       if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
     }
 
-    tabs.innerHTML = years
-      .map((y) => `<button type="button" class="year-tabs__item" data-year="${y}">${y}</button>`)
-      .join('');
+    // tapping a tab scrolls the pager to that year's page — the pager's
+    // own scroll (see below) is what then confirms the selection and
+    // keeps the tab centred, same as a manual swipe would
     tabs.querySelectorAll('.year-tabs__item').forEach((btn) => {
-      btn.addEventListener('click', () => renderYear(Number(btn.dataset.year)));
+      btn.addEventListener('click', () => {
+        const page = pager.querySelector(`[data-year-page="${btn.dataset.year}"]`);
+        page.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      });
     });
 
-    renderYear(years[0]);
+    // swiping the catalogue itself is the primary way to change year —
+    // scroll-snap already makes each page settle centred; this just
+    // figures out which page that is and syncs the tab strip to match
+    let scrollTimer;
+    pager.addEventListener(
+      'scroll',
+      () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+          const index = Math.round(pager.scrollLeft / pager.clientWidth);
+          setActive(yearsAsc[Math.max(0, Math.min(yearsAsc.length - 1, index))]);
+        }, 100);
+      },
+      { passive: true }
+    );
+
+    // start on the newest year (the last page) with no scroll animation
+    const lastPage = pager.lastElementChild;
+    if (lastPage) pager.scrollLeft = lastPage.offsetLeft;
+    setActive(yearsAsc[yearsAsc.length - 1]);
   } else {
     // desktop: unchanged — permanently transparent header, no hero, the
     // whole catalogue (every year) in one scroll with the year-rail
     // scrollspy on the right
     document.getElementById('heroMobile').remove();
     document.querySelector('[data-year-tabs]').remove();
+    document.querySelector('[data-year-pager]').remove();
     document.getElementById('catalogue').classList.add('catalogue--top');
     document.querySelector('.header').classList.add('is-transparent');
 
