@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260835">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260836">
 </head>
 <body>
 
@@ -13,106 +16,79 @@
 
 <div class="hero-mobile" id="heroMobile"></div>
 
-<div class="year-filter" data-year-filter></div>
+<nav class="year-tabs" data-year-tabs></nav>
 
 <main class="catalogue" id="catalogue">
-  <div class="grid-2" data-grid></div>
+  <div class="grid-2 sketch-grid" data-grid></div>
 </main>
 
 <aside class="year-rail" data-years></aside>
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260835"></script>
-<script src="js/site.js?v=20260835"></script>
+<script src="js/data.js?v=20260836"></script>
+<script src="js/site.js?v=20260836"></script>
 <script>
   mountHeader();
   mountFooter();
 
-  // behaves like items.html on every viewport: permanently transparent
-  // header, no hero/intro photo, catalogue--top gives it the header
-  // clearance padding on both desktop and mobile.
-  document.getElementById('heroMobile').remove();
-  document.getElementById('catalogue').classList.add('catalogue--top');
-  document.querySelector('.header').classList.add('is-transparent');
-
   const years = sketchYears();
-  const grid = document.querySelector('[data-grid]');
-  grid.innerHTML = years
-    .map(
-      (year, i) =>
-        `<div class="year-marker" data-year-marker="${year}"></div>` +
-        byYear(year)
-          .map((s) => sketchCardMarkup('', s))
-          .join('')
-    )
-    .join('');
+  const isMobile = window.innerWidth <= 980;
 
-  const rail = document.querySelector('[data-years]');
-  rail.innerHTML = years.map((y) => `<span class="year-rail__item">${y}</span>`).join('');
+  if (isMobile) {
+    // half-screen intro photo with the section name over it, like the
+    // homepage hero but shorter — same scroll-driven header behaviour
+    // (initHeroHeader), just a text label instead of the wordmark image
+    mountHeroMobile('', { img: 'assets/menu/tattoo.png', label: 'Tattoo' });
+    document.getElementById('heroMobile').classList.add('hero-mobile--half');
+    initHeroHeader();
 
-  // desktop only, in practice — the rail this drives is hidden on
-  // mobile/tablet in favour of the year-filter dropdown below, which
-  // just re-renders the grid directly instead of scrolling to it
-  initYearScrollspy(years);
+    const grid = document.querySelector('[data-grid]');
+    const tabs = document.querySelector('[data-year-tabs]');
 
-  // mobile/tablet: "year: all" dropdown — newest-to-oldest by default
-  // (byYear/sketchYears already sort that way), or a single year once
-  // picked. Doesn't touch the desktop rail/scrollspy above; it's
-  // simply hidden at this width, so nothing needs to stay in sync.
-  const yearFilter = document.querySelector('[data-year-filter]');
-  yearFilter.innerHTML = `
-    <button type="button" class="year-filter__toggle" data-year-toggle>
-      year: <span data-year-current>all</span>
-      <svg class="year-filter__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
-        <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.3"/>
-      </svg>
-    </button>
-    <div class="year-filter__list" data-year-list></div>`;
-
-  const currentLabel = yearFilter.querySelector('[data-year-current]');
-  const list = yearFilter.querySelector('[data-year-list]');
-
-  // the list's left edge lines up under the currently-selected value
-  // (not the "year:" label, and not centred on the toggle as a whole)
-  // — both shift as the label's own text changes width, so this is
-  // re-measured on every render rather than set once in CSS
-  function positionList() {
-    const filterRect = yearFilter.getBoundingClientRect();
-    const currentRect = currentLabel.getBoundingClientRect();
-    list.style.marginLeft = `${currentRect.left - filterRect.left}px`;
-  }
-
-  // excludes whichever value is currently selected — picking a year
-  // only makes sense for the years you're not already looking at
-  function renderOptions(current) {
-    const options = ['all', ...years].filter((y) => String(y) !== String(current));
-    list.innerHTML = options.map((y) => `<a href="#" data-year-option="${y}">${y}</a>`).join('');
-    list.querySelectorAll('[data-year-option]').forEach((opt) => {
-      opt.addEventListener('click', (e) => {
-        e.preventDefault();
-        selectYear(opt.dataset.yearOption);
+    function renderYear(year) {
+      tabs.querySelectorAll('.year-tabs__item').forEach((btn) => {
+        btn.classList.toggle('is-active', Number(btn.dataset.year) === year);
       });
+      grid.innerHTML = byYear(year)
+        .map((s, i) => sketchCardMarkup('', s, i + 1))
+        .join('');
+      const active = tabs.querySelector('.year-tabs__item.is-active');
+      if (active) active.scrollIntoView({ inline: 'center', block: 'nearest' });
+    }
+
+    tabs.innerHTML = years
+      .map((y) => `<button type="button" class="year-tabs__item" data-year="${y}">${y}</button>`)
+      .join('');
+    tabs.querySelectorAll('.year-tabs__item').forEach((btn) => {
+      btn.addEventListener('click', () => renderYear(Number(btn.dataset.year)));
     });
+
+    renderYear(years[0]);
+  } else {
+    // desktop: unchanged — permanently transparent header, no hero, the
+    // whole catalogue (every year) in one scroll with the year-rail
+    // scrollspy on the right
+    document.getElementById('heroMobile').remove();
+    document.querySelector('[data-year-tabs]').remove();
+    document.getElementById('catalogue').classList.add('catalogue--top');
+    document.querySelector('.header').classList.add('is-transparent');
+
+    const grid = document.querySelector('[data-grid]');
+    grid.innerHTML = years
+      .map(
+        (year) =>
+          `<div class="year-marker" data-year-marker="${year}"></div>` +
+          byYear(year)
+            .map((s) => sketchCardMarkup('', s))
+            .join('')
+      )
+      .join('');
+
+    const rail = document.querySelector('[data-years]');
+    rail.innerHTML = years.map((y) => `<span class="year-rail__item">${y}</span>`).join('');
+    initYearScrollspy(years);
   }
-
-  function selectYear(val) {
-    currentLabel.textContent = val;
-    yearFilter.classList.remove('is-open');
-    const shownYears = val === 'all' ? years : [Number(val)];
-    grid.innerHTML = shownYears.map((y) => byYear(y).map((s) => sketchCardMarkup('', s)).join('')).join('');
-    renderOptions(val);
-    positionList();
-  }
-
-  renderOptions('all');
-  positionList();
-
-  yearFilter.querySelector('[data-year-toggle]').addEventListener('click', () => {
-    positionList();
-    yearFilter.classList.toggle('is-open');
-  });
-  window.addEventListener('resize', positionList);
 </script>
 </body>
 </html>

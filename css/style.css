@@ -268,7 +268,8 @@ button { font-family: inherit; }
   bottom: 16px;
   z-index: 2;
   color: #fff;
-  font-size: var(--font-b-size);
+  font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+  font-size: 20px;
   letter-spacing: .01em;
   opacity: 0;
   transition: opacity .35s ease;
@@ -284,6 +285,30 @@ button { font-family: inherit; }
 }
 .menu-tile.is-active .menu-tile__veil { opacity: 0; }
 .menu-tile.is-active .menu-tile__label { opacity: 1; }
+
+/* ===========================================================
+   MARQUEE — scrolling text strip under the menu-strip/hero-mobile.
+   Two identical copies of the text sit back to back in the track;
+   scrolling exactly -50% of the track's width loops seamlessly.
+   =========================================================== */
+.marquee {
+  overflow: hidden;
+  background: #000;
+  white-space: nowrap;
+}
+.marquee__track {
+  display: inline-flex;
+  width: max-content;
+  padding: 10px 0;
+  color: #fff;
+  font-size: var(--font-b-size);
+  letter-spacing: .02em;
+  animation: marquee-scroll 28s linear infinite;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
 /* ===========================================================
    HERO MOBILE — mobile/tablet-only replacement for the menu-strip,
@@ -342,6 +367,29 @@ button { font-family: inherit; }
   filter: brightness(0) invert(1);
 }
 .hero-mobile__logo.is-hidden { opacity: 0; }
+
+/* text version of the overlay (tattoo.html and other section pages),
+   used instead of .hero-mobile__logo — same centring/fade behaviour,
+   driven by the same initHeroHeader logic */
+.hero-mobile__label {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'UnifrakturMaguntia', 'Old English Text MT', serif;
+  font-size: 40px;
+  font-weight: 400;
+  transition: opacity .3s ease;
+}
+.hero-mobile__label.is-hidden { opacity: 0; }
+
+/* half-height variant — section pages (tattoo.html) get a shorter
+   intro photo than the homepage's full-screen one */
+.hero-mobile--half { height: 50vh; height: 50svh; }
 
 /* ===========================================================
    CATALOGUE GRID
@@ -403,60 +451,10 @@ button { font-family: inherit; }
 .year-rail__item.is-current { color: var(--ink); }
 
 @media (max-width: 980px) {
-  /* replaced by .year-filter (a simple dropdown right under the
-     header) on mobile/tablet — narrow phones don't have the spare
-     width for a side rail, rotated or not */
+  /* replaced by .year-tabs (a horizontal scroller right under the
+     hero) on mobile/tablet — narrow phones don't have the spare width
+     for a side rail, rotated or not */
   .year-rail { display: none; }
-}
-
-/* ===========================================================
-   YEAR FILTER — mobile/tablet-only dropdown replacement for the
-   year rail, sits right under the header on tattoo.html
-   =========================================================== */
-.year-filter { display: none; }
-
-@media (max-width: 980px) {
-  .year-filter {
-    display: block;
-    text-align: center;
-    padding: 66px 0 0;
-  }
-  .year-filter__toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: 0;
-    font: inherit;
-    font-size: var(--font-a-size);
-    color: var(--font-a-color);
-  }
-  .year-filter__chevron { transition: transform .2s ease; }
-  .year-filter.is-open .year-filter__chevron { transform: rotate(180deg); }
-
-  /* width: fit-content + a JS-computed margin-left (see positionList
-     in tattoo.html) lines this list's left edge up under the
-     currently-selected value in the toggle above, rather than
-     centring it under the toggle as a whole */
-  .year-filter__list {
-    display: none;
-    width: fit-content;
-    margin: 10px 0 0;
-    text-align: left;
-  }
-  .year-filter.is-open .year-filter__list { display: block; }
-  .year-filter__list a {
-    display: block;
-    padding: 3px 0;
-    font-size: var(--font-a-size);
-    color: var(--font-a-color);
-  }
-  .year-filter__list a:hover { color: var(--font-b-color); }
-
-  /* the filter itself now carries the header clearance (see its own
-     padding-top above), so the grid right after it only needs a
-     little breathing room, not the full header-height offset again */
-  .year-filter ~ .catalogue.catalogue--top { padding-top: 30px; }
 }
 
 /* ===========================================================
@@ -550,6 +548,43 @@ button { font-family: inherit; }
   margin-left: 10px;
   font-size: var(--font-a-size);
   color: var(--font-a-color);
+}
+.sketch-card__number {
+  margin-top: 10px;
+  text-align: center;
+  font-size: var(--font-b-size);
+  color: var(--font-b-color);
+}
+
+/* ===========================================================
+   YEAR TABS — mobile/tablet-only horizontal scroller on tattoo.html,
+   replaces the year-filter dropdown. One year is shown at a time;
+   the selected tab is bigger/dark, the rest small/muted.
+   =========================================================== */
+.year-tabs { display: none; }
+@media (max-width: 980px) {
+  .year-tabs {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 20px 24px;
+  }
+  .year-tabs::-webkit-scrollbar { display: none; }
+  .year-tabs__item {
+    flex: 0 0 auto;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: var(--font-b-size);
+    color: var(--font-b-color);
+    padding: 0;
+  }
+  .year-tabs__item.is-active {
+    font-size: 22px;
+    color: var(--ink);
+  }
 }
 
 /* ===========================================================
@@ -1132,12 +1167,18 @@ button { font-family: inherit; }
     opacity: 1;
   }
 
-  /* the hero markup comes after the menu-strip in the DOM (desktop
-     doesn't render it at all, so source order never mattered before),
-     but on mobile it needs to be the first full-screen photo, with the
-     menu-strip stack right under it — body is already a flex column,
-     so this reorders them without touching the markup */
-  .hero-mobile { display: block; order: -1; }
+  /* the hero markup comes after the menu-strip/marquee in the DOM
+     (desktop doesn't render it at all, so source order never mattered
+     before), but on mobile it needs to be the first full-screen photo,
+     with the marquee right under it and the menu-strip stack after
+     that — body is already a flex column, so this reorders them
+     without touching the markup. Desktop wants menu-strip before the
+     marquee; mobile wants the opposite (marquee right under the hero,
+     menu-strip stack below that), hence the explicit order here
+     instead of leaving it to plain DOM order. */
+  .hero-mobile { display: block; order: -2; }
+  .marquee { order: -1; }
+  .menu-strip { order: 0; }
   .catalogue { padding: 0 30px 100px; }
   /* mobile header is one compact row (~50px) — items.html's hero-less
      catalogue needs the matching extra clearance */
@@ -1152,6 +1193,26 @@ button { font-family: inherit; }
   }
 
   .grid-2 { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 40px; }
+
+  /* tattoo.html's mobile feed: two-column masonry (CSS columns, not
+     grid) so each column flows independently — no shared row height
+     forcing every sketch into the same box. Each image keeps its own
+     natural aspect ratio instead of being cropped/letterboxed. */
+  .sketch-grid {
+    display: block;
+    columns: 2;
+    column-gap: 16px;
+  }
+  .sketch-grid .sketch-card {
+    break-inside: avoid;
+    margin-bottom: 32px;
+  }
+  .sketch-grid .sketch-card__frame {
+    aspect-ratio: auto;
+    background: none;
+  }
+  .sketch-grid .sketch-card__frame img { height: auto; object-fit: contain; }
+  .sketch-grid .year-marker { display: none; }
   /* the header-clearance margin only made sense for the old single
      column, flush to the left edge — centred two-up cards don't need
      it, and smaller type suits the narrower columns */
@@ -1238,12 +1299,10 @@ button { font-family: inherit; }
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 22px;
+    gap: 24px;
     padding: 20px 24px 0;
     font-family: 'Times New Roman', Times, serif;
-    /* same size as the icon button above it, not an arbitrary bigger
-       size — the whole panel reads as one consistent button size */
-    font-size: var(--font-a-size);
+    font-size: 32px;
   }
   .mobile-menu__link {
     align-self: flex-start;
@@ -1252,16 +1311,29 @@ button { font-family: inherit; }
     gap: 10px;
     text-transform: capitalize;
   }
-  .mobile-menu__icon { width: 26px; height: 26px; object-fit: contain; opacity: .65; }
+  .mobile-menu__link span:first-child { text-decoration: underline; white-space: nowrap; }
+  /* square outline around each icon, matching the reference mockup —
+     the icon itself sits inside at a smaller, consistent size */
+  .mobile-menu__icon-box {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-menu__icon { width: 20px; height: 20px; object-fit: contain; }
   /* the staggered left offsets below are lifted directly from the
      mockup's cascading zigzag layout, not a formula */
   .mobile-menu__link:nth-child(1) { margin-left: 0; }
-  .mobile-menu__link:nth-child(2) { margin-left: 58%; }
-  .mobile-menu__link:nth-child(3) { margin-left: 18%; }
-  .mobile-menu__link:nth-child(4) { margin-left: 35%; }
-  .mobile-menu__link:nth-child(5) { margin-left: 55%; }
+  .mobile-menu__link:nth-child(2) { margin-left: 63%; }
+  .mobile-menu__link:nth-child(3) { margin-left: 20%; }
+  .mobile-menu__link:nth-child(4) { margin-left: 33%; }
+  .mobile-menu__link:nth-child(5) { margin-left: 53%; }
   .mobile-menu__link:nth-child(6) { margin-left: 15%; }
-  .mobile-menu__link:nth-child(7) { margin-left: 60%; }
+  .mobile-menu__link:nth-child(7) { margin-left: 28%; }
+  .mobile-menu__link:nth-child(8) { margin-left: 65%; }
   .mobile-menu__disclaimer {
     margin: auto 24px 24px;
     font-family: 'Times New Roman', Times, serif;
