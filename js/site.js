@@ -37,31 +37,35 @@ function headerMarkup(prefix) {
     <nav class="mobile-menu__links">
       <a class="mobile-menu__link" href="${p}index.html">
         <span>home</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/home.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/home.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}about.html">
         <span>about</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/about.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/about.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}index.html?cat=garment">
         <span>garment</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/garment.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/garment.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}index.html?cat=jewellery">
         <span>jewellery</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/jewellery.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}tattoo.html">
         <span>tattoo</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/tattoo.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}adept.html">
         <span>a.dept</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/adept.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/adept.svg" alt=""></span>
+      </a>
+      <a class="mobile-menu__link" href="https://tattoo-office.com" target="_blank" rel="noopener">
+        <span>tattoo office</span>
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/tattoo-office.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="#" data-cart-open data-mobile-menu-cart>
         <span>cart</span>
-        <img class="mobile-menu__icon" src="${p}assets/menu-icons/cart.svg" alt="">
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/cart.svg" alt=""></span>
       </a>
     </nav>
     <p class="mobile-menu__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
@@ -336,16 +340,20 @@ function mountMenuStrip(prefix, activeId) {
    header/overlay fade behaviour). Category/tattoo pages used to get
    their own full-screen intro photo here too; that's gone now, so
    this only ever mounts on the homepage. */
-function heroMobileMarkup(prefix) {
+function heroMobileMarkup(prefix, opts) {
   const p = prefix || '';
+  const o = opts || {};
+  const overlay = o.label
+    ? `<h1 class="hero-mobile__label">${o.label}</h1>`
+    : `<div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
   return `
-  <img class="hero-mobile__img" src="${p}assets/hero-mobile.png" alt="Artasimn">
-  <div class="hero-mobile__logo"><img src="${p}assets/logo.svg" alt="Artasimn"></div>`;
+  <img class="hero-mobile__img" src="${p}${o.img || 'assets/hero-mobile.png'}" alt="">
+  ${overlay}`;
 }
 
-function mountHeroMobile(prefix) {
+function mountHeroMobile(prefix, opts) {
   const el = document.querySelector('.hero-mobile');
-  if (el) el.innerHTML = heroMobileMarkup(prefix);
+  if (el) el.innerHTML = heroMobileMarkup(prefix, opts);
 }
 
 /* Product card — mouse position along the image scrubs through the
@@ -783,17 +791,23 @@ function renderCards(target, items, prefix) {
   el.querySelectorAll('.card').forEach(attachScrub);
 }
 
-function sketchCardMarkup(prefix, sketch) {
+/* number, when given, replaces the date/caption pair with a plain
+   sequential "01"/"02" label — used by tattoo.html's mobile masonry
+   feed, where the catalogue is just numbered, not dated */
+function sketchCardMarkup(prefix, sketch, number) {
   const p = prefix || '';
   const s = sketch || SKETCHES[0];
+  const meta = number
+    ? `<div class="sketch-card__number">${String(number).padStart(2, '0')}</div>`
+    : `<div class="sketch-card__date">${s.date}</div>
+       <div class="sketch-card__caption">${s.caption}</div>`;
   return `
   <a class="sketch-card" href="${p}tattoo-item.html?id=${s.id}">
     <div class="sketch-card__frame">
       <img src="${p}${s.image}" alt="${s.caption}">
     </div>
     <div class="card__dots" aria-hidden="true"><span></span></div>
-    <div class="sketch-card__date">${s.date}</div>
-    <div class="sketch-card__caption">${s.caption}</div>
+    ${meta}
   </a>`;
 }
 

@@ -320,7 +320,7 @@ const MENU = [
   },
   {
     id: 'tattoo-office',
-    label: 'Tatto Office',
+    label: 'Tattoo Office',
     image: 'assets/menu/tattoo-office.png',
     kind: 'external',
     href: 'https://tattoo-office.com'
