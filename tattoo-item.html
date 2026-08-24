@@ -5,54 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260840">
+<link rel="stylesheet" href="css/style.css?v=20260841">
 </head>
 <body>
 
 <header class="header"></header>
 
 <main class="product-page">
-  <div class="product" id="product"></div>
+  <div id="feed"></div>
 </main>
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260840"></script>
-<script src="js/site.js?v=20260840"></script>
+<script src="js/data.js?v=20260841"></script>
+<script src="js/site.js?v=20260841"></script>
 <script>
   mountHeader();
   mountFooter();
 
-  const id = new URLSearchParams(location.search).get('id');
-  const item = SKETCHES.find((s) => s.id === id) || SKETCHES[0];
-  document.title = 'Artasimn — ' + item.caption;
+  const startId = new URLSearchParams(location.search).get('id');
+  const startIndex = Math.max(0, SKETCHES.findIndex((s) => s.id === startId));
+  document.title = 'Artasimn — ' + SKETCHES[startIndex >= 0 ? startIndex : 0].caption;
 
-  const descriptionHtml =
-    item.descriptionRu.map((p) => `<p>${p}</p>`).join('') +
-    item.descriptionEn.map((p) => `<p>${p}</p>`).join('') +
-    '<p style="color:#999;font-size:13px">*Социальная сеть Instagram запрещена на территории РФ, Meta Platforms Inc. признана в РФ экстремистской организацией.</p>';
+  const feed = document.getElementById('feed');
+  let nextIndex = 0;
 
-  document.getElementById('product').innerHTML = `
-    <div class="product__left">
-      <div class="product__main">
-        <img src="${item.image}" alt="${item.caption}">
+  function sketchBlockMarkup(item) {
+    const descriptionHtml =
+      item.descriptionRu.map((p) => `<p>${p}</p>`).join('') +
+      item.descriptionEn.map((p) => `<p>${p}</p>`).join('') +
+      '<p style="color:#999;font-size:13px">*Социальная сеть Instagram запрещена на территории РФ, Meta Platforms Inc. признана в РФ экстремистской организацией.</p>';
+
+    return `
+    <div class="product" data-sketch-block>
+      <div class="product__left">
+        <div class="product__main product__main--fluid">
+          <img src="${item.image}" alt="${item.caption}">
+        </div>
+        <div class="product__title">ЭСКИЗ</div>
+        <div class="product__price">${item.date}</div>
       </div>
-      <div class="product__title">ЭСКИЗ</div>
-      <div class="product__price">${item.date}</div>
-    </div>
-    <div class="product__right">
-      <div class="product__actions">
-        <a href="https://t.me/artasimn" target="_blank" rel="noopener">+ order via telegram</a>
-        <a href="https://instagram.com/artasimn" target="_blank" rel="noopener">+ order via instagram</a>
+      <div class="product__right">
+        <div class="product__actions">
+          <a href="https://t.me/artasimn" target="_blank" rel="noopener">+ order via telegram</a>
+          <a href="https://instagram.com/artasimn" target="_blank" rel="noopener">+ order via instagram</a>
+        </div>
+        ${accordionMarkup('DESCRIPTION', descriptionHtml, true)}
       </div>
-      ${accordionMarkup('DESCRIPTION', descriptionHtml, true)}
     </div>`;
+  }
 
-  document.querySelector('.product__main').addEventListener('click', () => {
-    openLightbox([item.image], 0, item.caption);
-  });
+  function appendNextSketch() {
+    if (nextIndex >= SKETCHES.length) return;
+    const item = SKETCHES[nextIndex];
+    nextIndex += 1;
 
-  initAccordions();
+    const block = document.createElement('div');
+    block.innerHTML = sketchBlockMarkup(item);
+    const node = block.firstElementChild;
+    feed.appendChild(node);
+
+    node.querySelector('.product__main').addEventListener('click', () => {
+      openLightbox([item.image], 0, item.caption);
+    });
+    initAccordions(node);
+  }
+
+  // load the requested sketch first, then keep the feed going in the
+  // catalogue's own order (wrapping past the end back to the start)
+  // so there's always something more to scroll into, endlessly
+  nextIndex = startIndex >= 0 ? startIndex : 0;
+  appendNextSketch();
+
+  const sentinel = document.createElement('div');
+  feed.after(sentinel);
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      if (nextIndex >= SKETCHES.length) nextIndex = 0;
+      appendNextSketch();
+    }
+  }, { rootMargin: '600px' });
+  observer.observe(sentinel);
 </script>
 </body>
 </html>
