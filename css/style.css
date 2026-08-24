@@ -615,21 +615,18 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   color: var(--font-b-color);
 }
 
-/* tattoo.html's whole catalogue (desktop and mobile alike): a single
-   vertical feed, never a horizontal grid — each sketch keeps its own
-   natural aspect ratio (no crop/letterbox), so pieces render at
-   whatever size that implies instead of a uniform card size. The
-   ≤980px breakpoint below layers the mobile-only two-column masonry
-   on top of this. */
+/* tattoo.html desktop: same two-column grid as the product catalogue
+   (.grid-2) — .sketch-card__frame already matches .card__frame's own
+   fixed-ratio/contain treatment, so this reads as one consistent
+   catalogue style across both sections. The ≤980px breakpoint below
+   replaces this with the mobile-only masonry feed instead. */
 .sketch-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 80px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 90px;
+  row-gap: 70px;
+  align-items: start;
 }
-.sketch-grid .sketch-card { width: min(640px, 100%); }
-.sketch-grid .sketch-card__frame { aspect-ratio: auto; background: none; }
-.sketch-grid .sketch-card__frame img { height: auto; object-fit: contain; }
 
 /* ===========================================================
    YEAR TABS — mobile/tablet-only horizontal scroller on tattoo.html,
@@ -1101,7 +1098,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 @media (max-width: 980px) {
   .about-page { padding: 90px 24px 100px; }
   .about-top { grid-template-columns: 1fr; gap: 40px; }
-  .about-top__aside { position: static; }
+  /* the portrait/signature/caption column renders after the text in
+     the DOM (so it can be the sticky second grid column on desktop),
+     but the mobile mockup wants it first, above "About Artasimn" —
+     grid items honour `order` same as flex, so this reorders it
+     visually without touching the markup */
+  .about-top__aside { position: static; order: -1; }
   .about-photos { grid-template-columns: 1fr 1fr; max-width: 100%; }
   .work { grid-template-columns: 1fr; gap: 20px; }
   .work__grid { grid-template-columns: repeat(3, 1fr); }
@@ -1763,15 +1765,24 @@ body.dark-theme .footer { background: #000; }
   inset: 0;
   background-image: url(../assets/alinks/bg.svg);
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  background-size: 100% 600%;
+  /* shrinks the icon graphic uniformly around the box's own centre —
+     the label below is centred on that same box, so scaling this way
+     keeps both aligned on one shared centre */
+  transform: scale(.62);
 }
+.alinks__icon[data-icon="0"] { background-position: 0 0%; }
+.alinks__icon[data-icon="1"] { background-position: 0 20%; }
+.alinks__icon[data-icon="2"] { background-position: 0 40%; }
+.alinks__icon[data-icon="3"] { background-position: 0 60%; }
+.alinks__icon[data-icon="4"] { background-position: 0 80%; }
+.alinks__icon[data-icon="5"] { background-position: 0 100%; }
 .alinks__label {
   position: relative;
   z-index: 1;
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: 400;
-  font-size: 34px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  font-size: 30px;
   color: #111;
 }
 
