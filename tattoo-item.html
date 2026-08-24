@@ -5,23 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260841">
+<link rel="stylesheet" href="css/style.css?v=20260842">
 </head>
 <body>
 
 <header class="header"></header>
 
 <main class="product-page">
+  <a class="back-link" href="tattoo.html">&larr; back</a>
   <div id="feed"></div>
 </main>
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260841"></script>
-<script src="js/site.js?v=20260841"></script>
+<script src="js/data.js?v=20260842"></script>
+<script src="js/site.js?v=20260842"></script>
 <script>
   mountHeader();
   mountFooter();
+  document.querySelector('.header').classList.add('is-transparent');
 
   const startId = new URLSearchParams(location.search).get('id');
   const startIndex = Math.max(0, SKETCHES.findIndex((s) => s.id === startId));

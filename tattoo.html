@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260841">
+<link rel="stylesheet" href="css/style.css?v=20260842">
 </head>
 <body>
 
@@ -17,15 +17,15 @@
 
 <main class="catalogue" id="catalogue">
   <div class="year-pager" data-year-pager></div>
-  <div class="grid-2 sketch-grid" data-grid></div>
+  <div class="sketch-grid" data-grid></div>
 </main>
 
 <aside class="year-rail" data-years></aside>
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260841"></script>
-<script src="js/site.js?v=20260841"></script>
+<script src="js/data.js?v=20260842"></script>
+<script src="js/site.js?v=20260842"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -55,7 +55,7 @@
       .map(
         (y) =>
           `<div class="year-page" data-year-page="${y}">
-             <div class="grid-2 sketch-grid">
+             <div class="sketch-grid">
                ${byYear(y)
                  .map((s, i) => sketchCardMarkup('', s, i + 1))
                  .join('')}

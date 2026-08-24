@@ -613,6 +613,22 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   color: var(--font-b-color);
 }
 
+/* tattoo.html's whole catalogue (desktop and mobile alike): a single
+   vertical feed, never a horizontal grid — each sketch keeps its own
+   natural aspect ratio (no crop/letterbox), so pieces render at
+   whatever size that implies instead of a uniform card size. The
+   ≤980px breakpoint below layers the mobile-only two-column masonry
+   on top of this. */
+.sketch-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+}
+.sketch-grid .sketch-card { width: min(640px, 100%); }
+.sketch-grid .sketch-card__frame { aspect-ratio: auto; background: none; }
+.sketch-grid .sketch-card__frame img { height: auto; object-fit: contain; }
+
 /* ===========================================================
    YEAR TABS — mobile/tablet-only horizontal scroller on tattoo.html,
    replaces the year-filter dropdown. One year is shown at a time;
@@ -1406,11 +1422,16 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   .mobile-menu__link {
     align-self: flex-start;
     display: flex;
-    align-items: center;
+    /* the icon-box's own bottom border needs to land exactly on the
+       label's underline (see the mockup's red guide line) — flex-end
+       plus the label's line-height:1 below puts both bottom edges on
+       the same line, instead of centre-aligning them */
+    align-items: flex-end;
     gap: 10px;
     text-transform: capitalize;
   }
   .mobile-menu__link span:first-child {
+    line-height: 1;
     text-decoration: underline;
     text-decoration-thickness: 1px;
     /* the mockup's underline runs straight through descenders (the "y"
@@ -1432,7 +1453,9 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
     align-items: center;
     justify-content: center;
   }
-  .mobile-menu__icon { width: 28px; height: 28px; object-fit: contain; }
+  /* fills the box's own content area right up to its border, edge to
+     edge, instead of floating inside it with a visible gap */
+  .mobile-menu__icon { width: 100%; height: 100%; object-fit: contain; }
   /* the staggered left offsets below are lifted directly from the
      mockup's cascading zigzag layout, not a formula */
   .mobile-menu__link:nth-child(1) { margin-left: 0; }
@@ -1641,24 +1664,16 @@ body.dark-theme .footer { background: #000; }
   text-decoration: none;
 }
 .alinks__item--stub { cursor: default; }
+/* the same single graphic, shown whole (never cropped into per-icon
+   slices) and identically on every button */
 .alinks__icon {
   position: absolute;
   inset: 0;
   background-image: url(../assets/alinks/bg.svg);
   background-repeat: no-repeat;
-  background-size: 100% 600%;
-  /* shrinks the icon graphic uniformly around the box's own centre —
-     since the label below is centred on that same box (see
-     .alinks__label), scaling down this way keeps both aligned on one
-     shared centre instead of drifting apart */
-  transform: scale(.62);
+  background-position: center;
+  background-size: contain;
 }
-.alinks__icon[data-icon="0"] { background-position: 0 0%; }
-.alinks__icon[data-icon="1"] { background-position: 0 20%; }
-.alinks__icon[data-icon="2"] { background-position: 0 40%; }
-.alinks__icon[data-icon="3"] { background-position: 0 60%; }
-.alinks__icon[data-icon="4"] { background-position: 0 80%; }
-.alinks__icon[data-icon="5"] { background-position: 0 100%; }
 .alinks__label {
   position: relative;
   z-index: 1;
@@ -1689,4 +1704,3 @@ body.dark-theme .footer { background: #000; }
   .alinks__label { font-size: 28px; }
   .alinks__disclaimer { margin-top: 90px; }
 }
-
