@@ -919,6 +919,58 @@ function sketchCardMarkup(prefix, sketch, number) {
   </a>`;
 }
 
+/* tattoo.html desktop: waterfall two-column masonry. cards is an
+   array of already-built .sketch-card elements, in the order they
+   should read (chronological, newest year first, same as the DOM
+   order everywhere else on the site). They're staged into the first
+   column so every one renders at the real column width before its
+   height is measured (with a fixed aspect-ratio image and .card__dots/
+   caption below it, height depends on layout width, not just the
+   image's own intrinsic size) — only once every image has actually
+   loaded (a not-yet-loaded image reports 0 height, since the frame
+   takes its size from the image) are they redistributed, each into
+   whichever column is currently shortest. That keeps a later card
+   from ever landing above an earlier one in the other column, unlike
+   CSS multi-column's own balance-by-total-height algorithm. Calls
+   onSettled() once the real layout is in place, since anything that
+   measures card position (initYearScrollspy) needs to run after it. */
+function layoutSketchMasonry(container, cards, onSettled) {
+  const cols = [document.createElement('div'), document.createElement('div')];
+  cols.forEach((c) => (c.className = 'sketch-masonry__col'));
+  container.innerHTML = '';
+  cols.forEach((c) => container.appendChild(c));
+  cards.forEach((c) => cols[0].appendChild(c));
+
+  const settle = () => {
+    const heights = [0, 0];
+    cards.forEach((card) => {
+      const h = card.getBoundingClientRect().height;
+      const target = heights[0] <= heights[1] ? 0 : 1;
+      cols[target].appendChild(card);
+      heights[target] += h + 70;
+    });
+    if (onSettled) onSettled();
+  };
+
+  const imgs = cards.map((c) => c.querySelector('img'));
+  if (!imgs.length) {
+    settle();
+    return;
+  }
+  let remaining = imgs.length;
+  const done = () => {
+    remaining -= 1;
+    if (remaining <= 0) settle();
+  };
+  imgs.forEach((img) => {
+    if (img.complete && img.naturalWidth) done();
+    else {
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    }
+  });
+}
+
 /* ===========================================================
    LIGHTBOX — full-screen viewer for the product/sketch main image.
    Click/tap the image to zoom in (centred on where you clicked), drag

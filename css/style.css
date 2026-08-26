@@ -634,12 +634,34 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   color: var(--font-b-color);
 }
 
-/* tattoo.html desktop: the same strict 2-column .grid-2 the product
-   catalogue uses, instead of a natural-height masonry — every card's
-   frame takes the same fixed ratio as .card__frame (object-fit:
-   contain, so the full sketch still shows letterboxed rather than
-   cropped) so rows line up into a clean grid instead of staggered
-   heights */
+/* tattoo.html desktop: two-column masonry, laid out by JS
+   (layoutSketchMasonry in site.js) rather than CSS columns — CSS
+   columns balance their two columns by total height, which can (and
+   did) drop a card from partway through the list at the very top of
+   column 2, well above cards from earlier in the list still filling
+   out column 1. That breaks the year-rail scrollspy's assumption
+   that scrolling down means moving forward through the years. A
+   waterfall layout (each card goes into whichever column is
+   currently shortest) keeps insertion order intact instead, so a
+   later year's cards never land above an earlier year's. */
+.sketch-masonry {
+  display: flex;
+  gap: 90px;
+  align-items: flex-start;
+}
+.sketch-masonry__col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+}
+
+/* index.html's mixed product/sketch grid (both share .grid-2): every
+   sketch card's frame takes the same fixed ratio as .card__frame
+   (object-fit: contain, so the full sketch still shows letterboxed
+   rather than cropped), so a sketch card's row lines up with the
+   product cards next to it instead of taking its own natural height */
 .grid-2 .sketch-card__frame {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -1415,8 +1437,8 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 }
 .newsletter__close:hover { color: var(--ink); }
 .newsletter__close-icon {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1424,7 +1446,9 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 }
 /* the same emblem the cursor uses, huge and faint, centred behind the
    copy — matches the mockup's watermark exactly since it's the same
-   mark */
+   mark. The source artwork itself is a diagonal dagger shape (its
+   long axis runs corner to corner, not top to bottom), so it reads as
+   tilted unless counter-rotated upright here. */
 .newsletter__mark {
   position: absolute;
   inset: 0;
@@ -1432,6 +1456,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   width: 72%;
   max-width: 560px;
   aspect-ratio: 53 / 82;
+  transform: rotate(-28deg);
   background-image: url(../assets/cursors/artasimn.svg);
   background-repeat: no-repeat;
   background-position: center;
