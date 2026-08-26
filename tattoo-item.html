@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260853">
+<link rel="stylesheet" href="css/style.css?v=20260854">
 </head>
 <body>
 
@@ -18,18 +18,12 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260853"></script>
-<script src="js/site.js?v=20260853"></script>
+<script src="js/data.js?v=20260854"></script>
+<script src="js/site.js?v=20260854"></script>
 <script>
   mountHeader();
   mountFooter();
-  // desktop-only — the infinite feed mixes photos with text blocks, so
-  // on mobile a permanently transparent header would float over both
-  // alike, leaving text unreadable scrolling right up under the icons
-  // once a text block reaches the top instead of a photo
-  if (window.innerWidth > 980) {
-    document.querySelector('.header').classList.add('is-transparent');
-  }
+  document.querySelector('.header').classList.add('is-transparent');
 
   const startId = new URLSearchParams(location.search).get('id');
   const startIndex = Math.max(0, SKETCHES.findIndex((s) => s.id === startId));
@@ -39,10 +33,7 @@
   let nextIndex = 0;
 
   function sketchBlockMarkup(item) {
-    const descriptionHtml =
-      item.descriptionRu.map((p) => `<p>${p}</p>`).join('') +
-      item.descriptionEn.map((p) => `<p>${p}</p>`).join('') +
-      '<p style="color:#999;font-size:13px">*Социальная сеть Instagram запрещена на территории РФ, Meta Platforms Inc. признана в РФ экстремистской организацией.</p>';
+    const descriptionHtml = '<p>Внимание: эскизы ARTASIMN могут вызывать эстетическую зависимость!</p>';
 
     return `
     <div class="product" data-sketch-block>

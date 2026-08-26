@@ -634,27 +634,21 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   color: var(--font-b-color);
 }
 
-/* tattoo.html desktop: two-column masonry, laid out by JS
-   (layoutSketchMasonry in site.js) rather than CSS columns — CSS
-   columns balance their two columns by total height, which can (and
-   did) drop a card from partway through the list at the very top of
-   column 2, well above cards from earlier in the list still filling
-   out column 1. That breaks the year-rail scrollspy's assumption
-   that scrolling down means moving forward through the years. A
-   waterfall layout (each card goes into whichever column is
-   currently shortest) keeps insertion order intact instead, so a
-   later year's cards never land above an earlier year's. */
-.sketch-masonry {
-  display: flex;
-  gap: 90px;
-  align-items: flex-start;
+/* tattoo.html desktop: the same strict 2-column .grid-2 the product
+   catalogue uses, instead of a natural-height masonry — every card's
+   frame takes the same fixed ratio as .card__frame (object-fit:
+   contain, so the full sketch still shows letterboxed rather than
+   cropped) so rows line up into a clean grid instead of staggered
+   heights */
+.grid-2 .sketch-card__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
 }
-.sketch-masonry__col {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 70px;
+.grid-2 .sketch-card__frame img {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* ===========================================================
@@ -823,6 +817,9 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 }
 .product__actions a { color: var(--font-b-color); }
 .product__actions a:hover { color: var(--ink); }
+/* tattoo-item.html's order-via-telegram/instagram links, a touch
+   heavier than the plain default weight */
+.product__actions a:not([data-add-to-card]) { font-weight: 600; }
 
 /* product.html's own "+ to cart" — a bordered button (not a plain
    text link like tattoo-item.html's order-via links, which share this
@@ -1956,10 +1953,15 @@ body.adept .footer { position: relative; z-index: 1; }
   color: #333;
 }
 
-/* deliberately far narrower than the labels it sits behind: at this
-   width each slice of the sprite is short enough that consecutive
-   icons stack edge to edge into one continuous vertical chain (the
-   mockup's look), while the labels overflow it left and right */
+/* deliberately far narrower than the labels it sits behind, so
+   consecutive icons stack edge to edge into one continuous vertical
+   chain (the mockup's look) while the labels overflow it left and
+   right. Each icon is its own file at its own native aspect ratio
+   (not a uniform slice of one shared sprite) stacked with zero gap —
+   simple flow layout instead of percentage-based background-position
+   math, which was the source of a cross-device rounding drift that
+   made the label/icon pairing visibly slip out of place on some
+   phones. */
 .alinks__list {
   width: calc(var(--w) * .343);
   margin: calc(var(--w) * .157) auto 0;
@@ -1968,31 +1970,24 @@ body.adept .footer { position: relative; z-index: 1; }
 }
 .alinks__item {
   position: relative;
-  aspect-ratio: 280 / 166.5;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
 }
 .alinks__item--stub { cursor: default; }
-/* one 280x166.5 slice of the six-icon sprite, at full size (no
-   scale-down) so it fills its slot edge to edge */
 .alinks__icon {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.alinks__label {
   position: absolute;
   inset: 0;
-  background-image: url(../assets/alinks/bg.svg);
-  background-repeat: no-repeat;
-  background-size: 100% 600%;
-}
-.alinks__icon[data-icon="0"] { background-position: 0 0%; }
-.alinks__icon[data-icon="1"] { background-position: 0 20%; }
-.alinks__icon[data-icon="2"] { background-position: 0 40%; }
-.alinks__icon[data-icon="3"] { background-position: 0 60%; }
-.alinks__icon[data-icon="4"] { background-position: 0 80%; }
-.alinks__icon[data-icon="5"] { background-position: 0 100%; }
-.alinks__label {
-  position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 400;
   font-size: calc(var(--w) * .058);
@@ -2000,12 +1995,6 @@ body.adept .footer { position: relative; z-index: 1; }
   white-space: nowrap;
   color: #111;
 }
-/* Artasimn.com's icon (the wordmark emblem) sits visually higher in
-   its own slice than the others, so its label needs a small nudge
-   down to look centred on it; T.office's icon sits lower, so its
-   label nudges up to match */
-.alinks__item:nth-child(3) .alinks__label { top: calc(var(--w) * .012); }
-.alinks__item:nth-child(5) .alinks__label { top: calc(var(--w) * -.012); }
 
 .alinks__disclaimer {
   margin: calc(var(--w) * .163) 0 0;
