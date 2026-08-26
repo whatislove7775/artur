@@ -571,7 +571,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 .card__title {
   margin-top: 14px;
-  margin-left: 10px;
+  /* same offset as .card__price below, so title and price sit at the
+     same left edge — desktop only, the mobile breakpoint below
+     re-centres both anyway */
+  margin-left: 22px;
   font-size: var(--font-b-size);
   letter-spacing: .01em;
   text-transform: uppercase;
@@ -583,8 +586,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 .card__price {
   margin-top: 6px;
-  /* nudged further right than .card__title's 10px, desktop only —
-     the mobile breakpoint below re-centres both anyway */
   margin-left: 22px;
   font-size: var(--font-a-size);
   color: var(--font-a-color);
@@ -832,12 +833,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .product__actions a[data-add-to-card] {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   border: 1px solid currentColor;
-  padding: 10px 16px;
-  font-size: 15px;
+  padding: 7px 13px;
+  font-size: 14px;
 }
-.product__actions a[data-add-to-card] svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.product__actions a[data-add-to-card] svg { width: 14px; height: 14px; flex: 0 0 auto; }
 
 .product__note { margin-top: 22px; }
 
@@ -1809,6 +1810,8 @@ body.dark-theme .product__size { border-color: #444; }
 body.dark-theme .product__size:hover,
 body.dark-theme .product__size.is-active { border-color: #fff; }
 body.dark-theme .footer { background: #000; }
+/* same stacking-context fix as .adept__main above, for a.dept's page */
+body.adept .footer { position: relative; z-index: 1; }
 
 /* ===========================================================
    A.DEPT — its own page, permanently dark with a photo backdrop
@@ -1873,6 +1876,12 @@ body.dark-theme .footer { background: #000; }
 .adept__links a:hover { opacity: .55; }
 
 .adept__main {
+  /* .adept__bg is position:fixed with z-index:0 — a positioned element
+     always paints above plain in-flow content regardless of DOM order,
+     so without its own stacking context this content (and the footer,
+     see body.adept .footer below) would render invisibly underneath it */
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   justify-content: flex-end;

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Items</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260851">
+<link rel="stylesheet" href="css/style.css?v=20260853">
 </head>
 <body>
 
@@ -17,13 +17,20 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260851"></script>
-<script src="js/site.js?v=20260851"></script>
+<script src="js/data.js?v=20260853"></script>
+<script src="js/site.js?v=20260853"></script>
 <script>
   mountHeader();
   mountFooter();
   renderCards('[data-grid]', PRODUCTS);
-  document.querySelector('.header').classList.add('is-transparent');
+  // permanently transparent header is a desktop-only treatment (no
+  // photo backdrop to float over here, it's flush with the plain white
+  // catalogue) — on mobile it must stay the solid white bar, otherwise
+  // the grid scrolls right up underneath the nav icons with nothing
+  // behind them
+  if (window.innerWidth > 980) {
+    document.querySelector('.header').classList.add('is-transparent');
+  }
 </script>
 </body>
 </html>

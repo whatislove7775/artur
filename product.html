@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260851">
+<link rel="stylesheet" href="css/style.css?v=20260853">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260851"></script>
-<script src="js/site.js?v=20260851"></script>
+<script src="js/data.js?v=20260853"></script>
+<script src="js/site.js?v=20260853"></script>
 <script>
   const id = new URLSearchParams(location.search).get('id');
   const adeptItem = ADEPT_PRODUCTS.find((p) => p.id === id);
@@ -38,7 +38,13 @@
   } else {
     mountHeader();
     mountFooter();
-    document.querySelector('.header').classList.add('is-transparent');
+    // desktop-only — see about.html for why mobile must stay solid;
+    // this page happens to be short enough that the description
+    // accordion rarely scrolls under the header, but a longer one would
+    // hit the same unbacked-transparent-header bug
+    if (window.innerWidth > 980) {
+      document.querySelector('.header').classList.add('is-transparent');
+    }
   }
 
   const dots =
@@ -84,10 +90,10 @@
       </div>
       <div class="product__actions">
         <a href="#" data-add-to-card>+ to cart
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="19" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M8.60426 13.3291C9.15644 13.3292 9.60426 13.7768 9.60426 14.3291V16.9941C9.60425 17.5463 9.15643 17.994 8.60426 17.9941C8.05211 17.994 7.60428 17.5463 7.60426 16.9941V14.3291C7.60426 13.7769 8.0521 13.3292 8.60426 13.3291Z" fill="currentColor"/>
+            <path d="M15.3943 13.3291C15.9465 13.3292 16.3943 13.7768 16.3943 14.3291V16.9941C16.3943 17.5463 15.9465 17.994 15.3943 17.9941C14.8422 17.9939 14.3943 17.5462 14.3943 16.9941V14.3291C14.3943 13.7769 14.8422 13.3293 15.3943 13.3291Z" fill="currentColor"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.7703 0.129834C14.2509 -0.142097 14.8615 0.0271907 15.1336 0.507764L19.3728 7.998H21.8689C22.222 7.99819 22.5629 8.09309 22.8631 8.26558C23.1619 8.43739 23.4085 8.67895 23.5935 8.95796C23.7782 9.23654 23.9001 9.55116 23.9588 9.87593C24.0174 10.201 24.0125 10.537 23.9441 10.8603L21.8953 20.5146C21.7339 21.275 21.3554 21.9787 20.7908 22.498C20.2228 23.0203 19.4955 23.3269 18.7215 23.3271H5.27809C4.50414 23.3268 3.77668 23.0203 3.20876 22.498C2.6442 21.9787 2.26664 21.275 2.10524 20.5146L0.0554365 10.8632L0.0163739 10.6181C-0.0113688 10.3719 -0.00405279 10.1219 0.0398115 9.87788C0.0982782 9.5526 0.221165 9.23797 0.406022 8.95894C0.591038 8.67973 0.837525 8.43849 1.13649 8.26655C1.43688 8.09391 1.7782 7.99801 2.13161 7.998H4.62673L8.86598 0.507764C9.13806 0.0271949 9.74866 -0.142211 10.2293 0.129834C10.7094 0.402 10.8779 1.01175 10.6062 1.49214L6.92458 7.998H17.075L13.3924 1.49214C13.1207 1.01165 13.29 0.401848 13.7703 0.129834ZM2.13356 9.99995C2.12353 10.0057 2.09956 10.0234 2.07301 10.0634C2.04633 10.1037 2.02134 10.1605 2.00856 10.2314C1.99583 10.3022 1.9968 10.3769 2.01149 10.4462L4.0613 20.0996C4.1447 20.4925 4.33229 20.8139 4.56325 21.0263C4.79066 21.2353 5.04398 21.3271 5.27907 21.3271H18.7205C18.9557 21.327 19.2098 21.2355 19.4373 21.0263C19.6682 20.8139 19.8549 20.4924 19.9382 20.0996L21.9881 10.4453C22.0026 10.3761 22.0037 10.302 21.991 10.2314C21.9782 10.1606 21.9532 10.1037 21.9265 10.0634C21.9001 10.0236 21.8761 10.0058 21.866 9.99995C21.8645 9.99909 21.863 9.99844 21.8621 9.998H2.13747C2.13653 9.99844 2.1351 9.99908 2.13356 9.99995Z" fill="currentColor"/>
           </svg>
         </a>
       </div>
