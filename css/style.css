@@ -1355,6 +1355,17 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   font-size: var(--font-a-size);
   color: var(--font-a-color);
 }
+/* same bordered-button treatment as product.html's "+ to cart"
+   (.product__actions a[data-add-to-card]) */
+.cart-drawer__order {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid currentColor;
+  padding: 7px 13px;
+  font-size: 14px;
+}
+.cart-drawer__order svg { width: 14px; height: 14px; flex: 0 0 auto; }
 .cart-drawer__order:hover { opacity: .55; }
 .cart-drawer__buy { display: none; }
 .cart-drawer.is-checkout .cart-drawer__order { display: none; }
@@ -1376,15 +1387,16 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #000;
-  color: #fff;
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
   padding: 14px 20px;
   font-size: var(--font-b-size);
 }
 .cookie-notice button {
   flex: 0 0 auto;
-  background: #fff;
-  color: #000;
+  background: #000;
+  color: #fff;
   border: 0;
   padding: 6px 16px;
   font: inherit;
@@ -1393,7 +1405,9 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .cookie-notice button:hover { opacity: .8; }
 
 @media (max-width: 560px) {
-  .cookie-notice { right: 12px; bottom: 12px; left: 12px; }
+  /* stays a compact box pinned to the corner, not a full-width bar —
+     only the outer margin shrinks on small screens */
+  .cookie-notice { right: 12px; bottom: 12px; }
 }
 
 /* ===========================================================
@@ -1974,11 +1988,20 @@ body.adept .footer { position: relative; z-index: 1; }
      simply scales as a unit — 800px is the mockup's own width, which
      is where it renders 1:1 */
   --w: min(800px, 100vw);
+  /* the icon column's own height fraction and label font size are
+     kept as separate variables (not baked into .343/.058 below) so
+     they can be dialled down on their own — the six stacked icons are
+     the dominant height in this whole layout, so shrinking just this
+     pair is what gets the full page to fit one screen without
+     scrolling, without also shrinking the title/disclaimer/copyright
+     text down to somewhere illegible */
+  --icon-h: .18;
+  --label-fs: .0306;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--w) * .125) 12px calc(var(--w) * .16);
+  padding: calc(var(--w) * .06) 12px calc(var(--w) * .08);
   text-align: center;
 }
 .alinks__title {
@@ -2007,7 +2030,7 @@ body.adept .footer { position: relative; z-index: 1; }
    phones. */
 .alinks__list {
   width: calc(var(--w) * .343);
-  margin: calc(var(--w) * .157) auto 0;
+  margin: calc(var(--w) * .08) auto 0;
   display: flex;
   flex-direction: column;
 }
@@ -2029,13 +2052,13 @@ body.adept .footer { position: relative; z-index: 1; }
    the wider ones overflow the column edge to edge like the mockup */
 .alinks__icon {
   display: block;
-  height: calc(var(--w) * .343);
+  height: calc(var(--w) * var(--icon-h));
   width: auto;
   max-width: none;
 }
 /* YouTube's icon reads a touch large next to its neighbours at the
-   shared height */
-.alinks__item:nth-child(4) .alinks__icon { height: calc(var(--w) * .3); }
+   shared height (same ratio as before: ~87.5% of the others) */
+.alinks__item:nth-child(4) .alinks__icon { height: calc(var(--w) * var(--icon-h) * .875); }
 .alinks__label {
   position: absolute;
   inset: 0;
@@ -2045,14 +2068,14 @@ body.adept .footer { position: relative; z-index: 1; }
   justify-content: center;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 400;
-  font-size: calc(var(--w) * .058);
+  font-size: calc(var(--w) * var(--label-fs));
   line-height: 1;
   white-space: nowrap;
   color: #111;
 }
 
 .alinks__disclaimer {
-  margin: calc(var(--w) * .163) 0 0;
+  margin: calc(var(--w) * .08) 0 0;
   max-width: calc(var(--w) * .80);
   font-family: 'Times New Roman', Times, serif;
   font-size: calc(var(--w) * .0434);
@@ -2060,7 +2083,7 @@ body.adept .footer { position: relative; z-index: 1; }
   color: #111;
 }
 .alinks__copyright {
-  margin: calc(var(--w) * .113) 0 0;
+  margin: calc(var(--w) * .06) 0 0;
   font-family: 'Times New Roman', Times, serif;
   font-size: calc(var(--w) * .0434);
   color: #111;
@@ -2071,5 +2094,8 @@ body.adept .footer { position: relative; z-index: 1; }
    down as a unit (same --w-driven proportions, just a smaller base)
    instead of shrinking one page element at a time */
 @media (min-width: 981px) {
-  .alinks { --w: min(560px, 100vw); }
+  /* desktop viewports are wide but not necessarily tall, so on top of
+     the smaller --w base, the icon column needs its own extra
+     reduction to still fit one screen without scrolling */
+  .alinks { --w: min(560px, 100vw); --icon-h: .105; --label-fs: .0179; }
 }
