@@ -128,6 +128,7 @@ function mountAdeptHeader(prefix) {
   }
   mountCartDrawer(prefix);
   mountBackToTop();
+  mountSitePopups();
 }
 
 /* mobile/tablet only: "menu" opens a full-screen overlay panel (close
@@ -288,6 +289,7 @@ function mountHeader(prefix) {
   initMobileMenuToggle();
   mountCartDrawer(prefix);
   mountBackToTop();
+  mountSitePopups();
 }
 
 function mountFooter(brand) {
@@ -336,6 +338,66 @@ function mountBackToTop() {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+}
+
+/* Cookie notice (bottom-right, shown immediately) and the newsletter
+   signup modal (shown 20s after the page loads) — both site-wide,
+   both gated on their own localStorage flag so each only ever
+   appears once per visitor, on whichever page they land on first. */
+const COOKIE_NOTICE_KEY = 'artasimn-cookie-notice-dismissed';
+const NEWSLETTER_KEY = 'artasimn-newsletter-dismissed';
+const CLOSE_SVG =
+  '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+
+function mountSitePopups() {
+  if (!localStorage.getItem(COOKIE_NOTICE_KEY)) {
+    const el = document.createElement('div');
+    el.className = 'cookie-notice';
+    el.innerHTML = `
+      <span>Сайт использует cookie-файлы</span>
+      <button type="button" data-cookie-ok>OK</button>`;
+    document.body.appendChild(el);
+    el.querySelector('[data-cookie-ok]').addEventListener('click', () => {
+      localStorage.setItem(COOKIE_NOTICE_KEY, '1');
+      el.remove();
+    });
+  }
+
+  if (!localStorage.getItem(NEWSLETTER_KEY)) {
+    setTimeout(() => {
+      // the flag could have been set by another tab, or the visitor
+      // could have already navigated to a second page, in the 20s
+      // this was waiting — re-check right before actually showing it
+      if (localStorage.getItem(NEWSLETTER_KEY)) return;
+      const el = document.createElement('div');
+      el.className = 'newsletter';
+      el.innerHTML = `
+        <div class="newsletter__box">
+          <button type="button" class="newsletter__close" data-newsletter-close>close <span class="newsletter__close-icon">${CLOSE_SVG}</span></button>
+          <div class="newsletter__mark" aria-hidden="true"></div>
+          <p class="newsletter__text">Подпишись на рассылку, чтобы получать уведомления о новых позициях, акциях и тд.</p>
+          <form class="newsletter__form" data-newsletter-form>
+            <label>e-mail <input type="email" placeholder="свойemail@mail.ru" required></label>
+            <button type="submit">OK</button>
+          </form>
+        </div>`;
+      document.body.appendChild(el);
+
+      const dismiss = () => {
+        localStorage.setItem(NEWSLETTER_KEY, '1');
+        el.remove();
+      };
+      el.querySelector('[data-newsletter-close]').addEventListener('click', dismiss);
+      el.addEventListener('click', (e) => {
+        if (e.target === el) dismiss();
+      });
+      el.querySelector('[data-newsletter-form]').addEventListener('submit', (e) => {
+        e.preventDefault();
+        dismiss();
+      });
+      requestAnimationFrame(() => el.classList.add('is-open'));
+    }, 20000);
+  }
 }
 
 /* Menu strip: 4 photos, dark veil, hover reveals, click filters or

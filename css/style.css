@@ -61,20 +61,33 @@
 * {
   /* the new mark (a symmetric cross/dagger emblem, not a pointing
      arrow like the old one) has no natural "tip" to anchor on, so the
-     hotspot sits at its own centre (11 17, half of the 1x file's
-     22x34) instead of the old near-corner offset */
+     hotspot sits at its own centre (8 13, half of the 1x file's
+     16x25) instead of the old near-corner offset */
   cursor: -webkit-image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 11 17,
+  ) 8 13,
   image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 11 17,
-  url('../assets/cursors/artasimn.png') 11 17,
+  ) 8 13,
+  url('../assets/cursors/artasimn.png') 8 13,
   auto;
+}
+
+html {
+  /* mobile Safari/Chrome silently bump font-size on narrow columns of
+     text to keep them "readable" — invisible in desktop devtools'
+     mobile emulation (which is why this never showed up in testing),
+     but on an actual phone it inflates text past what any of the
+     site's own responsive sizing accounts for, which is exactly what
+     was pushing a-links' longer labels (e.g. "Artasimn.com") out from
+     under their icon on real devices. Locking the adjustment off
+     means the CSS is what actually renders everywhere. */
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 html, body {
@@ -809,6 +822,22 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .product__actions a { color: var(--font-b-color); }
 .product__actions a:hover { color: var(--ink); }
 
+/* product.html's own "+ to cart" — a bordered button (not a plain
+   text link like tattoo-item.html's order-via links, which share this
+   same .product__actions row) with a small cart glyph after the
+   label. currentColor throughout so the border/icon darken together
+   with the text on hover, and the border still reads correctly on
+   a.dept's dark-theme product pages without a separate override. */
+.product__actions a[data-add-to-card] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid currentColor;
+  padding: 10px 16px;
+  font-size: 15px;
+}
+.product__actions a[data-add-to-card] svg { width: 16px; height: 16px; flex: 0 0 auto; }
+
 .product__note { margin-top: 22px; }
 
 /* size picker — shown instead of .product__note for products that
@@ -1313,6 +1342,147 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 @media (max-width: 560px) {
   .cart-drawer { width: 100vw; max-width: 100vw; padding: 10px 18px; }
+}
+
+/* ===========================================================
+   COOKIE NOTICE — bottom-right, shown immediately on first visit
+   =========================================================== */
+.cookie-notice {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #000;
+  color: #fff;
+  padding: 14px 20px;
+  font-size: var(--font-b-size);
+}
+.cookie-notice button {
+  flex: 0 0 auto;
+  background: #fff;
+  color: #000;
+  border: 0;
+  padding: 6px 16px;
+  font: inherit;
+  text-transform: uppercase;
+}
+.cookie-notice button:hover { opacity: .8; }
+
+@media (max-width: 560px) {
+  .cookie-notice { right: 12px; bottom: 12px; left: 12px; }
+}
+
+/* ===========================================================
+   NEWSLETTER — full-screen modal, shown 20s after page load
+   =========================================================== */
+.newsletter {
+  position: fixed;
+  inset: 0;
+  z-index: 960;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, .15);
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.newsletter.is-open { opacity: 1; }
+.newsletter__box {
+  position: relative;
+  width: min(760px, 100%);
+  background: #fff;
+  padding: 60px 50px;
+  text-align: center;
+  overflow: hidden;
+}
+.newsletter__close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: var(--font-b-size);
+  color: var(--font-b-color);
+}
+.newsletter__close:hover { color: var(--ink); }
+.newsletter__close-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+}
+/* the same emblem the cursor uses, huge and faint, centred behind the
+   copy — matches the mockup's watermark exactly since it's the same
+   mark */
+.newsletter__mark {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 60%;
+  max-width: 420px;
+  aspect-ratio: 53 / 82;
+  background-image: url(../assets/cursors/artasimn.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: .08;
+  pointer-events: none;
+}
+.newsletter__text {
+  position: relative;
+  max-width: 520px;
+  margin: 40px auto;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.newsletter__form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: var(--font-b-size);
+  color: var(--font-b-color);
+}
+.newsletter__form label { display: flex; align-items: center; gap: 10px; }
+.newsletter__form input {
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  outline: none;
+  font: inherit;
+  padding: 4px 0;
+  min-width: 200px;
+  color: var(--ink);
+}
+.newsletter__form button {
+  background: #000;
+  color: #fff;
+  border: 0;
+  padding: 8px 20px;
+  font: inherit;
+  text-transform: uppercase;
+}
+.newsletter__form button:hover { opacity: .8; }
+
+@media (max-width: 560px) {
+  .newsletter__box { padding: 80px 24px 40px; }
+  .newsletter__text { font-size: 18px; }
+  .newsletter__form { flex-direction: column; align-items: stretch; }
+  .newsletter__form input { min-width: 0; }
 }
 
 /* ===========================================================
