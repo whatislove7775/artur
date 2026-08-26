@@ -458,16 +458,21 @@ function cardMarkup(item, prefix) {
         `<img src="${p}${src}" alt="${item.title}"${i === 0 ? ' class="is-visible"' : ''} data-i="${i}">`
     )
     .join('');
+  // the wrapper is always rendered — even with no dots inside for a
+  // single-image product — so it reserves the same bit of vertical
+  // space every card gets between the frame and its title, whether or
+  // not there's anything to show there. That keeps title/price level
+  // with a sketch card's date/caption sitting next to it in the same
+  // row, which reserves the identical space for the same reason,
+  // regardless of how many images either one has
   const dots =
     item.images.length > 1
-      ? `<div class="card__dots">${item.images
-          .map((_, i) => `<span${i === 0 ? ' class="is-active"' : ''}></span>`)
-          .join('')}</div>`
+      ? item.images.map((_, i) => `<span${i === 0 ? ' class="is-active"' : ''}></span>`).join('')
       : '';
   return `
   <a class="card" href="${p}product.html?id=${item.id}" data-card>
     <div class="card__frame">${imgs}</div>
-    ${dots}
+    <div class="card__dots">${dots}</div>
     <div class="card__title">${item.title}</div>
     <div class="card__price">${item.price}</div>
   </a>`;
@@ -909,7 +914,7 @@ function sketchCardMarkup(prefix, sketch, number) {
     <div class="sketch-card__frame">
       <img src="${p}${s.image}" alt="${s.caption}">
     </div>
-    <div class="card__dots" aria-hidden="true"><span></span></div>
+    <div class="card__dots"></div>
     ${meta}
   </a>`;
 }

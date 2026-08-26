@@ -1657,7 +1657,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
      panel below instead. Stays position:fixed (inherited from the
      base rule) so the solid/transparent backdrop mechanic behaves the
      same as on desktop. */
-  .header { padding: 14px 18px; }
+  /* transparent everywhere on mobile, no exceptions — overrides
+     .header's own solid #fff and any is-transparent/is-inverted class
+     toggling a page's script does (index.html/tattoo.html's scroll-
+     driven hero header included), so there is exactly one mobile
+     header appearance across the whole site, full stop */
+  .header { background: none !important; padding: 14px 18px; }
   .header__logo-full { display: none; }
   .header__logo-mobile { display: block; height: 26px; width: auto; }
   .header__logo { justify-self: center; }
@@ -1976,10 +1981,19 @@ body.adept .footer { position: relative; z-index: 1; }
   text-decoration: none;
 }
 .alinks__item--stub { cursor: default; }
+/* every icon is held to the same HEIGHT (matching the square icons'
+   old full-list-width size) with width left to follow each file's own
+   aspect ratio, not stretched to a shared width — the six files are
+   not all square (the Artasimn.com mark in particular is a good deal
+   wider than tall), so forcing equal width made it render far
+   shorter/smaller than its neighbours; equal height instead lets each
+   icon's own natural proportions determine how wide it reads, letting
+   the wider ones overflow the column edge to edge like the mockup */
 .alinks__icon {
   display: block;
-  width: 100%;
-  height: auto;
+  height: calc(var(--w) * .343);
+  width: auto;
+  max-width: none;
 }
 .alinks__label {
   position: absolute;
