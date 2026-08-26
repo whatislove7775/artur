@@ -1995,8 +1995,8 @@ body.adept .footer { position: relative; z-index: 1; }
      pair is what gets the full page to fit one screen without
      scrolling, without also shrinking the title/disclaimer/copyright
      text down to somewhere illegible */
-  --icon-h: .18;
-  --label-fs: .0306;
+  --icon-h: .22;
+  --label-fs: .0374;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
@@ -2097,5 +2097,5 @@ body.adept .footer { position: relative; z-index: 1; }
   /* desktop viewports are wide but not necessarily tall, so on top of
      the smaller --w base, the icon column needs its own extra
      reduction to still fit one screen without scrolling */
-  .alinks { --w: min(560px, 100vw); --icon-h: .105; --label-fs: .0179; }
+  .alinks { --w: min(560px, 100vw); --icon-h: .13; --label-fs: .0221; }
 }
