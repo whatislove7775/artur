@@ -6,7 +6,7 @@
 <title>Artasimn — About</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preload" href="assets/fonts/blackletter.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=20260851">
+<link rel="stylesheet" href="css/style.css?v=20260853">
 </head>
 <body>
 
@@ -119,12 +119,18 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260851"></script>
-<script src="js/site.js?v=20260851"></script>
+<script src="js/data.js?v=20260853"></script>
+<script src="js/site.js?v=20260853"></script>
 <script>
   mountHeader();
   mountFooter();
-  document.querySelector('.header').classList.add('is-transparent');
+  // desktop-only: on mobile there's no photo backdrop for it to float
+  // over here, so a permanently transparent header lets the page's own
+  // text scroll right up underneath the nav icons with nothing behind
+  // them
+  if (window.innerWidth > 980) {
+    document.querySelector('.header').classList.add('is-transparent');
+  }
 </script>
 </body>
 </html>
