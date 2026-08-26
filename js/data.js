@@ -317,13 +317,6 @@ const MENU = [
     image: 'assets/menu/tattoo.png',
     kind: 'page',
     href: 'tattoo.html'
-  },
-  {
-    id: 'tattoo-office',
-    label: 'Tattoo Office',
-    image: 'assets/menu/tattoo-office.png',
-    kind: 'external',
-    href: 'https://tattoo-office.com'
   }
 ];
 
