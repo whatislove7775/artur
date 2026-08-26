@@ -59,21 +59,19 @@
    plain url()/auto are fallbacks for browsers without image-set()
    support in `cursor` (older Firefox in particular). */
 * {
-  /* the new mark (a symmetric cross/dagger emblem, not a pointing
-     arrow like the old one) has no natural "tip" to anchor on, so the
-     hotspot sits at its own centre (8 13, half of the 1x file's
-     16x25) instead of the old near-corner offset */
+  /* the mark's sharp top-left point is its tip — hotspot pinned there
+     (2 0 in the 1x file's 16x25) instead of the shape's own centre */
   cursor: -webkit-image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 8 13,
+  ) 2 0,
   image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 8 13,
-  url('../assets/cursors/artasimn.png') 8 13,
+  ) 2 0,
+  url('../assets/cursors/artasimn.png') 2 0,
   auto;
 }
 
@@ -304,7 +302,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   display: block;
   overflow: hidden;
   background: #000;
-  aspect-ratio: 3 / 5;
+  /* 4:5 instead of the old 4-tile 3:5 — with only 3 tiles now spanning
+     the same full width, each tile is wider, so the ratio is corrected
+     to keep the whole strip's total height the same as it always was */
+  aspect-ratio: 4 / 5;
 }
 
 .menu-tile img {
