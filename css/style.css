@@ -1387,16 +1387,16 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(0, 0, 0, .15);
+  background: rgba(0, 0, 0, .45);
   opacity: 0;
   transition: opacity .25s ease;
 }
 .newsletter.is-open { opacity: 1; }
 .newsletter__box {
   position: relative;
-  width: min(760px, 100%);
+  width: min(900px, 92%);
   background: #fff;
-  padding: 60px 50px;
+  padding: 110px 60px;
   text-align: center;
   overflow: hidden;
 }
@@ -1431,20 +1431,20 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 60%;
-  max-width: 420px;
+  width: 72%;
+  max-width: 560px;
   aspect-ratio: 53 / 82;
   background-image: url(../assets/cursors/artasimn.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  opacity: .08;
+  opacity: .13;
   pointer-events: none;
 }
 .newsletter__text {
   position: relative;
   max-width: 520px;
-  margin: 40px auto;
+  margin: 0 auto 50px;
   font-size: 22px;
   font-weight: 700;
   line-height: 1.35;
@@ -1459,14 +1459,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   font-size: var(--font-b-size);
   color: var(--font-b-color);
 }
-.newsletter__form label { display: flex; align-items: center; gap: 10px; }
+.newsletter__form label { display: flex; align-items: center; gap: 12px; }
 .newsletter__form input {
-  border: 0;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ccc;
   outline: none;
   font: inherit;
-  padding: 4px 0;
-  min-width: 200px;
+  padding: 10px 14px;
+  min-width: 260px;
   color: var(--ink);
 }
 .newsletter__form button {
