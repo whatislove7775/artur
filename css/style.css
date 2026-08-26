@@ -1513,7 +1513,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   .newsletter__box { padding: 80px 24px 40px; }
   .newsletter__text { font-size: 18px; }
   .newsletter__form { flex-direction: column; align-items: stretch; }
-  .newsletter__form input { min-width: 0; }
+  /* label stretches full width here (align-items:stretch above), but
+     the input inside it doesn't grow to fill that on its own — without
+     flex:1 it stays its own intrinsic width, leaving a gap between its
+     right edge and the OK button's below it */
+  .newsletter__form label { align-items: center; }
+  .newsletter__form input { flex: 1; min-width: 0; }
 }
 
 /* ===========================================================
