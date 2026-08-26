@@ -59,17 +59,21 @@
    plain url()/auto are fallbacks for browsers without image-set()
    support in `cursor` (older Firefox in particular). */
 * {
+  /* the new mark (a symmetric cross/dagger emblem, not a pointing
+     arrow like the old one) has no natural "tip" to anchor on, so the
+     hotspot sits at its own centre (11 17, half of the 1x file's
+     22x34) instead of the old near-corner offset */
   cursor: -webkit-image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 2 1,
+  ) 11 17,
   image-set(
     url('../assets/cursors/artasimn.png') 1x,
     url('../assets/cursors/artasimn@2x.png') 2x,
     url('../assets/cursors/artasimn@3x.png') 3x
-  ) 2 1,
-  url('../assets/cursors/artasimn.png') 2 1,
+  ) 11 17,
+  url('../assets/cursors/artasimn.png') 11 17,
   auto;
 }
 
@@ -273,11 +277,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .header__right a:hover { opacity: .55; }
 
 /* ===========================================================
-   MENU STRIP — 4 photos under the header
+   MENU STRIP — 3 photos under the header (garment/jewellery/tattoo —
+   Tattoo Office used to be a 4th tile here, now lives only in the
+   mobile menu and the header's own link)
    =========================================================== */
 .menu-strip {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .menu-tile {
@@ -1367,15 +1373,15 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    RESPONSIVE
    =========================================================== */
 @media (max-width: 980px) {
-  /* the 4-tile photo grid used to be desktop-only, replaced on
+  /* the 3-tile photo grid used to be desktop-only, replaced on
      mobile/tablet by the single full-bleed .hero-mobile photo — now it
      shows on both: the hero stays as the top full-screen banner, and
      this stack sits right below it as a second full-screen-tall block
-     of 4 photos (one per row instead of 4 across), matching the hero's
+     of 3 photos (one per row instead of 3 across), matching the hero's
      own height so the two blocks read as equal-weight sections */
   .menu-strip {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     height: 100vh;
     height: 100svh;
   }
@@ -1401,15 +1407,15 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   /* the hero markup comes after the menu-strip/marquee in the DOM
      (desktop doesn't render it at all, so source order never mattered
      before), but on mobile it needs to be the first full-screen photo,
-     with the marquee right under it and the menu-strip stack after
-     that — body is already a flex column, so this reorders them
-     without touching the markup. Desktop wants menu-strip before the
-     marquee; mobile wants the opposite (marquee right under the hero,
-     menu-strip stack below that), hence the explicit order here
-     instead of leaving it to plain DOM order. */
+     with the menu-strip stack right under it and the marquee last, at
+     the bottom of that stack — body is already a flex column, so this
+     reorders them without touching the markup. Desktop wants
+     menu-strip before the marquee too, just with no hero in between,
+     so only the mobile marquee position (last, not second) actually
+     differs here. */
   .hero-mobile { display: block; order: -2; }
-  .marquee { order: -1; }
-  .menu-strip { order: 0; }
+  .menu-strip { order: -1; }
+  .marquee { order: 0; }
   .catalogue { padding: 0 30px 100px; }
   /* mobile header is one compact row (~50px) — items.html's hero-less
      catalogue needs the matching extra clearance */
