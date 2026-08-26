@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260848">
+<link rel="stylesheet" href="css/style.css?v=20260849">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260848"></script>
-<script src="js/site.js?v=20260848"></script>
+<script src="js/data.js?v=20260849"></script>
+<script src="js/site.js?v=20260849"></script>
 <script>
   const id = new URLSearchParams(location.search).get('id');
   const adeptItem = ADEPT_PRODUCTS.find((p) => p.id === id);
@@ -83,7 +83,13 @@
           .join('')}
       </div>
       <div class="product__actions">
-        <a href="#" data-add-to-card>+ to cart</a>
+        <a href="#" data-add-to-card>+ to cart
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="19" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </a>
       </div>
       ${sizeMarkup}
       ${accordionMarkup(
