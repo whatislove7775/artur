@@ -1494,8 +1494,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .newsletter__form button {
   background: #000;
   color: #fff;
-  border: 0;
-  padding: 8px 20px;
+  /* same border-box footprint as the input (1px border + 10px
+     padding), just in the background's own colour so it's invisible —
+     otherwise the button reads shorter than the input next to it */
+  border: 1px solid #000;
+  padding: 10px 20px;
   font: inherit;
   text-transform: uppercase;
 }
@@ -2020,6 +2023,9 @@ body.adept .footer { position: relative; z-index: 1; }
   width: auto;
   max-width: none;
 }
+/* YouTube's icon reads a touch large next to its neighbours at the
+   shared height */
+.alinks__item:nth-child(4) .alinks__icon { height: calc(var(--w) * .3); }
 .alinks__label {
   position: absolute;
   inset: 0;
