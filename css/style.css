@@ -1429,10 +1429,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .newsletter__box {
   position: relative;
   width: min(900px, 92%);
+  max-height: 90vh;
+  overflow-y: auto;
   background: #fff;
-  padding: 110px 60px;
-  text-align: center;
-  overflow: hidden;
+  padding: 70px 60px 60px;
+  text-align: left;
 }
 .newsletter__close {
   position: absolute;
@@ -1458,81 +1459,73 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   justify-content: center;
   border: 1px solid currentColor;
 }
-/* the requested watermark emblem, huge and faint, centred behind the
-   copy */
-.newsletter__mark {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 72%;
-  max-width: 560px;
-  aspect-ratio: 257 / 153;
-  background-image: url(../assets/newsletter/popup.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  opacity: .13;
-  pointer-events: none;
-}
 .newsletter__text {
-  position: relative;
-  max-width: 520px;
-  margin: 0 auto 50px;
+  max-width: 640px;
+  margin: 0 0 32px;
   font-size: 22px;
   font-weight: 700;
   line-height: 1.35;
   color: var(--ink);
 }
 .newsletter__form {
-  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: var(--font-b-size);
-  color: var(--font-b-color);
+  flex-direction: column;
+  gap: 24px;
 }
-.newsletter__form label { display: flex; align-items: center; gap: 12px; }
-/* -webkit-appearance/appearance: none on both — without it Safari
-   keeps its own native control chrome on top of the border+padding
-   box below, adding its own height on top of ours (differently for
-   <input> and <button>), which is what made the two mismatch even
-   with an identical box model */
-.newsletter__form input {
+/* -webkit-appearance/appearance: none — without it Safari keeps its
+   own native control chrome on top of the border+padding box below,
+   adding its own height on top of ours */
+.newsletter__form input[type="text"],
+.newsletter__form input[type="email"] {
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid #ccc;
+  display: block;
+  width: 100%;
+  border: 0;
   outline: none;
   font: inherit;
-  padding: 10px 14px;
-  min-width: 260px;
+  font-size: var(--font-b-size);
+  background: #f4f4f4;
+  padding: 18px 20px;
   color: var(--ink);
 }
+.newsletter__form input[type="text"]::placeholder,
+.newsletter__form input[type="email"]::placeholder { color: #999; }
+.newsletter__agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: var(--font-b-size);
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+.newsletter__agree input {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin: 2px 0 0;
+  accent-color: #000;
+}
+.newsletter__agree a { text-decoration: underline; }
+.newsletter__agree a:hover { opacity: .6; }
 .newsletter__form button {
   -webkit-appearance: none;
   appearance: none;
+  align-self: center;
   background: #000;
   color: #fff;
-  /* same border-box footprint as the input (1px border + 10px
-     padding), just in the background's own colour so it's invisible —
-     otherwise the button reads shorter than the input next to it */
-  border: 1px solid #000;
-  padding: 10px 20px;
+  border: 0;
+  padding: 16px 48px;
   font: inherit;
+  font-size: var(--font-b-size);
   text-transform: uppercase;
 }
 .newsletter__form button:hover { opacity: .8; }
 
 @media (max-width: 560px) {
-  .newsletter__box { padding: 80px 24px 40px; }
+  .newsletter__box { padding: 60px 24px 32px; }
   .newsletter__text { font-size: 18px; }
-  .newsletter__form { flex-direction: column; align-items: stretch; }
-  /* label stretches full width here (align-items:stretch above), but
-     the input inside it doesn't grow to fill that on its own — without
-     flex:1 it stays its own intrinsic width, leaving a gap between its
-     right edge and the OK button's below it */
-  .newsletter__form label { align-items: center; }
-  .newsletter__form input { flex: 1; min-width: 0; }
 }
 
 /* ===========================================================

@@ -374,11 +374,15 @@ function mountSitePopups() {
       el.innerHTML = `
         <div class="newsletter__box">
           <button type="button" class="newsletter__close" data-newsletter-close>close <span class="newsletter__close-icon">${CLOSE_SVG}</span></button>
-          <div class="newsletter__mark" aria-hidden="true"></div>
           <p class="newsletter__text">Подпишись на рассылку, чтобы получать уведомления о новых позициях, акциях и тд.</p>
           <form class="newsletter__form" data-newsletter-form>
-            <label>e-mail <input type="email" placeholder="свойemail@mail.ru" required></label>
-            <button type="submit">OK</button>
+            <input type="text" name="name" placeholder="имя" required>
+            <input type="email" name="email" placeholder="e-mail" required>
+            <label class="newsletter__agree">
+              <input type="checkbox" required>
+              <span>Я согласен с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a> сайта и сбором моих данных</span>
+            </label>
+            <button type="submit">Подписаться</button>
           </form>
         </div>`;
       document.body.appendChild(el);
