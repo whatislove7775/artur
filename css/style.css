@@ -298,12 +298,14 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   flex: 0 0 auto;
   width: 22px;
   height: 22px;
-  border: 1px solid currentColor;
+  border: 1px solid #111;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.header-icon { width: 100%; height: 100%; object-fit: contain; }
+/* icons keep their own fixed black colour regardless of the link's own
+   (sometimes grey/hover) text colour */
+.header-icon { width: 100%; height: 100%; object-fit: contain; filter: brightness(0); }
 /* the plain logo-mark (not the text logo), tilted per the mockup */
 .header-icon--mark { transform: rotate(40deg); }
 
@@ -1472,12 +1474,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 }
 .newsletter__close:hover { color: var(--ink); }
 .newsletter__close-icon {
-  width: 22px;
-  height: 22px;
+  width: 14px;
+  height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid currentColor;
 }
 .newsletter__text {
   max-width: 640px;
@@ -1546,6 +1547,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 @media (max-width: 560px) {
   .newsletter__box { padding: 44px 24px 32px; }
   .newsletter__text { font-size: 18px; }
+  .newsletter__close-icon {
+    width: 22px;
+    height: 22px;
+    border: 1px solid currentColor;
+  }
 }
 
 /* ===========================================================
@@ -2111,5 +2117,5 @@ body.adept .footer { position: relative; z-index: 1; }
   /* desktop viewports are wide but not necessarily tall, so on top of
      the smaller --w base, the icon column needs its own extra
      reduction to still fit one screen without scrolling */
-  .alinks { --w: min(560px, 100vw); --icon-h: .13; --label-fs: .0221; }
+  .alinks { --w: min(560px, 100vw); --icon-h: .16; --label-fs: .0272; }
 }

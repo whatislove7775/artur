@@ -43,14 +43,14 @@ function headerMarkup(prefix) {
   </a>
   <nav class="nav">
     <a href="${p}about.html">about<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
-    <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span></a>
+    <a class="nav-items" href="${p}items.html">items<span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span><span class="nav-items__colon">:</span></a>
     <span class="nav-swap">
       <a class="nav-swap__default" href="${p}tattoo.html">tattoo<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
-      <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment</a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
     </span>
     <span class="nav-swap">
       <a class="nav-swap__default" href="${p}adept.html">a.dept<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
-      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery">jewellery</a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery">jewellery<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
     </span>
   </nav>
   <div class="header__spacer"></div>
