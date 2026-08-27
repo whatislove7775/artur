@@ -42,22 +42,23 @@ function headerMarkup(prefix) {
     <img class="header__logo-mobile" src="${p}assets/logo-mobile.svg" alt="Artasimn">
   </a>
   <nav class="nav">
-    <a href="${p}about.html">about</a>
-    <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span></a>
+    <a href="${p}about.html">about<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
+    <a class="nav-items" href="${p}items.html">items<span class="nav-items__colon">:</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span></a>
     <span class="nav-swap">
-      <a class="nav-swap__default" href="${p}tattoo.html">tattoo</a>
+      <a class="nav-swap__default" href="${p}tattoo.html">tattoo<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
       <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment</a>
     </span>
     <span class="nav-swap">
-      <a class="nav-swap__default" href="${p}adept.html">a.dept</a>
+      <a class="nav-swap__default" href="${p}adept.html">a.dept<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
       <a class="nav-swap__hover" href="${p}index.html?cat=jewellery">jewellery</a>
     </span>
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
-    <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office</a>
+    <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo-office.svg" alt=""></span></a>
     <a class="header__cart" href="#" data-cart-open>
       <span class="header__cart-text">cart</span>
+      <span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/cart.svg" alt=""></span>
       ${cartIconMarkup()}
     </a>
   </div>
