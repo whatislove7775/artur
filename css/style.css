@@ -2090,5 +2090,5 @@ body.adept .footer { position: relative; z-index: 1; }
   /* desktop viewports are wide but not necessarily tall, so on top of
      the smaller --w base, the icon column needs its own extra
      reduction to still fit one screen without scrolling */
-  .alinks { --w: min(560px, 100vw); --icon-h: .13; --label-fs: .0221; }
+  .alinks { --w: min(560px, 100vw); --icon-h: .16; --label-fs: .0272; }
 }
