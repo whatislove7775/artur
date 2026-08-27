@@ -348,7 +348,7 @@ function mountBackToTop() {
 const COOKIE_NOTICE_KEY = 'artasimn-cookie-notice-dismissed';
 const NEWSLETTER_KEY = 'artasimn-newsletter-dismissed';
 const CLOSE_SVG =
-  '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+  '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 
 function mountSitePopups() {
   if (!localStorage.getItem(COOKIE_NOTICE_KEY)) {

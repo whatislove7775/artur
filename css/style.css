@@ -296,8 +296,8 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 }
 .header-icon-box {
   flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border: 1px solid #111;
   display: flex;
   align-items: center;
@@ -1470,16 +1470,17 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   padding: 0;
   font: inherit;
   font-size: var(--font-b-size);
-  color: var(--font-b-color);
+  color: #111;
 }
-.newsletter__close:hover { color: var(--ink); }
+.newsletter__close:hover { opacity: .6; }
 .newsletter__close-icon {
-  width: 14px;
-  height: 14px;
+  width: 11px;
+  height: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.newsletter__close-icon svg { width: 100%; height: 100%; }
 .newsletter__text {
   max-width: 640px;
   margin: 0 0 32px;
@@ -1547,11 +1548,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 @media (max-width: 560px) {
   .newsletter__box { padding: 44px 24px 32px; }
   .newsletter__text { font-size: 18px; }
-  .newsletter__close-icon {
-    width: 22px;
-    height: 22px;
-    border: 1px solid currentColor;
-  }
 }
 
 /* ===========================================================
