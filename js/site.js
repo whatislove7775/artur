@@ -250,6 +250,12 @@ function initHeroScrollZoom() {
 function footerMarkup(brand) {
   return `
   <div class="footer__brand">${brand || 'artasimn'}</div>
+  <div class="footer__social">
+    <a href="https://www.instagram.com/artasimn?igsi=MTFwZTJienB4aXpxaA%3D%3D&utm_source=qr" target="_blank" rel="noopener"><img src="assets/alinks/instagram.svg" alt="Instagram"></a>
+    <a href="https://youtube.com/@artasimn?si=-V3yI6vsKQR3cw7G" target="_blank" rel="noopener"><img src="assets/alinks/youtube.svg" alt="YouTube"></a>
+    <a href="https://www.tiktok.com/@avemariaavemariaavemaria?_r=1&_t=ZG-994LA8NAvGy" target="_blank" rel="noopener"><img src="assets/alinks/tiktok.svg" alt="TikTok"></a>
+    <a href="https://t.me/artasimn" target="_blank" rel="noopener"><img src="assets/alinks/telegram.svg" alt="Telegram"></a>
+  </div>
   <p class="footer__disclaimer">All designs, apparel, jewelry, and tattoo flash presented on Artasimn.com are original creations&mdash;wearing them or booking a design may cause severe style upgrades and an unhealthy obsession with your own reflection.</p>
   <div class="footer__links">
     <a href="privacy.html">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a>

@@ -327,6 +327,14 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .header.nav-compact .nav.items-active .nav-swap__hover .nav-label {
   visibility: visible;
 }
+/* in this state hovering is purely a reveal-the-label interaction, not
+   a "you're pointing at a link" affordance — stays fully black instead
+   of the usual dimmed-opacity hover treatment */
+.header.nav-compact .nav a:hover,
+.header.nav-compact .header__tattoo-office:hover,
+.header.nav-compact .header__cart:hover {
+  opacity: 1;
+}
 
 /* ===========================================================
    MENU STRIP — 3 photos under the header (garment/jewellery/tattoo —
@@ -1572,20 +1580,28 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* ===========================================================
    FOOTER
    =========================================================== */
+/* grid, not a plain row — brand and the social icons need to stack as
+   their own left-hand column (icons directly under "artasimn"),
+   without pushing the disclaimer/links columns around; a flex row
+   can't stack two independent items in one column like that */
 .footer {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "brand disclaimer links"
+    "social disclaimer links";
+  align-items: start;
+  column-gap: 40px;
+  row-gap: 8px;
   padding: 24px 28px;
   font-size: var(--font-b-size);
   color: var(--font-b-color);
   text-transform: uppercase;
 }
-.footer__brand { flex: 0 0 auto; white-space: nowrap; }
-.footer__disclaimer { flex: 1 1 auto; max-width: 760px; margin: 0; line-height: 1.5; }
+.footer__brand { grid-area: brand; white-space: nowrap; }
+.footer__disclaimer { grid-area: disclaimer; max-width: 760px; margin: 0; line-height: 1.5; }
 .footer__links {
-  flex: 0 0 auto;
+  grid-area: links;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -1593,6 +1609,16 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   text-align: right;
 }
 .footer__links a:hover { color: var(--ink); }
+/* the same icon files a-links.html uses for its own social buttons —
+   sized so the whole brand+icons column never grows taller than the
+   disclaimer paragraph beside it */
+.footer__social {
+  grid-area: social;
+  display: flex;
+  gap: 8px;
+}
+.footer__social img { display: block; height: 20px; width: auto; }
+.footer__social a:hover { opacity: .6; }
 
 /* index.html only: centred heading between the mobile menu-photos
    stack and the product grid — desktop has no equivalent, so this
@@ -1862,6 +1888,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 @media (max-width: 560px) {
   .footer {
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -1869,7 +1896,8 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   }
   .footer__brand { order: 1; }
   .footer__links { order: 2; justify-content: center; text-align: center; }
-  .footer__disclaimer { order: 3; max-width: 100%; }
+  .footer__social { order: 3; justify-content: center; }
+  .footer__disclaimer { order: 4; max-width: 100%; }
 }
 
 /* ===========================================================
