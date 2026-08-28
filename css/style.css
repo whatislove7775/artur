@@ -240,7 +240,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
      column's title/price once the page is scrolled — adding "about"
      widened the row, and since it's centred, that widening pushed the
      right edge further right too, so the offset grew to match */
-  transform: translateX(-133px);
+  transform: translateX(-158px);
 }
 
 .nav a:hover { opacity: .55; }
@@ -308,6 +308,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .header-icon { width: 100%; height: 100%; object-fit: contain; filter: brightness(0); }
 /* the plain logo-mark (not the text logo), tilted per the mockup */
 .header-icon--mark { transform: rotate(40deg); }
+
+/* index.html desktop only, once the menu-strip photo block has fully
+   scrolled past (see initHeroHeader in site.js) — labels drop out,
+   icon-boxes stay */
+.header.nav-compact .nav-label { display: none; }
 
 /* ===========================================================
    MENU STRIP — 3 photos under the header (garment/jewellery/tattoo —

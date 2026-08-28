@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260871">
+<link rel="stylesheet" href="css/style.css?v=20260872">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260871"></script>
-<script src="js/site.js?v=20260871"></script>
+<script src="js/data.js?v=20260872"></script>
+<script src="js/site.js?v=20260872"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -33,8 +33,6 @@
   let nextIndex = 0;
 
   function sketchBlockMarkup(item) {
-    const descriptionHtml = '<p>Внимание: эскизы ARTASIMN могут вызывать эстетическую зависимость!</p>';
-
     return `
     <div class="product" data-sketch-block>
       <div class="product__left">
@@ -49,7 +47,6 @@
           <a href="https://t.me/artasimn" target="_blank" rel="noopener">+ order via telegram</a>
           <a href="https://instagram.com/artasimn" target="_blank" rel="noopener">+ order via instagram</a>
         </div>
-        ${accordionMarkup('DESCRIPTION', descriptionHtml, true)}
       </div>
     </div>`;
   }
