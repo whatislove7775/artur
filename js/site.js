@@ -42,22 +42,22 @@ function headerMarkup(prefix) {
     <img class="header__logo-mobile" src="${p}assets/logo-mobile.svg" alt="Artasimn">
   </a>
   <nav class="nav">
-    <a href="${p}about.html">about<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
-    <a class="nav-items" href="${p}items.html">items<span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span><span class="nav-items__colon">:</span></a>
+    <a href="${p}about.html"><span class="nav-label">about</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
+    <a class="nav-items" href="${p}items.html"><span class="nav-label">items</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span><span class="nav-items__colon">:</span></a>
     <span class="nav-swap">
-      <a class="nav-swap__default" href="${p}tattoo.html">tattoo<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
-      <a class="nav-swap__hover" href="${p}index.html?cat=garment">garment<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
+      <a class="nav-swap__default" href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
     </span>
     <span class="nav-swap">
-      <a class="nav-swap__default" href="${p}adept.html">a.dept<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
-      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery">jewellery<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
+      <a class="nav-swap__default" href="${p}adept.html"><span class="nav-label">a.dept</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
     </span>
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
-    <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener">tattoo office<span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo-office.svg" alt=""></span></a>
+    <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener"><span class="nav-label">tattoo office</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo-office.svg" alt=""></span></a>
     <a class="header__cart" href="#" data-cart-open>
-      <span class="header__cart-text">cart</span>
+      <span class="header__cart-text nav-label">cart</span>
       <span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/cart.svg" alt=""></span>
       ${cartIconMarkup()}
     </a>
@@ -202,6 +202,9 @@ function initHeroHeader() {
     } else {
       header.classList.toggle('is-transparent', !overHero);
       header.classList.remove('is-inverted');
+      // once the menu-strip photo block has fully scrolled past, drop
+      // the nav/header link labels down to just their icon-boxes
+      header.classList.toggle('nav-compact', !overHero);
     }
   };
   update();
@@ -375,7 +378,7 @@ function mountSitePopups() {
       el.innerHTML = `
         <div class="newsletter__box">
           <button type="button" class="newsletter__close" data-newsletter-close>close <span class="newsletter__close-icon">${CLOSE_SVG}</span></button>
-          <p class="newsletter__text">Подпишись на рассылку, чтобы получать уведомления о новых позициях, акциях и тд.</p>
+          <p class="newsletter__text">Подпишись на рассылку, — получи скидку 5% на весь ассортимент, уведомления о новых позициях, акциях и тд.</p>
           <form class="newsletter__form" data-newsletter-form>
             <input type="text" name="name" placeholder="имя" required>
             <input type="email" name="email" placeholder="e-mail" required>
