@@ -312,7 +312,21 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* index.html desktop only, once the menu-strip photo block has fully
    scrolled past (see initHeroHeader in site.js) — labels drop out,
    icon-boxes stay */
-.header.nav-compact .nav-label { display: none; }
+/* visibility, not display: none — the label keeps reserving its own
+   layout width so the icon-box next to it never shifts position when
+   the text disappears/reappears */
+.header.nav-compact .nav-label { visibility: hidden; }
+.header.nav-compact .nav a:hover .nav-label,
+.header.nav-compact .header__tattoo-office:hover .nav-label,
+.header.nav-compact .header__cart:hover .nav-label {
+  visibility: visible;
+}
+/* hovering "items" swaps tattoo/a.dept for garment/jewellery (see
+   initItemsMenu in site.js) — their labels should already be visible
+   the moment they appear, not require a second, separate hover */
+.header.nav-compact .nav.items-active .nav-swap__hover .nav-label {
+  visibility: visible;
+}
 
 /* ===========================================================
    MENU STRIP — 3 photos under the header (garment/jewellery/tattoo —
