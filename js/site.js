@@ -75,7 +75,7 @@ function headerMarkup(prefix) {
         <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/about.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}items.html">
-        <span>items</span>
+        <span>all items</span>
         <span class="mobile-menu__icon-box"><img class="mobile-menu__icon mobile-menu__icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}index.html?cat=garment">
