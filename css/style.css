@@ -250,6 +250,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   align-items: center;
   gap: 44px;
   justify-self: center;
+  transform: translateX(-60px);
 }
 
 .nav a:hover { opacity: .55; }
