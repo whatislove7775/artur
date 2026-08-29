@@ -105,56 +105,83 @@ const SKETCH_DESC_EN = [
 
 const SKETCHES = [
   {
-    id: 'nobody-loves-me',
-    year: 2026,
-    date: '02 2026',
-    caption: 'эскиз от artasimn',
-    image: 'assets/sketches/nobody-loves-me.png',
-    descriptionRu: SKETCH_DESC_RU,
-    descriptionEn: SKETCH_DESC_EN
-  },
-  {
-    id: 'bleeding-heart',
-    year: 2026,
-    date: '01 2026',
-    caption: 'эскиз от artasimn',
-    image: 'assets/sketches/bleeding-heart.png',
-    descriptionRu: SKETCH_DESC_RU,
-    descriptionEn: SKETCH_DESC_EN
-  },
-  {
-    id: 'reaper-collage',
-    year: 2026,
-    date: '03 2026',
-    caption: 'эскиз от artasimn',
-    image: 'assets/sketches/reaper-collage.png',
-    descriptionRu: SKETCH_DESC_RU,
-    descriptionEn: SKETCH_DESC_EN
-  },
-  {
-    id: 'church-domes',
+    id: 'fallen-seraph',
     year: 2026,
     date: '08 2026',
     caption: 'эскиз от artasimn',
-    image: 'assets/sketches/church-domes.png',
+    image: 'assets/sketches/fallen-seraph.webp',
     descriptionRu: SKETCH_DESC_RU,
     descriptionEn: SKETCH_DESC_EN
   },
   {
-    id: 'heart-and-globe',
+    id: 'jester-and-globe',
     year: 2026,
     date: '07 2026',
     caption: 'эскиз от artasimn',
-    image: 'assets/sketches/heart-and-globe.png',
+    image: 'assets/sketches/jester-and-globe.webp',
     descriptionRu: SKETCH_DESC_RU,
     descriptionEn: SKETCH_DESC_EN
   },
   {
-    id: 'star-cross',
+    id: 'tribal-skull',
     year: 2026,
-    date: '23 2026',
+    date: '06 2026',
     caption: 'эскиз от artasimn',
-    image: 'assets/sketches/star-cross.png',
+    image: 'assets/sketches/tribal-skull.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'sacred-medallion',
+    year: 2026,
+    date: '04 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/sacred-medallion.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'nobody-loves-me-ii',
+    year: 2026,
+    date: '03 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/nobody-loves-me-ii.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'arm-of-relics',
+    year: 2026,
+    date: '01 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/arm-of-relics.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'thorn-embrace',
+    year: 2026,
+    date: '09 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/thorn-embrace.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'briar-wings',
+    year: 2026,
+    date: '10 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/briar-wings.webp',
+    descriptionRu: SKETCH_DESC_RU,
+    descriptionEn: SKETCH_DESC_EN
+  },
+  {
+    id: 'night-scrawl',
+    year: 2026,
+    date: '11 2026',
+    caption: 'эскиз от artasimn',
+    image: 'assets/sketches/night-scrawl.webp',
     descriptionRu: SKETCH_DESC_RU,
     descriptionEn: SKETCH_DESC_EN
   },
