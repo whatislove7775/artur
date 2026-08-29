@@ -1174,23 +1174,14 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   top: 100px;
   text-align: center;
 }
+/* the brand logo-mark, not a circular photo crop — contain instead of
+   cover so its wings/points never get clipped */
 .about-portrait {
   width: 170px;
   height: 170px;
   margin: 0 auto;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #e4e4e4;
 }
-.about-portrait img { width: 100%; height: 100%; object-fit: cover; }
-.about-signature { width: 140px; margin: 16px auto 0; }
-.about-signature img { width: 100%; height: auto; }
-.about-caption {
-  margin: 12px 0 0;
-  font-size: var(--font-b-size);
-  color: var(--font-b-color);
-  line-height: 1.5;
-}
+.about-portrait img { width: 100%; height: 100%; object-fit: contain; }
 
 /* generic grey stand-in for every photo that isn't wired to a real
    asset yet — the ratio is set per use so each one keeps the shape
