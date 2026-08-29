@@ -138,6 +138,7 @@ button { font-family: inherit; }
   z-index: 650;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+  column-gap: 60px;
   align-items: center;
   padding: 10px 58px;
   font-size: var(--font-a-size);
@@ -170,6 +171,19 @@ button { font-family: inherit; }
 .header__logo-mobile { display: none; }
 
 .header__logo { justify-self: start; }
+/* desktop only: pinned to explicit columns (not left to auto-
+   placement) so hiding .nav on scroll (see .header.nav-compact below)
+   can't reflow .header__right into the middle column behind it — CSS
+   Grid's auto-placement skips display:none items entirely, which used
+   to shift .header__right (and the cart link inside it) toward centre
+   the moment .nav disappeared. Mobile keeps relying on auto-placement
+   (menu-toggle/logo/header__right, .nav already display:none there)
+   so this is scoped out of that breakpoint. */
+@media (min-width: 981px) {
+  .header__logo { grid-column: 1; }
+  .nav { grid-column: 2; }
+  .header__right { grid-column: 3; }
+}
 
 .header__menu-toggle { display: none; }
 
@@ -236,32 +250,35 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   align-items: center;
   gap: 44px;
   justify-self: center;
-  /* nudged left of true-centre so "a.dept" (the last link) sits close
-     to "tattoo office" instead of leaving a wide gap between the nav
-     group and .header__right — nav-compact now hides this whole group
-     on scroll (see below), so there's no longer a scrolled-state
-     catalogue column to keep clear of either */
-  transform: translateX(-40px);
 }
 
 .nav a:hover { opacity: .55; }
 
 .header__spacer { display: none; }
 
+/* three groups, per the mockup: about/garment/jewellery/tattoo (.nav)
+   — a gap — a.dept+tattoo office (.header__right-group) — a gap —
+   cart, all the way at the right edge */
 .header__right {
   display: flex;
   align-items: center;
   gap: 118px;
   justify-self: end;
 }
+.header__right-group {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
 .header__right a:hover { opacity: .55; }
 
 /* small bordered icon square after each desktop nav/header link label,
    mirroring the mobile menu overlay's own icon-box treatment */
-.nav a, .header__tattoo-office, .header__cart {
+.nav a, .header__right-group a, .header__cart {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  white-space: nowrap;
 }
 .header-icon-box {
   flex: 0 0 auto;
@@ -279,9 +296,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* index.html desktop only, once the menu-strip photo block has fully
    scrolled past (see initHeroHeader in site.js) — every header button
    disappears except the logo and the cart link (icon + its own label
-   stay exactly as at rest) */
+   stay exactly as at rest); cart itself stays put at the header's own
+   right edge (justify-self: end on .header__right, unaffected by
+   .nav/.header__right-group collapsing to zero width) rather than
+   drifting toward centre */
 .header.nav-compact .nav,
-.header.nav-compact .header__tattoo-office {
+.header.nav-compact .header__right-group {
   display: none;
 }
 
@@ -1772,7 +1792,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
     position: relative;
     z-index: 601;
   }
-  .header__tattoo-office { display: none; }
+  .header__right-group { display: none; }
   .header__cart-text { display: none; }
   .header-icon-box { display: none; }
   .icon-toggle { display: block; }
