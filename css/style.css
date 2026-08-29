@@ -236,46 +236,15 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   align-items: center;
   gap: 44px;
   justify-self: center;
-  /* nudged left of true-centre so it clears the right-hand catalogue
-     column's title/price once the page is scrolled — adding "about"
-     widened the row, and since it's centred, that widening pushed the
-     right edge further right too, so the offset grew to match */
-  transform: translateX(-158px);
+  /* nudged left of true-centre so "a.dept" (the last link) sits close
+     to "tattoo office" instead of leaving a wide gap between the nav
+     group and .header__right — nav-compact now hides this whole group
+     on scroll (see below), so there's no longer a scrolled-state
+     catalogue column to keep clear of either */
+  transform: translateX(-40px);
 }
 
 .nav a:hover { opacity: .55; }
-
-/* colon is always in the DOM (reserves its own width) so "items" never
-   shifts when it fades in — same reasoning for .nav-swap below */
-.nav-items__colon { opacity: 0; transition: opacity .15s ease; }
-.nav.items-active .nav-items__colon { opacity: 1; }
-
-/* hovering "items" only (see initItemsMenu in site.js — not tattoo or
-   a.dept) swaps them for the two catalogue filters, garment + jewellery.
-   Both states are stacked on top of each other (absolute + a fixed-width
-   placeholder) so the swap never changes .nav's own width — nothing in
-   the row, "items" included, shifts position when it happens. */
-.nav-swap {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-}
-.nav-swap__default { opacity: 1; transition: opacity .15s ease; }
-.nav-swap__hover {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .15s ease;
-  white-space: nowrap;
-}
-.nav.items-active .nav-swap__default { opacity: 0; pointer-events: none; }
-.nav.items-active .nav-swap__hover { opacity: 1; pointer-events: auto; }
-/* higher specificity than the rule above, so hovering garment/jewellery
-   itself still greys it out like every other nav link instead of
-   staying pinned at full opacity */
-.nav.items-active .nav-swap__hover:hover { opacity: .55; }
 
 .header__spacer { display: none; }
 
@@ -306,34 +275,14 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* icons keep their own fixed black colour regardless of the link's own
    (sometimes grey/hover) text colour */
 .header-icon { width: 100%; height: 100%; object-fit: contain; filter: brightness(0); }
-/* the plain logo-mark (not the text logo), tilted per the mockup */
-.header-icon--mark { transform: rotate(40deg); }
 
 /* index.html desktop only, once the menu-strip photo block has fully
-   scrolled past (see initHeroHeader in site.js) — labels drop out,
-   icon-boxes stay */
-/* visibility, not display: none — the label keeps reserving its own
-   layout width so the icon-box next to it never shifts position when
-   the text disappears/reappears */
-.header.nav-compact .nav-label { visibility: hidden; }
-.header.nav-compact .nav a:hover .nav-label,
-.header.nav-compact .header__tattoo-office:hover .nav-label,
-.header.nav-compact .header__cart:hover .nav-label {
-  visibility: visible;
-}
-/* hovering "items" swaps tattoo/a.dept for garment/jewellery (see
-   initItemsMenu in site.js) — their labels should already be visible
-   the moment they appear, not require a second, separate hover */
-.header.nav-compact .nav.items-active .nav-swap__hover .nav-label {
-  visibility: visible;
-}
-/* in this state hovering is purely a reveal-the-label interaction, not
-   a "you're pointing at a link" affordance — stays fully black instead
-   of the usual dimmed-opacity hover treatment */
-.header.nav-compact .nav a:hover,
-.header.nav-compact .header__tattoo-office:hover,
-.header.nav-compact .header__cart:hover {
-  opacity: 1;
+   scrolled past (see initHeroHeader in site.js) — every header button
+   disappears except the logo and the cart link (icon + its own label
+   stay exactly as at rest) */
+.header.nav-compact .nav,
+.header.nav-compact .header__tattoo-office {
+  display: none;
 }
 
 /* ===========================================================
@@ -1657,11 +1606,15 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .footer-icon--tiktok { -webkit-mask-image: url('../assets/alinks/tiktok.svg'); mask-image: url('../assets/alinks/tiktok.svg'); }
 .footer-icon--telegram { -webkit-mask-image: url('../assets/alinks/telegram.svg'); mask-image: url('../assets/alinks/telegram.svg'); }
 
-/* index.html only: centred heading between the mobile menu-photos
-   stack and the product grid — desktop has no equivalent, so this
-   stays hidden there and is only switched on in the mobile breakpoint
-   below */
-.catalogue__heading { display: none; }
+/* index.html only: centred heading between the menu-photos strip/
+   marquee and the product grid, desktop and mobile alike */
+.catalogue__heading {
+  display: block;
+  text-align: center;
+  font-size: var(--font-a-size);
+  color: var(--font-a-color);
+  padding: 34px 0 0;
+}
 
 /* fixed corner "scroll to top" button, mobile and desktop alike (see
    mountBackToTop in site.js) — pinned to the viewport's own corner
@@ -1737,14 +1690,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   /* mobile header is one compact row (~50px) — items.html's hero-less
      catalogue needs the matching extra clearance */
   .catalogue--top { padding-top: 66px; }
-
-  .catalogue__heading {
-    display: block;
-    text-align: center;
-    font-size: var(--font-a-size);
-    color: var(--font-a-color);
-    padding: 34px 0 0;
-  }
 
   .grid-2 { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 40px; }
 

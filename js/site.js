@@ -43,15 +43,10 @@ function headerMarkup(prefix) {
   </a>
   <nav class="nav">
     <a href="${p}about.html"><span class="nav-label">about</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
-    <a class="nav-items" href="${p}items.html"><span class="nav-label">items</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span><span class="nav-items__colon">:</span></a>
-    <span class="nav-swap">
-      <a class="nav-swap__default" href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
-      <a class="nav-swap__hover" href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
-    </span>
-    <span class="nav-swap">
-      <a class="nav-swap__default" href="${p}adept.html"><span class="nav-label">a.dept</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
-      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
-    </span>
+    <a href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
+    <a href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
+    <a href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
+    <a href="${p}adept.html"><span class="nav-label">a.dept</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
@@ -264,38 +259,9 @@ function footerMarkup(brand) {
   </div>`;
 }
 
-/* The garment/jewellery swap only ever triggers off the "items" link
-   itself — hovering tattoo or a.dept directly does nothing. A short
-   grace period on leaving "items" keeps the menu open long enough for
-   the pointer to reach the revealed links (which sit exactly where
-   tattoo/a.dept were), so it doesn't collapse mid-travel. */
-function initItemsMenu() {
-  const nav = document.querySelector('.nav');
-  const itemsLink = document.querySelector('.nav-items');
-  if (!nav || !itemsLink) return;
-
-  let hideTimer = null;
-  const show = () => {
-    clearTimeout(hideTimer);
-    nav.classList.add('items-active');
-  };
-  const scheduleHide = () => {
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => nav.classList.remove('items-active'), 220);
-  };
-
-  itemsLink.addEventListener('mouseenter', show);
-  itemsLink.addEventListener('mouseleave', scheduleHide);
-  nav.querySelectorAll('.nav-swap__hover').forEach((el) => {
-    el.addEventListener('mouseenter', show);
-    el.addEventListener('mouseleave', scheduleHide);
-  });
-}
-
 function mountHeader(prefix) {
   const el = document.querySelector('.header');
   if (el) el.innerHTML = headerMarkup(prefix);
-  initItemsMenu();
   initMobileMenuToggle();
   mountCartDrawer(prefix);
   mountBackToTop();
