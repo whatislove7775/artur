@@ -809,6 +809,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   grid-template-columns: 1fr 1fr;
   gap: 60px;
 }
+/* product.html only (not tattoo-item.html's data-sketch-block, which
+   already fills the column edge to edge via .product__main--fluid) —
+   a wider left column so the product photo reads noticeably bigger */
+.product:not([data-sketch-block]) { grid-template-columns: 1.3fr 1fr; }
 
 /* tattoo-item.html's infinite feed: each sketch after the first needs
    its own separation from the one before it */
@@ -822,7 +826,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 .product__main {
   aspect-ratio: 4 / 5;
-  max-height: 62vh;
+  max-height: 78vh;
   overflow: hidden;
   background: #fff;
   margin: 0 auto;
@@ -1182,6 +1186,14 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   margin: 0 auto;
 }
 .about-portrait img { width: 100%; height: 100%; object-fit: contain; }
+.about-signature { width: 140px; margin: 16px auto 0; }
+.about-signature img { width: 100%; height: auto; }
+.about-caption {
+  margin: 12px 0 0;
+  font-size: var(--font-b-size);
+  color: var(--font-b-color);
+  line-height: 1.5;
+}
 
 /* generic grey stand-in for every photo that isn't wired to a real
    asset yet — the ratio is set per use so each one keeps the shape
@@ -1638,8 +1650,8 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    forced black */
 .footer-icon-box {
   flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
+  width: 28px;
+  height: 28px;
   border: 1px solid currentColor;
   display: flex;
   align-items: center;
