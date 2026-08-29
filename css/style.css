@@ -1945,7 +1945,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   .mobile-menu__link:nth-child(7) { margin-left: 28%; }
   .mobile-menu__link:nth-child(8) { margin-left: 30%; }
   .mobile-menu__disclaimer {
-    margin: auto 24px 24px;
+    /* a fixed gap, not margin-top:auto — auto only pushes the
+       disclaimer down when there's real leftover space below the
+       links; on a shorter viewport (browser chrome eating into the
+       visible height) the links already nearly fill it, so auto
+       collapsed to almost nothing there while looking fine on a
+       taller screen */
+    margin: 48px 24px 24px;
     font-family: 'Times New Roman', Times, serif;
     font-size: var(--font-b-size);
     line-height: 1.5;
@@ -1975,16 +1981,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   .footer__links a:nth-child(2) { order: 3; }
   .footer__links a:nth-child(3) { order: 1; }
 
-  /* 3-column icon grid with a label under each icon, per the mockup —
-     circular/rounded icon (no bordered box), larger than the compact
-     desktop treatment */
+  /* single row, exactly 4 icons (instagram/youtube/telegram/tiktok —
+     no tattoo-office or artasimn.com here), each with a label below,
+     per the mockup */
   .footer__social {
     order: 3;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 28px;
-    width: 100%;
-    max-width: 320px;
+    display: flex;
+    gap: 24px;
   }
   .footer-icon-box {
     flex-direction: column;
@@ -2001,16 +2004,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   }
   .footer-social-label { display: block; font-size: 11px; letter-spacing: .02em; }
 
-  .footer-icon-box:has(.footer-icon--office) { order: 1; }
+  .footer-icon-box:has(.footer-icon--instagram) { order: 1; }
   .footer-icon-box:has(.footer-icon--youtube) { order: 2; }
   .footer-icon-box:has(.footer-icon--telegram) { order: 3; }
-  .footer-icon-box:has(.footer-icon--instagram) { order: 4; }
-  .footer-icon-box:has(.footer-icon--artasimn) { order: 5; }
-  .footer-icon-box:has(.footer-icon--tiktok) { order: 6; }
-  .footer-icon-box:has(.footer-icon--office),
-  .footer-icon-box:has(.footer-icon--artasimn) {
-    display: flex;
-  }
+  .footer-icon-box:has(.footer-icon--tiktok) { order: 4; }
 
   .footer__disclaimer { order: 4; max-width: 100%; }
 }
