@@ -263,10 +263,12 @@ function footerMarkup(brand) {
     <a href="about.html">ИНФО</a>
   </div>
   <div class="footer__social">
-    <a class="footer-icon-box" href="https://www.instagram.com/artasimn?igsi=MTFwZTJienB4aXpxaA%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><span class="footer-icon footer-icon--instagram"></span></a>
-    <a class="footer-icon-box" href="https://youtube.com/@artasimn?si=-V3yI6vsKQR3cw7G" target="_blank" rel="noopener" aria-label="YouTube"><span class="footer-icon footer-icon--youtube"></span></a>
-    <a class="footer-icon-box" href="https://www.tiktok.com/@avemariaavemariaavemaria?_r=1&_t=ZG-994LA8NAvGy" target="_blank" rel="noopener" aria-label="TikTok"><span class="footer-icon footer-icon--tiktok"></span></a>
-    <a class="footer-icon-box" href="https://t.me/artasimn" target="_blank" rel="noopener" aria-label="Telegram"><span class="footer-icon footer-icon--telegram"></span></a>
+    <a class="footer-icon-box" href="https://tattoo-office.com" target="_blank" rel="noopener" aria-label="Tattoo Office"><span class="footer-icon footer-icon--office"></span><span class="footer-social-label">T.office</span></a>
+    <a class="footer-icon-box" href="https://youtube.com/@artasimn?si=-V3yI6vsKQR3cw7G" target="_blank" rel="noopener" aria-label="YouTube"><span class="footer-icon footer-icon--youtube"></span><span class="footer-social-label">YouTube</span></a>
+    <a class="footer-icon-box" href="https://t.me/artasimn" target="_blank" rel="noopener" aria-label="Telegram"><span class="footer-icon footer-icon--telegram"></span><span class="footer-social-label">Telegram</span></a>
+    <a class="footer-icon-box" href="https://www.instagram.com/artasimn?igsi=MTFwZTJienB4aXpxaA%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><span class="footer-icon footer-icon--instagram"></span><span class="footer-social-label">Instagram</span></a>
+    <a class="footer-icon-box" href="index.html" aria-label="Artasimn.com"><span class="footer-icon footer-icon--artasimn"></span><span class="footer-social-label">Artasimn.com</span></a>
+    <a class="footer-icon-box" href="https://www.tiktok.com/@avemariaavemariaavemaria?_r=1&_t=ZG-994LA8NAvGy" target="_blank" rel="noopener" aria-label="TikTok"><span class="footer-icon footer-icon--tiktok"></span><span class="footer-social-label">TikTok</span></a>
   </div>`;
 }
 
