@@ -794,6 +794,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   flex-direction: column;
   justify-content: center;
 }
+/* product.html only, desktop: centering the tall product photo/right
+   column vertically pushed the title/price below it past the fold —
+   pin the card near the top instead, so the price is visible without
+   scrolling at all */
+@media (min-width: 981px) {
+  .product-page:has(.product:not([data-sketch-block])) { justify-content: flex-start; }
+}
 
 .back-link {
   display: inline-flex;
