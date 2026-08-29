@@ -46,11 +46,13 @@ function headerMarkup(prefix) {
     <a href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
     <a href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
     <a href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
-    <a href="${p}adept.html"><span class="nav-label">a.dept</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
-    <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener"><span class="nav-label">tattoo office</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo-office.svg" alt=""></span></a>
+    <div class="header__right-group">
+      <a href="${p}adept.html"><span class="nav-label">a.dept</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/adept.svg" alt=""></span></a>
+      <a class="header__tattoo-office" href="https://tattoo-office.com" target="_blank" rel="noopener"><span class="nav-label">tattoo office</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo-office.svg" alt=""></span></a>
+    </div>
     <a class="header__cart" href="#" data-cart-open>
       <span class="header__cart-text nav-label">cart</span>
       <span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/cart.svg" alt=""></span>
