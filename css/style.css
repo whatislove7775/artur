@@ -836,17 +836,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    main image's top — not offset by that element's own top margin,
    which is only meant to space it from whatever comes before it */
 .product__right > :first-child { margin-top: 0; }
-/* product.html only, desktop: the right column (thumbs/size/description/
-   cart) reads much shorter than the tall product photo beside it, so it
-   sits centred against the image's height instead of pinned to its top */
-@media (min-width: 981px) {
-  .product:not([data-sketch-block]) .product__right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-  }
-}
 
 .product__main {
   aspect-ratio: 4 / 5;
