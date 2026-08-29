@@ -23,8 +23,7 @@
 <script>
   mountHeader();
   mountFooter();
-  document.querySelector('.header').classList.add('is-transparent');
-  initNavCompactOnScroll();
+  initSolidHeaderOnScroll();
 
   const startId = new URLSearchParams(location.search).get('id');
   const startIndex = Math.max(0, SKETCHES.findIndex((s) => s.id === startId));

@@ -55,12 +55,11 @@
       mountHeroMobile('', heroByCat[validCat]);
       document.getElementById('heroMobile').classList.add('hero-mobile--half');
     } else {
-      // desktop: transparent over the top row of the filtered grid,
-      // nav row drops away the instant you scroll
+      // desktop: transparent only while at rest over the top row of
+      // the filtered grid, solid again the moment you scroll
       document.getElementById('heroMobile').remove();
       document.getElementById('catalogue').classList.add('catalogue--top');
-      document.querySelector('.header').classList.add('is-transparent');
-      initNavCompactOnScroll();
+      initSolidHeaderOnScroll();
     }
   } else {
     mountMenuStrip('', validCat);

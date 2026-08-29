@@ -103,16 +103,15 @@
     if (lastPage) pager.scrollLeft = lastPage.offsetLeft;
     setActive(yearsAsc[yearsAsc.length - 1]);
   } else {
-    // desktop: transparent over the top row of the sketch grid, nav
-    // row (all items/about/tattoo/a.dept/tattoo office) drops away the
-    // instant you scroll — the whole catalogue (every year) in one
-    // scroll with the year-rail scrollspy on the right
+    // desktop: transparent only while at rest over the top row of the
+    // sketch grid, solid again the moment you scroll — the whole
+    // catalogue (every year) in one scroll with the year-rail
+    // scrollspy on the right
     document.getElementById('heroMobile').remove();
     document.querySelector('[data-year-tabs]').remove();
     document.querySelector('[data-year-pager]').remove();
     document.getElementById('catalogue').classList.add('catalogue--top');
-    document.querySelector('.header').classList.add('is-transparent');
-    initNavCompactOnScroll();
+    initSolidHeaderOnScroll();
 
     const grid = document.querySelector('[data-grid]');
     grid.classList.remove('sketch-grid');
