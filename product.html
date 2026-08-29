@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260890">
+<link rel="stylesheet" href="css/style.css?v=20260892">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260890"></script>
-<script src="js/site.js?v=20260890"></script>
+<script src="js/data.js?v=20260892"></script>
+<script src="js/site.js?v=20260892"></script>
 <script>
   const id = new URLSearchParams(location.search).get('id');
   const adeptItem = ADEPT_PRODUCTS.find((p) => p.id === id);
@@ -38,7 +38,7 @@
   } else {
     mountHeader();
     mountFooter();
-    document.querySelector('.header').classList.add('is-transparent');
+    initSolidHeaderOnScroll();
   }
 
   const dots =

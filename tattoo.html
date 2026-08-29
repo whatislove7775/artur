@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Tattoo</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260890">
+<link rel="stylesheet" href="css/style.css?v=20260892">
 </head>
 <body>
 
@@ -24,8 +24,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260890"></script>
-<script src="js/site.js?v=20260890"></script>
+<script src="js/data.js?v=20260892"></script>
+<script src="js/site.js?v=20260892"></script>
 <script>
   mountHeader();
   mountFooter();
@@ -103,14 +103,15 @@
     if (lastPage) pager.scrollLeft = lastPage.offsetLeft;
     setActive(yearsAsc[yearsAsc.length - 1]);
   } else {
-    // desktop: unchanged — permanently transparent header, no hero, the
-    // whole catalogue (every year) in one scroll with the year-rail
+    // desktop: transparent only while at rest over the top row of the
+    // sketch grid, solid again the moment you scroll — the whole
+    // catalogue (every year) in one scroll with the year-rail
     // scrollspy on the right
     document.getElementById('heroMobile').remove();
     document.querySelector('[data-year-tabs]').remove();
     document.querySelector('[data-year-pager]').remove();
     document.getElementById('catalogue').classList.add('catalogue--top');
-    document.querySelector('.header').classList.add('is-transparent');
+    initSolidHeaderOnScroll();
 
     const grid = document.querySelector('[data-grid]');
     grid.classList.remove('sketch-grid');
