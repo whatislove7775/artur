@@ -797,9 +797,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* product.html only, desktop: centering the tall product photo/right
    column vertically pushed the title/price below it past the fold —
    pin the card near the top instead, so the price is visible without
-   scrolling at all */
+   scrolling at all. A plain modifier class (not :has()) so this
+   doesn't depend on a browser's relational-selector support. */
 @media (min-width: 981px) {
-  .product-page:has(.product:not([data-sketch-block])) { justify-content: flex-start; }
+  .product-page--item { justify-content: flex-start; }
 }
 
 .back-link {
