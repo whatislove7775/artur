@@ -886,6 +886,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   text-transform: uppercase;
   color: var(--font-b-color);
 }
+/* product.html's own "+ to cart" row sits after the size/description/
+   delivery block — give it extra breathing room below that, instead
+   of the tighter spacing tattoo-item.html's order-via row uses right
+   under the thumbnails */
+.product__actions:has(a[data-add-to-card]) { margin-top: 40px; }
 .product__actions a { color: var(--font-b-color); }
 .product__actions a:hover { color: var(--ink); }
 /* tattoo-item.html's order-via-telegram/instagram links, a touch
@@ -1580,16 +1585,17 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* ===========================================================
    FOOTER
    =========================================================== */
-/* grid, not a plain row — brand and the social icons need to stack as
-   their own left-hand column (icons directly under "artasimn"),
-   without pushing the disclaimer/links columns around; a flex row
-   can't stack two independent items in one column like that */
+/* grid, not a plain row — the social icons need to sit in their own
+   row directly under the links column (left edge aligned with
+   "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ"), without disturbing the brand/
+   disclaimer columns; a flex row can't stack two independent items in
+   one column like that */
 .footer {
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
     "brand disclaimer links"
-    "social disclaimer links";
+    ".     disclaimer social";
   align-items: start;
   column-gap: 40px;
   row-gap: 8px;
@@ -1609,16 +1615,47 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   text-align: right;
 }
 .footer__links a:hover { color: var(--ink); }
-/* the same icon files a-links.html uses for its own social buttons —
-   sized so the whole brand+icons column never grows taller than the
-   disclaimer paragraph beside it */
+/* the links column auto-sizes to its own (widest) content, and that
+   content is itself right-aligned to fill the column exactly — so a
+   plain left-aligned row underneath starts at the same x position as
+   "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ" with no extra alignment math needed */
 .footer__social {
   grid-area: social;
   display: flex;
   gap: 8px;
 }
-.footer__social img { display: block; height: 20px; width: auto; }
-.footer__social a:hover { opacity: .6; }
+/* same size/box treatment as the header's own icon-boxes, just
+   coloured to match the footer's own (grey) text instead of being
+   forced black */
+.footer-icon-box {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border: 1px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer-icon-box:hover { opacity: .6; }
+/* the same icon files a-links.html uses for its own social buttons,
+   recoloured via mask (their own baked-in grey fill would otherwise
+   never match the footer's text colour, light or dark theme alike) */
+.footer-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.footer-icon--instagram { -webkit-mask-image: url('../assets/alinks/instagram.svg'); mask-image: url('../assets/alinks/instagram.svg'); }
+.footer-icon--youtube { -webkit-mask-image: url('../assets/alinks/youtube.svg'); mask-image: url('../assets/alinks/youtube.svg'); }
+.footer-icon--tiktok { -webkit-mask-image: url('../assets/alinks/tiktok.svg'); mask-image: url('../assets/alinks/tiktok.svg'); }
+.footer-icon--telegram { -webkit-mask-image: url('../assets/alinks/telegram.svg'); mask-image: url('../assets/alinks/telegram.svg'); }
 
 /* index.html only: centred heading between the mobile menu-photos
    stack and the product grid — desktop has no equivalent, so this
