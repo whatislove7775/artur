@@ -296,28 +296,37 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* the plain logo-mark (not the text logo), tilted per the mockup */
 .header-icon--mark { transform: rotate(40deg); }
 
-/* hovering "all items" grows this row to reveal garment/jewellery —
-   part of .nav's own flex flow (not an absolute overlay), so "tattoo"
-   and the rest of the header genuinely make room and slide right
-   instead of the reveal sitting on top of them */
-.nav-items-wrap { display: inline-flex; align-items: center; }
-.nav-items-reveal {
-  display: flex;
-  align-items: center;
-  gap: 44px;
-  max-width: 0;
-  margin-left: 0;
-  overflow: hidden;
+/* colon is always in the DOM (reserves its own width) so "all items"
+   never shifts when it fades in — same reasoning for .nav-swap below */
+.nav-items__colon { opacity: 0; transition: opacity .15s ease; margin-left: 10px; }
+.nav.items-active .nav-items__colon { opacity: 1; }
+
+/* hovering "all items" swaps about/tattoo for the two catalogue
+   filters, garment + jewellery. Both states are stacked on top of
+   each other (absolute + a fixed-width placeholder) so the swap never
+   changes .nav's own width — nothing in the row shifts position when
+   it happens. */
+.nav-swap {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.nav-swap__default { opacity: 1; transition: opacity .15s ease; }
+.nav-swap__hover {
+  position: absolute;
+  left: 0;
+  top: 0;
   opacity: 0;
-  transition: max-width .2s ease, margin-left .2s ease, opacity .15s ease;
+  pointer-events: none;
+  transition: opacity .15s ease;
   white-space: nowrap;
 }
-.nav.items-active .nav-items-reveal {
-  max-width: 280px;
-  margin-left: 44px;
-  opacity: 1;
-  pointer-events: auto;
-}
+.nav.items-active .nav-swap__default { opacity: 0; pointer-events: none; }
+.nav.items-active .nav-swap__hover { opacity: 1; pointer-events: auto; }
+/* higher specificity than the rule above, so hovering garment/jewellery
+   itself still greys it out like every other nav link instead of
+   staying pinned at full opacity */
+.nav.items-active .nav-swap__hover:hover { opacity: .55; }
 
 /* index.html desktop only, once the menu-strip photo block has fully
    scrolled past (see initHeroHeader in site.js) — every header button
@@ -1902,7 +1911,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   .mobile-menu__link:nth-child(5) { margin-left: 53%; }
   .mobile-menu__link:nth-child(6) { margin-left: 15%; }
   .mobile-menu__link:nth-child(7) { margin-left: 28%; }
-  .mobile-menu__link:nth-child(8) { margin-left: 65%; }
+  .mobile-menu__link:nth-child(8) { margin-left: 30%; }
   .mobile-menu__disclaimer {
     margin: auto 24px 24px;
     font-family: 'Times New Roman', Times, serif;

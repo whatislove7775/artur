@@ -42,15 +42,15 @@ function headerMarkup(prefix) {
     <img class="header__logo-mobile" src="${p}assets/logo-mobile.svg" alt="Artasimn">
   </a>
   <nav class="nav">
-    <a href="${p}about.html"><span class="nav-label">about</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
-    <span class="nav-items-wrap">
-      <a class="nav-items" href="${p}items.html"><span class="nav-label">all items</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span></a>
-      <span class="nav-items-reveal">
-        <a href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
-        <a href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
-      </span>
+    <a class="nav-items" href="${p}items.html"><span class="nav-label">all items</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span><span class="nav-items__colon">:</span></a>
+    <span class="nav-swap">
+      <a class="nav-swap__default" href="${p}about.html"><span class="nav-label">about</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
     </span>
-    <a href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
+    <span class="nav-swap">
+      <a class="nav-swap__default" href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
+      <a class="nav-swap__hover" href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
+    </span>
   </nav>
   <div class="header__spacer"></div>
   <div class="header__right">
@@ -277,8 +277,7 @@ function footerMarkup(brand) {
 function initItemsMenu() {
   const nav = document.querySelector('.nav');
   const itemsLink = document.querySelector('.nav-items');
-  const reveal = document.querySelector('.nav-items-reveal');
-  if (!nav || !itemsLink || !reveal) return;
+  if (!nav || !itemsLink) return;
 
   let hideTimer = null;
   const show = () => {
@@ -292,8 +291,10 @@ function initItemsMenu() {
 
   itemsLink.addEventListener('mouseenter', show);
   itemsLink.addEventListener('mouseleave', scheduleHide);
-  reveal.addEventListener('mouseenter', show);
-  reveal.addEventListener('mouseleave', scheduleHide);
+  nav.querySelectorAll('.nav-swap__hover').forEach((el) => {
+    el.addEventListener('mouseenter', show);
+    el.addEventListener('mouseleave', scheduleHide);
+  });
 }
 
 function mountHeader(prefix) {
