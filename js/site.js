@@ -43,8 +43,13 @@ function headerMarkup(prefix) {
   </a>
   <nav class="nav">
     <a href="${p}about.html"><span class="nav-label">about</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/about.svg" alt=""></span></a>
-    <a href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
-    <a href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
+    <span class="nav-items-wrap">
+      <a class="nav-items" href="${p}items.html"><span class="nav-label">all items</span><span class="header-icon-box"><img class="header-icon header-icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span></a>
+      <span class="nav-items-reveal">
+        <a href="${p}index.html?cat=garment"><span class="nav-label">garment</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/garment.svg" alt=""></span></a>
+        <a href="${p}index.html?cat=jewellery"><span class="nav-label">jewellery</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/jewellery.svg" alt=""></span></a>
+      </span>
+    </span>
     <a href="${p}tattoo.html"><span class="nav-label">tattoo</span><span class="header-icon-box"><img class="header-icon" src="${p}assets/menu-icons/tattoo.svg" alt=""></span></a>
   </nav>
   <div class="header__spacer"></div>
@@ -68,6 +73,10 @@ function headerMarkup(prefix) {
       <a class="mobile-menu__link" href="${p}about.html">
         <span>about</span>
         <span class="mobile-menu__icon-box"><img class="mobile-menu__icon" src="${p}assets/menu-icons/about.svg" alt=""></span>
+      </a>
+      <a class="mobile-menu__link" href="${p}items.html">
+        <span>items</span>
+        <span class="mobile-menu__icon-box"><img class="mobile-menu__icon mobile-menu__icon--mark" src="${p}assets/logo-mobile.svg" alt=""></span>
       </a>
       <a class="mobile-menu__link" href="${p}index.html?cat=garment">
         <span>garment</span>
@@ -261,9 +270,36 @@ function footerMarkup(brand) {
   </div>`;
 }
 
+/* hovering "all items" reveals garment/jewellery to its right (see
+   .nav-items-reveal in style.css) — a short grace period on leaving
+   "all items" keeps it open long enough for the pointer to reach the
+   revealed links without it collapsing mid-travel. */
+function initItemsMenu() {
+  const nav = document.querySelector('.nav');
+  const itemsLink = document.querySelector('.nav-items');
+  const reveal = document.querySelector('.nav-items-reveal');
+  if (!nav || !itemsLink || !reveal) return;
+
+  let hideTimer = null;
+  const show = () => {
+    clearTimeout(hideTimer);
+    nav.classList.add('items-active');
+  };
+  const scheduleHide = () => {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => nav.classList.remove('items-active'), 220);
+  };
+
+  itemsLink.addEventListener('mouseenter', show);
+  itemsLink.addEventListener('mouseleave', scheduleHide);
+  reveal.addEventListener('mouseenter', show);
+  reveal.addEventListener('mouseleave', scheduleHide);
+}
+
 function mountHeader(prefix) {
   const el = document.querySelector('.header');
   if (el) el.innerHTML = headerMarkup(prefix);
+  initItemsMenu();
   initMobileMenuToggle();
   mountCartDrawer(prefix);
   mountBackToTop();

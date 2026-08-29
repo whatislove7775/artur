@@ -250,7 +250,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   align-items: center;
   gap: 44px;
   justify-self: center;
-  transform: translateX(-60px);
+  transform: translateX(-20px);
 }
 
 .nav a:hover { opacity: .55; }
@@ -293,6 +293,31 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* icons keep their own fixed black colour regardless of the link's own
    (sometimes grey/hover) text colour */
 .header-icon { width: 100%; height: 100%; object-fit: contain; filter: brightness(0); }
+/* the plain logo-mark (not the text logo), tilted per the mockup */
+.header-icon--mark { transform: rotate(40deg); }
+
+/* hovering "all items" grows this row to reveal garment/jewellery —
+   part of .nav's own flex flow (not an absolute overlay), so "tattoo"
+   and the rest of the header genuinely make room and slide right
+   instead of the reveal sitting on top of them */
+.nav-items-wrap { display: inline-flex; align-items: center; }
+.nav-items-reveal {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  max-width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width .2s ease, margin-left .2s ease, opacity .15s ease;
+  white-space: nowrap;
+}
+.nav.items-active .nav-items-reveal {
+  max-width: 280px;
+  margin-left: 44px;
+  opacity: 1;
+  pointer-events: auto;
+}
 
 /* index.html desktop only, once the menu-strip photo block has fully
    scrolled past (see initHeroHeader in site.js) — every header button
@@ -1866,6 +1891,8 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   /* fills the box's own content area right up to its border, edge to
      edge, instead of floating inside it with a visible gap */
   .mobile-menu__icon { width: 100%; height: 100%; object-fit: contain; }
+  /* the plain logo-mark (not the text logo), tilted per the mockup */
+  .mobile-menu__icon--mark { transform: rotate(40deg); }
   /* the staggered left offsets below are lifted directly from the
      mockup's cascading zigzag layout, not a formula */
   .mobile-menu__link:nth-child(1) { margin-left: 0; }
