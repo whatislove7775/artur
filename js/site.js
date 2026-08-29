@@ -218,6 +218,23 @@ function initHeroHeader() {
   window.addEventListener('resize', update);
 }
 
+/* desktop-only in effect (mobile forces the header transparent
+   unconditionally via its own !important rule regardless of this
+   class) — for pages that start transparent to float over a photo
+   sitting directly under the header (items.html's/tattoo.html's own
+   catalogue grid, product.html/tattoo-item.html's own main image):
+   staying transparent for the rest of the scroll let the page's own
+   text scroll up underneath and visually collide with the nav labels,
+   making them unreadable. This drops back to solid the moment you
+   scroll at all, restoring transparency only back at the very top. */
+function initSolidHeaderOnScroll() {
+  const header = document.querySelector('.header');
+  if (!header) return;
+  const update = () => header.classList.toggle('is-transparent', window.scrollY <= 0);
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+}
+
 /* mobile/tablet-only: the hero photo and each menu-strip tile scale
    up within their own clipped frame as they scroll past — resting at
    their normal size while fully in view, growing as each one scrolls

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260891">
+<link rel="stylesheet" href="css/style.css?v=20260892">
 </head>
 <body>
 
@@ -28,8 +28,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260891"></script>
-<script src="js/site.js?v=20260891"></script>
+<script src="js/data.js?v=20260892"></script>
+<script src="js/site.js?v=20260892"></script>
 <script>
   const cat = new URLSearchParams(location.search).get('cat');
   const validCat = cat === 'jewellery' || cat === 'garment' ? cat : null;
@@ -55,10 +55,11 @@
       mountHeroMobile('', heroByCat[validCat]);
       document.getElementById('heroMobile').classList.add('hero-mobile--half');
     } else {
-      // desktop: unchanged — permanently transparent header, no hero
+      // desktop: transparent only while at rest over the top row of
+      // the filtered grid, solid again the moment you scroll
       document.getElementById('heroMobile').remove();
       document.getElementById('catalogue').classList.add('catalogue--top');
-      document.querySelector('.header').classList.add('is-transparent');
+      initSolidHeaderOnScroll();
     }
   } else {
     mountMenuStrip('', validCat);

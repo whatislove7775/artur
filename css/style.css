@@ -1936,7 +1936,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
      edge, instead of floating inside it with a visible gap */
   .mobile-menu__icon { width: 100%; height: 100%; object-fit: contain; }
   /* the plain logo-mark (not the text logo), tilted per the mockup */
-  .mobile-menu__icon--mark { transform: rotate(40deg); }
+  /* the source SVG is solid black (unlike the other menu-icons files,
+     which are baked in at a mid grey) — dial it back to match instead
+     of standing out as the only fully black icon in the list */
+  .mobile-menu__icon--mark { transform: rotate(40deg); filter: brightness(0) opacity(.66); }
   /* the staggered left offsets below are lifted directly from the
      mockup's cascading zigzag layout, not a formula */
   .mobile-menu__link:nth-child(1) { margin-left: 0; }
