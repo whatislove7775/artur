@@ -841,6 +841,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    main image's top — not offset by that element's own top margin,
    which is only meant to space it from whatever comes before it */
 .product__right > :first-child { margin-top: 0; }
+/* desktop only: nudge it a little below the image's top edge instead
+   of flush, per feedback — mobile's stacked layout keeps the flush
+   rule above unchanged */
+@media (min-width: 981px) {
+  .product__right > :first-child { margin-top: 20px; }
+}
 
 .product__main {
   aspect-ratio: 4 / 5;
@@ -1975,13 +1981,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   .mobile-menu__link:nth-child(7) { margin-left: 28%; }
   .mobile-menu__link:nth-child(8) { margin-left: 30%; }
   .mobile-menu__disclaimer {
-    /* a fixed gap, not margin-top:auto — auto only pushes the
-       disclaimer down when there's real leftover space below the
-       links; on a shorter viewport (browser chrome eating into the
-       visible height) the links already nearly fill it, so auto
-       collapsed to almost nothing there while looking fine on a
-       taller screen */
-    margin: 48px 24px 24px;
+    /* margin-top: auto pins it to the very bottom of the panel when
+       the links don't fill the screen; padding-top is the floor for
+       when they do (auto collapses to 0 there, but padding doesn't
+       collapse) so there's always at least this much breathing room
+       above the text either way */
+    margin: auto 24px 24px;
+    padding-top: 24px;
     font-family: 'Times New Roman', Times, serif;
     font-size: var(--font-b-size);
     line-height: 1.5;
