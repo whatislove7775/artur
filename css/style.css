@@ -824,8 +824,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 }
 /* product.html only (not tattoo-item.html's data-sketch-block, which
    already fills the column edge to edge via .product__main--fluid) —
-   a wider left column so the product photo reads noticeably bigger */
-.product:not([data-sketch-block]) { grid-template-columns: 1.3fr 1fr; }
+   a wider left column so the product photo reads noticeably bigger.
+   Desktop-only: :not() outweighs the mobile single-column override
+   below on specificity alone, so without this scope it was silently
+   forcing a two-up grid back onto the mobile page too. */
+@media (min-width: 981px) {
+  .product:not([data-sketch-block]) { grid-template-columns: 1.3fr 1fr; }
+}
 
 /* tattoo-item.html's infinite feed: each sketch after the first needs
    its own separation from the one before it */
@@ -839,10 +844,16 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 .product__main {
   aspect-ratio: 4 / 5;
-  max-height: 78vh;
+  max-height: 62vh;
   overflow: hidden;
   background: #fff;
   margin: 0 auto;
+}
+/* desktop only — the 78vh enlargement was meant for product.html's
+   desktop layout specifically; the rule above wasn't scoped, so it was
+   silently affecting the mobile product page's proportions too */
+@media (min-width: 981px) {
+  .product__main { max-height: 78vh; }
 }
 .product__main img { width: 100%; height: 100%; object-fit: contain; }
 
