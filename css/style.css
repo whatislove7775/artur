@@ -1226,6 +1226,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .about-photo { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
 
 .about-figure { margin: 0; }
+/* the hero photo itself opens the full case fullscreen on click (see
+   initWorkGalleries in site.js) — same img{pointer-events:none}
+   override as the grid thumbnails and the lightbox's own image */
+.about-figure img { cursor: pointer; pointer-events: auto; }
 .about-figure figcaption {
   margin-top: 8px;
   font-size: var(--font-b-size);

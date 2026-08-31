@@ -643,12 +643,24 @@ function initWorkGalleries() {
     const hero = work.querySelector('.about-figure img');
     const thumbs = work.querySelectorAll('.work__grid img');
     if (!hero || !thumbs.length) return;
+    // the full case, in the same order the grid reads (hero first,
+    // then each thumbnail) — what the lightbox steps through
+    const allSrcs = [hero.src, ...Array.from(thumbs, (t) => t.src)];
+
     thumbs.forEach((thumb) => {
       thumb.addEventListener('click', () => {
         hero.src = thumb.src;
         hero.alt = thumb.alt;
         thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
       });
+    });
+
+    // clicking the hero photo itself opens the full case fullscreen,
+    // same as the product page's own main-image click — starting on
+    // whichever photo is currently shown as the hero
+    hero.addEventListener('click', () => {
+      const startIndex = allSrcs.indexOf(hero.src);
+      openLightbox(allSrcs, startIndex < 0 ? 0 : startIndex, hero.alt);
     });
   });
 }
