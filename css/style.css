@@ -1160,7 +1160,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 
 /* ===========================================================
    ABOUT — biography page: intro + sticky portrait, a long personal
-   statement, the Tattoo Office section, then a Works portfolio list.
+   statement, then a Works portfolio list.
    =========================================================== */
 .about-page {
   width: 100%;
@@ -1170,13 +1170,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   max-width: 1120px;
   margin: 0 auto;
   padding: 118px 60px 140px;
-  /* word-wrapping alone leaves ragged lines on narrow columns when a
-     long Russian word won't fit — syllable-level hyphenation (paired
-     with lang="ru" on this element, so the browser picks the right
-     hyphenation dictionary) breaks it mid-word instead */
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
 }
 
 /* every band of the page shares one column skeleton, so the text, the
@@ -1203,13 +1196,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    this text at ~46 characters per line in that narrow column, which
    only holds at this size */
 .about-block { font-size: 16px; color: var(--font-a-color); line-height: 1.6; }
-.about-block + .about-block { margin-top: 190px; }
 .about-block p { margin: 0 0 16px; }
 .about-block p:last-child { margin-bottom: 0; }
 
 /* the portrait column stays put while both text blocks scroll past
    (the mockup's red guide line), then releases at the end of the row
-   — just above the Tattoo Office photos */
+   — just above the Works section */
 .about-row--top .about-row__right {
   position: sticky;
   top: 100px;
@@ -1230,28 +1222,23 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    asset yet — the ratio is set per use so each one keeps the shape
    the mockup gives it without needing an actual image to size against */
 .about-placeholder { width: 100%; aspect-ratio: 1 / 1; background: #e4e4e4; }
+/* a wired-up real photo in the same slot — same box, cropped to fill it */
+.about-photo { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
 
 .about-figure { margin: 0; }
-.about-figure figcaption,
-.about-mark figcaption {
+.about-figure figcaption {
   margin-top: 8px;
   font-size: var(--font-b-size);
   color: var(--font-b-color);
 }
 
-/* photo + its small companion mark share the left column, exactly as
-   the photo + title pair does in each Works entry below */
+/* photo + title share the left column, same split every Works entry uses */
 .about-row__left--split {
   display: grid;
   grid-template-columns: 68% 1fr;
   gap: 12px;
   align-items: start;
 }
-.about-mark { width: 44px; }
-.about-mark .about-placeholder { border-radius: 50%; }
-
-.about-row--office { margin-top: 90px; }
-.about-row--office .about-placeholder { aspect-ratio: 4 / 3; }
 
 .about-row--works-head { margin-top: 80px; }
 .about-row--works-head .about__heading { margin-bottom: 0; }
@@ -1276,6 +1263,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
+/* 9M Belt's grid holds 9 real photos — 3x3 tiles the same way the
+   4-column layout above (still used by the placeholder-only Works
+   entries) tiles a different count */
+.work__grid--9 { grid-template-columns: repeat(3, 1fr); }
 
 @media (max-width: 980px) {
   .about-page { padding: 90px 24px 100px; }
@@ -1290,11 +1281,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
      `order` same as flex, so this reorders it without touching the
      markup */
   .about-row--top .about-row__right { position: static; order: -1; }
-  .about-block + .about-block { margin-top: 60px; }
-  .about-row--office,
   .about-row--works-head { margin-top: 60px; }
   .work + .work { margin-top: 60px; }
   .work__grid { width: 100%; grid-template-columns: repeat(4, 1fr); }
+  .work__grid--9 { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ===========================================================
