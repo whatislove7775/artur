@@ -1195,7 +1195,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* deliberately smaller than the site's --font-a-size: the mockup sets
    this text at ~46 characters per line in that narrow column, which
    only holds at this size */
-.about-block { font-size: 16px; color: var(--font-a-color); line-height: 1.6; text-align: justify; }
+.about-block { font-size: 16px; color: var(--font-a-color); line-height: 1.6; }
 .about-block p { margin: 0 0 16px; }
 .about-block p:last-child { margin-bottom: 0; }
 
@@ -1283,10 +1283,10 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
      `order` same as flex, so this reorders it without touching the
      markup */
   .about-row--top .about-row__right { position: static; order: -1; }
+  .about-block { text-align: justify; }
   .about-row--works-head { margin-top: 60px; }
   .work + .work { margin-top: 60px; }
   .work__grid { width: 100%; grid-template-columns: repeat(4, 1fr); }
-  .work__grid--9 { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ===========================================================
