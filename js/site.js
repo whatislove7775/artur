@@ -634,6 +634,25 @@ function accordionMarkup(label, bodyHtml, openByDefault) {
   </div>`;
 }
 
+/* about.html's Works entries — clicking a grid thumbnail swaps the
+   hero photo on the left, same mechanic as the product page's own
+   thumbnail row. Only entries with real <img> thumbnails wire up
+   (still-placeholder entries have no img to click). */
+function initWorkGalleries() {
+  document.querySelectorAll('.work').forEach((work) => {
+    const hero = work.querySelector('.about-figure img');
+    const thumbs = work.querySelectorAll('.work__grid img');
+    if (!hero || !thumbs.length) return;
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        hero.src = thumb.src;
+        hero.alt = thumb.alt;
+        thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
+      });
+    });
+  });
+}
+
 function initAccordions(root) {
   (root || document).querySelectorAll('.accordion__toggle').forEach((btn) => {
     btn.addEventListener('click', () => {

@@ -1195,7 +1195,7 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 /* deliberately smaller than the site's --font-a-size: the mockup sets
    this text at ~46 characters per line in that narrow column, which
    only holds at this size */
-.about-block { font-size: 16px; color: var(--font-a-color); line-height: 1.6; }
+.about-block { font-size: 16px; color: var(--font-a-color); line-height: 1.6; text-align: justify; }
 .about-block p { margin: 0 0 16px; }
 .about-block p:last-child { margin-bottom: 0; }
 
@@ -1263,10 +1263,12 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
 }
-/* 9M Belt's grid holds 9 real photos — 3x3 tiles the same way the
-   4-column layout above (still used by the placeholder-only Works
-   entries) tiles a different count */
-.work__grid--9 { grid-template-columns: repeat(3, 1fr); }
+/* 9M Belt's grid: clickable thumbnails swap the hero photo on the
+   left (see initWorkGalleries in site.js) — same dimmed-until-
+   selected treatment as the product page's own thumbnail row */
+.work__grid--9 img { cursor: pointer; opacity: .55; transition: opacity .2s; }
+.work__grid--9 img:hover,
+.work__grid--9 img.is-active { opacity: 1; }
 
 @media (max-width: 980px) {
   .about-page { padding: 90px 24px 100px; }
