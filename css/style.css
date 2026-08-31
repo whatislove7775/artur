@@ -1170,6 +1170,13 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   max-width: 1120px;
   margin: 0 auto;
   padding: 118px 60px 140px;
+  /* word-wrapping alone leaves ragged lines on narrow columns when a
+     long Russian word won't fit — syllable-level hyphenation (paired
+     with lang="ru" on this element, so the browser picks the right
+     hyphenation dictionary) breaks it mid-word instead */
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 
 /* every band of the page shares one column skeleton, so the text, the
