@@ -1264,11 +1264,20 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   gap: 6px;
 }
 /* 9M Belt's grid: clickable thumbnails swap the hero photo on the
-   left (see initWorkGalleries in site.js) — same dimmed-until-
-   selected treatment as the product page's own thumbnail row */
-.work__grid--9 img { cursor: pointer; opacity: .55; transition: opacity .2s; }
-.work__grid--9 img:hover,
-.work__grid--9 img.is-active { opacity: 1; }
+   left (see initWorkGalleries in site.js) — full colour by default
+   (this grid is the showcase itself, not secondary thumbnails), with
+   a border marking whichever one is currently shown as the hero */
+.work__grid--9 img {
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color .2s;
+  /* the global img{pointer-events:none} reset (keeps other browsers'
+     built-in image-actions overlays from triggering) would otherwise
+     also block the click handler that swaps the hero photo */
+  pointer-events: auto;
+}
+.work__grid--9 img.is-active { outline-color: #111; }
 
 @media (max-width: 980px) {
   .about-page { padding: 90px 24px 100px; }
