@@ -1224,6 +1224,11 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .about-placeholder { width: 100%; aspect-ratio: 1 / 1; background: #e4e4e4; }
 /* a wired-up real photo in the same slot — same box, cropped to fill it */
 .about-photo { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+/* the case's own hero photo, unlike the grid thumbnails above, keeps
+   its native proportions instead of being cropped square — every case
+   shares the same fixed column width, so only the height varies
+   photo to photo, in proportion to each one's own aspect ratio */
+.about-figure .about-photo { aspect-ratio: auto; height: auto; object-fit: unset; }
 
 .about-figure { margin: 0; }
 /* the hero photo itself opens the full case fullscreen on click (see
