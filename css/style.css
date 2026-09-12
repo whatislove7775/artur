@@ -902,8 +902,6 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   font-size: var(--font-a-size);
   color: var(--font-a-color);
 }
-.product__price--link { display: block; text-decoration: underline; }
-.product__price--link:hover { opacity: .55; }
 .product__price-old {
   font-size: var(--font-b-size);
   color: var(--font-b-color);
@@ -935,21 +933,24 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
    delivery block — give it extra breathing room below that, instead
    of the tighter spacing tattoo-item.html's order-via row uses right
    under the thumbnails */
-.product__actions:has(a[data-add-to-card]) { margin-top: 40px; }
+.product__actions:has(a[data-add-to-card], a[data-order-link]) { margin-top: 40px; }
 .product__actions a { color: var(--font-b-color); }
 .product__actions a:hover { color: var(--ink); }
 /* tattoo-item.html's order-via-telegram/instagram links, a touch
    heavier than the plain default weight */
-.product__actions a:not([data-add-to-card]) { font-weight: 600; }
+.product__actions a:not([data-add-to-card]):not([data-order-link]) { font-weight: 600; }
 
-/* product.html's own "+ to cart" — a bordered button (not a plain
-   text link like tattoo-item.html's order-via links, which share this
+/* product.html's own "+ to cart" (or, for a priceOnRequest item, the
+   "уточнить стоимость" order link in its place — data-order-link
+   shares this exact styling) — a bordered button (not a plain text
+   link like tattoo-item.html's order-via links, which share this
    same .product__actions row) with a small cart glyph after the
    label. Fixed black border/text and a light grey fill, per the
    mockup — deliberately not currentColor, so it reads the same way
    on a.dept's dark-theme product pages too, instead of inverting to
    a white-on-transparent button there. */
-.product__actions a[data-add-to-card] {
+.product__actions a[data-add-to-card],
+.product__actions a[data-order-link] {
   display: inline-flex;
   align-items: center;
   gap: 7px;
