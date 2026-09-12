@@ -902,6 +902,8 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
   font-size: var(--font-a-size);
   color: var(--font-a-color);
 }
+.product__price--link { display: block; text-decoration: underline; }
+.product__price--link:hover { opacity: .55; }
 .product__price-old {
   font-size: var(--font-b-size);
   color: var(--font-b-color);

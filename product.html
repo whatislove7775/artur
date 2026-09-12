@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260911">
+<link rel="stylesheet" href="css/style.css?v=20260912">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260911"></script>
-<script src="js/site.js?v=20260911"></script>
+<script src="js/data.js?v=20260912"></script>
+<script src="js/site.js?v=20260912"></script>
 <script>
   const id = new URLSearchParams(location.search).get('id');
   const adeptItem = ADEPT_PRODUCTS.find((p) => p.id === id);
@@ -67,9 +67,11 @@
       </div>
       ${dots}
       <h1 class="product__title">${item.title}</h1>
-      <div class="product__price">
+      ${item.priceOnRequest
+        ? `<a class="product__price product__price--link" href="https://t.me/artasimnsupport" target="_blank" rel="noopener">${item.price}</a>`
+        : `<div class="product__price">
         ${item.oldPrice ? `<span class="product__price-old">${item.oldPrice}</span>` : ''}${item.price}
-      </div>
+      </div>`}
     </div>
     <div class="product__right">
       <div class="product__thumbs">
