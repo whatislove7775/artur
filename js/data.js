@@ -45,10 +45,10 @@ const PRODUCTS = [
     id: 'pendant-angelisdead',
     cat: 'jewellery',
     title: 'PENDANT"ANGELISDEAD"',
-    price: 'уточнить стоимость',
-    // product.html renders this as a link to Telegram support instead
-    // of a plain price; the catalogue card just shows the text above,
-    // since the whole card is already a link to the product page
+    price: 'цена не указана',
+    // product.html swaps the "+ to cart" button for a link to Telegram
+    // support instead; the price itself just reads as plain text
+    // (here and on the catalogue card) rather than a numeric price
     priceOnRequest: true,
     images: [
       'assets/products/pendant-angelisdead/1.png',
