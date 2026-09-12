@@ -45,7 +45,11 @@ const PRODUCTS = [
     id: 'pendant-angelisdead',
     cat: 'jewellery',
     title: 'PENDANT"ANGELISDEAD"',
-    price: '35 850 p',
+    price: 'уточнить стоимость',
+    // product.html renders this as a link to Telegram support instead
+    // of a plain price; the catalogue card just shows the text above,
+    // since the whole card is already a link to the product page
+    priceOnRequest: true,
     images: [
       'assets/products/pendant-angelisdead/1.png',
       'assets/products/pendant-angelisdead/2.png',
