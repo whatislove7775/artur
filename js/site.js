@@ -438,6 +438,43 @@ function mountSitePopups() {
   }
 }
 
+/* "уточнить стоимость" on a priceOnRequest product — same box/close/
+   backdrop-dismiss mechanic and .newsletter__* styling as the
+   newsletter signup modal above, just its own copy/fields and no
+   localStorage gating (it's a deliberate click, not a one-per-visitor
+   timer popup, so it can open again every time the button is clicked) */
+function openPriceInquiryModal() {
+  const el = document.createElement('div');
+  el.className = 'newsletter';
+  el.innerHTML = `
+    <div class="newsletter__box">
+      <button type="button" class="newsletter__close" data-newsletter-close>close <span class="newsletter__close-icon">${CLOSE_SVG}</span></button>
+      <p class="newsletter__text">Оставь любой контакт, и скоро мы тебе напишем стоимость товара!</p>
+      <form class="newsletter__form" data-newsletter-form>
+        <input type="text" name="telegram" placeholder="telegram">
+        <input type="text" name="instagram" placeholder="instagram">
+        <input type="email" name="email" placeholder="e-mail">
+        <label class="newsletter__agree">
+          <input type="checkbox" required>
+          <span>Я согласен с <a href="privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a> сайта и сбором моих данных</span>
+        </label>
+        <button type="submit">Отправить</button>
+      </form>
+    </div>`;
+  document.body.appendChild(el);
+
+  const dismiss = () => el.remove();
+  el.querySelector('[data-newsletter-close]').addEventListener('click', dismiss);
+  el.addEventListener('click', (e) => {
+    if (e.target === el) dismiss();
+  });
+  el.querySelector('[data-newsletter-form]').addEventListener('submit', (e) => {
+    e.preventDefault();
+    dismiss();
+  });
+  requestAnimationFrame(() => el.classList.add('is-open'));
+}
+
 /* Menu strip: 4 photos, dark veil, hover reveals, click filters or
    opens the item's external site. */
 function menuStripMarkup(prefix, activeId) {
