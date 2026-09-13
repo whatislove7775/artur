@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Artasimn — Item</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=20260913">
+<link rel="stylesheet" href="css/style.css?v=20260914">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 
 <footer class="footer"></footer>
 
-<script src="js/data.js?v=20260913"></script>
-<script src="js/site.js?v=20260913"></script>
+<script src="js/data.js?v=20260914"></script>
+<script src="js/site.js?v=20260914"></script>
 <script>
   const id = new URLSearchParams(location.search).get('id');
   const adeptItem = ADEPT_PRODUCTS.find((p) => p.id === id);
@@ -95,7 +95,7 @@
       )}
       <div class="product__actions">
         ${item.priceOnRequest
-          ? `<a href="https://t.me/artasimnsupport" target="_blank" rel="noopener" data-order-link>уточнить стоимость</a>`
+          ? `<a href="#" data-order-link>уточнить стоимость</a>`
           : `<a href="#" data-add-to-card>+ to cart
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M8.60426 13.3291C9.15644 13.3292 9.60426 13.7768 9.60426 14.3291V16.9941C9.60425 17.5463 9.15643 17.994 8.60426 17.9941C8.05211 17.994 7.60428 17.5463 7.60426 16.9941V14.3291C7.60426 13.7769 8.0521 13.3292 8.60426 13.3291Z" fill="currentColor"/>
@@ -163,6 +163,11 @@
     e.preventDefault();
     addToCart(item.id, 1);
     openCartDrawer();
+  });
+
+  document.querySelector('[data-order-link]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openPriceInquiryModal();
   });
 </script>
 </body>
