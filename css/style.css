@@ -1122,6 +1122,26 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
 .not-found__link:hover { opacity: .55; }
 
 /* ===========================================================
+   TATTOO OFFICE — stand-in for the external tattoo-office.com site,
+   which doesn't exist yet; every "tattoo office" link on the site
+   points here in the meantime.
+   =========================================================== */
+.tattoo-office-page {
+  padding: 58px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.tattoo-office-page__photo { width: 100%; max-width: 640px; height: auto; }
+.tattoo-office-page__caption {
+  margin: 0;
+  font-size: var(--font-a-size);
+  color: var(--ink);
+}
+
+/* ===========================================================
    LEGAL — plain text pages (privacy policy, etc)
    =========================================================== */
 .legal {
