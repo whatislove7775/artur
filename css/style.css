@@ -1810,6 +1810,9 @@ body.cart-open .icon-toggle__b { opacity: 1; transform: rotate(0); }
     height: 100svh;
   }
   .menu-tile { aspect-ratio: auto; }
+  /* jewellery tile: nudge the photo 10px down so the ring on the
+     finger at the top of the frame isn't cut off by the crop */
+  .menu-tile:nth-child(1) img { object-position: 50% calc(50% + 10px); }
   /* the .6s hover transition is for desktop's discrete on/off hover
      jump — on mobile the scale is instead driven continuously by
      scroll position (see initHeroScrollZoom in site.js), which needs
