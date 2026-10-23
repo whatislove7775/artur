@@ -2211,8 +2211,10 @@ body.adept .footer { position: relative; z-index: 1; }
   }
   .adept__back { display: block; }
   .adept__logo { justify-self: center; }
-  .adept__logo-full { display: none; }
-  .adept__logo-mobile { display: block; }
+  /* mobile shows the full A.DEPT wordmark (same height as the old
+     circled-A icon) instead of the icon alone */
+  .adept__logo-full { display: block; height: 28px; }
+  .adept__logo-mobile { display: none; }
   .adept__brand { display: none; }
   .adept__tattoo-office { display: none; }
   .adept__cart-text { display: none; }
