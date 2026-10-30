@@ -26,6 +26,9 @@
 <script src="js/site.js?v=20260916"></script>
 <script>
   mountAdeptHeader();
+  const returnLink = document.querySelector('.adept__tattoo-office');
+  returnLink.href = 'index.html';
+  returnLink.textContent = 'back';
   mountFooter('artasimn.department');
 
   renderCards('[data-adept-grid]', ADEPT_PRODUCTS);
