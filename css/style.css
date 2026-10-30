@@ -2184,6 +2184,21 @@ body.adept .footer { position: relative; z-index: 1; }
 }
 .adept__links a:hover { opacity: .55; }
 
+/* Desktop keeps the wordmark in the first grid column, so the back
+   control sits just below it without shifting the centred brand. */
+@media (min-width: 981px) {
+  body.adept .adept__back {
+    position: absolute;
+    top: 68px;
+    left: 58px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  body.adept .adept__back::before { content: '\2190'; }
+  body.adept .adept__back:hover { opacity: .55; }
+}
+
 .adept__main {
   /* .adept__bg is position:fixed with z-index:0 — a positioned element
      always paints above plain in-flow content regardless of DOM order,
